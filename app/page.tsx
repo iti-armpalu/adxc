@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 
 import SquaresScatterToCard from "@/components/squares-scatter-to-card";
 import CapabilityMatrix from "@/components/capability-matrix";
+import { AudiencePortalSelector } from "@/components/audience-portal-selector";
 
 
 export default function Home() {
@@ -46,6 +47,9 @@ export default function Home() {
         </div>
         <CapabilityMatrix />
       </section>
+
+      <AudiencePortalSelector />
+
 
     </div>
   );
