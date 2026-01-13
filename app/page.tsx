@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react"
 
-
-import { HeroSection } from "@/components/hero-section";
 import SquaresScatterToCard from "@/components/squares-scatter-to-card";
 import CapabilityMatrix from "@/components/capability-matrix";
 

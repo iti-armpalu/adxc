@@ -31,6 +31,16 @@ export default function CapabilityMatrix() {
     // Calculate max value for scaling
     const maxValue = 5
 
+    const getColorClass = (value: number) => {
+        if (value <= 2) {
+            return "bg-emerald-100"
+        } else if (value <= 3) {
+            return "bg-emerald-400"
+        } else {
+            return "bg-emerald-600"
+        }
+    }
+
     return (
         <Card className="border-2">
             <CardHeader>
@@ -73,7 +83,7 @@ export default function CapabilityMatrix() {
                                         return (
                                             <div key={stageIdx} className="relative h-3 bg-muted rounded-full flex items-center">
                                                 <div
-                                                    className={`h-full rounded-full transition-all ${isHighlighted ? "bg-emerald-500" : "bg-emerald-400"}`}
+                                                    className={`h-full rounded-full transition-all ${getColorClass(value)}`}
                                                     style={{ width: `${widthPercent}%` }}
                                                 />
                                             </div>
