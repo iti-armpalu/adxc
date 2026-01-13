@@ -33,11 +33,11 @@ export default function CapabilityMatrix() {
 
     const getColorClass = (value: number) => {
         if (value <= 2) {
-            return "bg-emerald-100"
+            return "bg-red-400"
         } else if (value <= 3) {
-            return "bg-emerald-400"
+            return "bg-amber-400"
         } else {
-            return "bg-emerald-600"
+            return "bg-emerald-400"
         }
     }
 
