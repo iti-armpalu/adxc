@@ -18,8 +18,8 @@ const AGENT_SLOT_SIZE = 44
 
 // Scattered positions (percentage based for responsiveness)
 const SCATTERED_POSITIONS = [
-  { x: "8%", y: "15%", rotate: -12 },
-  { x: "78%", y: "8%", rotate: 18 },
+  { x: "8%", y: "10%", rotate: -12 },
+  { x: "95%", y: "8%", rotate: 18 },
   { x: "5%", y: "35%", rotate: 8 },
   { x: "82%", y: "52%", rotate: -15 },
   { x: "21%", y: "47%", rotate: 22 },
