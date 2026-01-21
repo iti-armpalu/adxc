@@ -163,3 +163,18 @@
 .animate-shake {
   animation: shake 0.5s ease-in-out;
 }
+
+@keyframes flow-dots {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 24px 0;
+  }
+}
+
+.animated-flow-line {
+  background-image: linear-gradient(to right, var(--border) 50%, transparent 50%);
+  background-size: 12px 2px;
+  animation: flow-dots 0.5s linear infinite;
+}

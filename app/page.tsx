@@ -2,6 +2,9 @@ import { cookies } from "next/headers";
 
 import GateForm from "@/components/gate/gate-form";
 import { HeroSection } from "@/components/hero-section";
+import SquaresScatterToCard from "@/components/squares-scatter-to-card";
+import { AudiencePortalSelector } from "@/components/audience-portal-selector";
+import { DemoSection } from "@/components/demo/demo-section";
 
 const COOKIE_NAME = "site_unlocked";
 
@@ -12,7 +15,7 @@ export default async function HomePage() {
   // Soft-launch: presence check only (matches your proxy check)
   if (!token) {
     return (
-      <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+      <main className="min-h-[calc(100vh-40px)] flex flex-col items-center justify-center px-2">
         <div className="mx-auto w-full max-w-xl text-center mb-10">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-8">
             Protected Access
@@ -33,13 +36,22 @@ export default async function HomePage() {
         <div className="mt-8 w-full flex justify-center">
           <GateForm nextPath="/" />
         </div>
+
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center">
+          <p className="text-muted-foreground text-xs mb-1">
+            A password was shared with you. Need access? Contact us.
+          </p>
+        </div>
       </main>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background animate-fade-in">
+    <main className="min-h-full animate-fade-in">
       <HeroSection />
-    </div>
+      <SquaresScatterToCard />
+      <DemoSection />
+      <AudiencePortalSelector />
+    </main>
   );
 }

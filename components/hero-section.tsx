@@ -1,6 +1,6 @@
 export function HeroSection() {
     return (
-        <section className="min-h-screen flex items-center justify-center px-4">
+        <section className="relative flex flex-col items-center justify-center py-16">
             <div className="max-w-2xl text-center">
                 <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-foreground mb-8">
                     ADXC

@@ -5,10 +5,11 @@ import { motion, useReducedMotion } from "framer-motion"
 import { Zap, Star, Heart, Diamond, Flame, Bot, Sparkles, Cpu } from "lucide-react"
 import { Card, CardContent } from "./ui/card"
 import { HeroSection } from "./hero-section"
+import { Badge } from "./ui/badge"
 
 // Configuration constants
 const SCROLL_THRESHOLD = 15 // px - threshold to trigger animation
-const ANIMATION_DURATION = 0.35 // 350ms
+const ANIMATION_DURATION = 1 // 1000ms
 const ANIMATION_EASING = [0.32, 0.72, 0, 1] as const // Custom ease-out
 const SQUARE_SIZE = 56 // px
 const SLOT_SIZE = 56 // px
@@ -298,9 +299,9 @@ export default function SquaresScatterToCard() {
   }, [getRandomHighlights]);
 
   return (
-    <div ref={containerRef} className="relative w-full min-h-[180vh] overflow-hidden bg-gradient-main">
+    <div ref={containerRef} className="relative w-full min-h-[110vh] overflow-hidden bg-gradient-main">
       {/* Hero text */}
-      <HeroSection />
+      {/* <HeroSection /> */}
 
       {/* Animated squares */}
       {isReady &&
@@ -406,12 +407,12 @@ export default function SquaresScatterToCard() {
       }
 
       {/* Card with slots */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
+      <div className="absolute left-1/2 top-0 -translate-x-1/2 z-0">
 
-        <Card className="bg-card/80 backdrop-blur-xl shadow-2xl border-border/50 py-0">
+        <Card className="bg-card/80 backdrop-blur-xl shadow-2xl border-border/50 py-0 w-[900px] max-w-[90vw]">
           <CardContent className="p-8">
 
-            <div>
+            {/* <div>
               <p className="text-center text-muted-foreground text-sm mb-4 transition-opacity duration-300">
                 {animationState === "slotted" ? "Data providers connected" : "Waiting for connection"}
               </p>
@@ -431,33 +432,154 @@ export default function SquaresScatterToCard() {
                   />
                 ))}
               </div>
+            </div> */}
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Data Providers</h3>
+                <span className={`text-xs px-2.5 py-1 rounded-full transition-all duration-300 ${animationState === "slotted"
+                  ? "bg-green-500/15 text-green-400"
+                  : "bg-muted text-muted-foreground"
+                  }`}>
+                  {animationState === "slotted" ? "Connected" : "Waiting"}
+                </span>
+              </div>
+              <div className="flex items-center justify-center gap-6 py-4 bg-muted/30 rounded-xl border border-border/20">
+                {[
+                  { name: "Kantar", role: "Market Research" },
+                  { name: "Nielsen", role: "Audience Data" },
+                  { name: "Experian", role: "Consumer Insights" },
+                  { name: "Circana (IRI)", role: "Retail & CPG Data" },
+                  { name: "Comscore", role: "Digital Measurement" },
+                ].map((provider, index) => (
+                  <div key={index} className="flex flex-col items-center gap-3">
+                    <div
+                      ref={(el) => {
+                        slotRefs.current[index] = el
+                      }}
+                      className={`rounded-xl border-2 border-dashed transition-all duration-300 ${animationState === "slotted" ? "border-transparent" : "border-border/50"
+                        }`}
+                      style={{
+                        width: SLOT_SIZE,
+                        height: SLOT_SIZE,
+                      }}
+                    />
+                    <div className="text-center">
+                      <p className="text-xs font-medium text-foreground">{provider.name}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{provider.role}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
 
-            {/* Large ADXC box */}
-            <motion.div
-              ref={adxcRef}
-              className="mt-12 w-full bg-primary rounded-xl flex items-center justify-center py-6"
-              animate={{
-                scale: hoverState.isHovering ? 1.02 : 1,
-                boxShadow: hoverState.isHovering
-                  ? "0 0 40px 15px rgba(0, 0, 0, 0.15), 0 0 60px 25px rgba(0, 0, 0, 0.08), 0 0 80px 35px rgba(0, 0, 0, 0.04)"
-                  : "0 10px 20px rgba(0,0,0,0.15)",
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 22,
-              }}
-            >
-              <span className="text-primary-foreground text-3xl font-bold tracking-widest">
-                ADXC
-              </span>
-            </motion.div>
+            {/* Section 2: ADXC Infrastructure Bridge */}
+            <div className="mt-8 space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Infrastructure Bridge</h3>
+              </div>
+              <motion.div
+                ref={adxcRef}
+                className="w-full bg-gradient-to-r from-primary/90 to-primary rounded-xl flex items-center justify-center py-5 border-2 border-transparent"
+                // animate={{
+                //   borderColor: hoverState.highlightedScatteredIndex !== -1 ? "rgba(102, 2, 60, 0.6)" : "transparent",
+                // }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="text-primary-foreground text-3xl font-bold tracking-[0.3em]">ADXC</span>
+              </motion.div>
+            </div>
 
+
+            {/* Section 3: Client Internal Data & AI Agentic Ecosystem - Side by Side */}
+            <div className="mt-8 relative">
+              <div className="grid grid-cols-[1fr_auto_2fr] gap-0 items-stretch">
+                {/* Client Internal Data */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Client Internal Data</h3>
+                    <span className={`text-xs px-2.5 py-1 rounded-full transition-all duration-300 ${animationState === "slotted"
+                      ? "bg-green-500/15 text-green-400"
+                      : "bg-muted text-muted-foreground"
+                      }`}>
+                      {animationState === "slotted" ? "Linked" : "Waiting"}
+                    </span>
+                  </div>
+                  <div className="">
+                    <div className="flex flex-wrap gap-3 mt-4">
+                      {["CRM Records", "Sales Pipeline", "Internal Docs", "Product Catalog", "Support Tickets", "Financial Data"].map((data, idx) => (
+                        <Badge key={idx} variant="outline" className="py-1 px-3">
+                          {data}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Animated Flow Line */}
+                <div className="flex items-center justify-center px-4 pt-10">
+                  <div className="flex items-center">
+                    <div className="w-16 h-[2px] animated-flow-line" />
+                    <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-primary/60" />
+                  </div>
+                </div>
+
+                {/* AI Agentic Ecosystem */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your AI Agentic Ecosystem</h3>
+                    <span className={`text-xs px-2.5 py-1 rounded-full transition-all duration-300 ${animationState === "slotted"
+                      ? "bg-green-500/15 text-green-400"
+                      : "bg-muted text-muted-foreground"
+                      }`}>
+                      {animationState === "slotted" ? "Connected" : "Waiting"}
+                    </span>
+                  </div>
+                  <div
+                    ref={agentCardRef}
+                    className="relative bg-muted/30 rounded-xl p-4 border border-border/20"
+                  >
+                    <div className="flex gap-8 justify-center">
+                      {[
+                        { name: "Miro Sidekick", role: "Visual Collaboration" },
+                        { name: "Jasper AI", role: "Content Creation" },
+                        { name: "Salesforce Einstein", role: "CRM Intelligence" },
+                      ].map((agent, index) => {
+                        const isHighlighted = hoverState.isHovering && hoverState.highlightedAgentIndex === index
+                        return (
+                          <div
+                            key={index}
+                            className="flex flex-col items-center gap-3"
+                          >
+                            <div
+                              ref={(el) => {
+                                agentSlotRefs.current[index] = el
+                              }}
+                              className={`relative rounded-xl border-2 border-dashed transition-all duration-300 ${animationState === "slotted" ? "border-transparent" : "border-border/40"
+                                } ${isHighlighted ? "shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)]" : ""}`}
+                              style={{
+                                width: AGENT_SLOT_SIZE,
+                                height: AGENT_SLOT_SIZE,
+                              }}
+                            >
+                              {isHighlighted && <div className="absolute inset-0 rounded-xl bg-primary/20 animate-pulse" />}
+                            </div>
+                            <div className="text-center">
+                              <p className="text-xs font-medium text-foreground">{agent.name}</p>
+                              <p className="text-[10px] text-muted-foreground mt-0.5">{agent.role}</p>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* AI Agent frosted glass card */}
-            <div
+            {/* <div
               className="relative mt-12 bg-card/40 backdrop-blur-lg rounded-xl p-5 border border-border/30 shadow-lg"
             >
               <p className="text-center text-foreground font-semibold text-lg mb-4">
@@ -490,16 +612,24 @@ export default function SquaresScatterToCard() {
                   );
                 })}
               </div>
-            </div>
+            </div> */}
 
             {/* Marketing Tasks Row */}
-            <div className="mt-6 flex gap-3">
+            {/* <div className="mt-8 mb-4 flex items-center gap-3">
+              <div className="h-px flex-1" />
+              <div className="flex flex-col items-center">
+                <span className="text-sm font-medium text-foreground tracking-wide">Workflow Example</span>
+                <span className="text-xs text-muted-foreground">Tasks and subtasks in a marketing flow</span>
+              </div>
+              <div className="h-px flex-1" />
+            </div>
+            <div className="mt-6 grid grid-cols-5 gap-3">
               {[
-                { task: "SEO Audit", subtasks: ["Keyword research", "Meta optimization", "Backlink analysis"] },
-                { task: "Content", subtasks: ["Blog strategy", "Social posts", "Email copy"] },
-                { task: "Ads", subtasks: ["Campaign setup", "A/B testing", "Budget allocation"] },
-                { task: "Analytics", subtasks: ["Traffic report", "Conversion tracking", "ROI analysis"] },
-                { task: "Social", subtasks: ["Engagement plan", "Influencer outreach", "Community mgmt"] },
+                { task: "Strategy / Brief", subtasks: ["Market understanding", "Audience sizing", "Category context"] },
+                { task: "Creative Development", subtasks: ["Insights", "Tensions", "Cultural context", "Inspiration"] },
+                { task: "Media Strategy / Planning", subtasks: ["Reach", "Frequency", "Channel effectiveness", "Planning"] },
+                { task: "Activation / Execution", subtasks: ["Campaign delivery", "Retail media", "Execution"] },
+                { task: "Measurement & Optimization", subtasks: ["ROI", "Effectiveness", "Sales impact", "Optimization"] },
               ].map((item, index) => (
                 <div
                   key={index}
@@ -512,7 +642,7 @@ export default function SquaresScatterToCard() {
                     {item.subtasks.map((subtask, subIndex) => (
                       <div
                         key={subIndex}
-                        className="bg-card/60 rounded px-2 py-1 text-xs text-muted-foreground text-center truncate cursor-pointer hover:bg-primary/20 hover:text-primary transition-all duration-200"
+                        className="bg-card/60 rounded py-1 text-xs text-muted-foreground text-center  cursor-pointer hover:bg-primary/20 hover:text-primary transition-all duration-200"
                         onMouseEnter={() => handleSubtaskHover(true)}
                         onMouseLeave={() => handleSubtaskHover(false)}
                       >
@@ -522,6 +652,52 @@ export default function SquaresScatterToCard() {
                   </div>
                 </div>
               ))}
+            </div> */}
+
+            {/* Section 4: Workflow Tasks */}
+            <div className="mt-8 space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Workflow Tasks</h3>
+                <span className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+                  Marketing Flow
+                </span>
+              </div>
+              <div className="grid grid-cols-5 gap-4">
+                {[
+                  { task: "Strategy/Brief", subtasks: ["Market understanding", "Audience sizing", "Category context"] },
+                  { task: "Creative Development", subtasks: ["Insights", "Tensions", "Cultural context", "Inspiration"] },
+                  { task: "Media Strategy / Planning", subtasks: ["Reach", "Frequency", "Channel effectiveness", "Planning"] },
+                  { task: "Activation / Execution", subtasks: ["Campaign delivery", "Retail media", "Execution"] },
+                  { task: "Measurement & Optimization", subtasks: ["ROI", "Effectiveness", "Sales impact", "Optimization"] },
+                ].map((item, index) => (
+                  <div key={index} className="bg-muted/40 rounded-xl p-3 border border-border/20 hover:border-primary/30 transition-all duration-200">
+                    <p className="text-foreground font-semibold text-xs text-center mb-3 py-1 min-h-[30px] flex items-start justify-center">{item.task}</p>
+                    <div className="space-y-2">
+                      {item.subtasks.map((subtask, subIndex) => (
+                        <div
+                          key={subIndex}
+                          className="text-xs text-muted-foreground text-center"
+                          onMouseEnter={() => {
+                            const randomIndex = Math.floor(Math.random() * 5)
+                            setHoverState((prev) => ({
+                              ...prev,
+                              highlightedScatteredIndex: randomIndex,
+                            }))
+                          }}
+                          onMouseLeave={() => {
+                            setHoverState((prev) => ({
+                              ...prev,
+                              highlightedScatteredIndex: -1,
+                            }))
+                          }}
+                        >
+                          {subtask}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
 
