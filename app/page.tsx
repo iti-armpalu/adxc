@@ -1,56 +1,45 @@
-'use client'
+import { cookies } from "next/headers";
 
-import { useEffect, useRef, useState } from "react"
+import GateForm from "@/components/gate/gate-form";
+import { HeroSection } from "@/components/hero-section";
 
-import SquaresScatterToCard from "@/components/squares-scatter-to-card";
-import CapabilityMatrix from "@/components/capability-matrix";
-import { AudiencePortalSelector } from "@/components/audience-portal-selector";
+const COOKIE_NAME = "site_unlocked";
 
+export default async function HomePage() {
+  const cookieStore = await cookies(); // Next 16: async
+  const token = cookieStore.get(COOKIE_NAME)?.value;
 
-export default function Home() {
+  // Soft-launch: presence check only (matches your proxy check)
+  if (!token) {
+    return (
+      <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+        <div className="mx-auto w-full max-w-xl text-center mb-10">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-8">
+            Protected Access
+          </p>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-foreground mb-8">
+            ADXC
+          </h1>
 
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
+          <p className="text-xl sm:text-2xl text-foreground/80 leading-relaxed mb-4">
+            The data exchange connecting AI agents to premium data providers, on a pay-per-query basis
+          </p>
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return
-
-      const scrollPosition = window.scrollY
-      const windowHeight = window.innerHeight
-      const fullHeight = containerRef.current.scrollHeight - windowHeight
-
-      const progress = Math.min(scrollPosition / (fullHeight * 0.3), 1)
-      setScrollProgress(progress)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    handleScroll() // Initial call
-
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  return (
-    <div>
-      <SquaresScatterToCard />
-
-
-
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 md:pb-24">
-        <div className="text-center max-w-4xl mx-auto mb-8 sm:mb-12 space-y-3 sm:space-y-4">
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground text-balance leading-tight px-4">
-            The data exists. Access doesn't.
-          </h2>
-          <p className="text-base sm:text-lg text-muted-foreground text-balance leading-relaxed px-4">
-            SMEs need insight from multiple providers, but high costs and low usage make full licenses unrealistic.
+          <p className="text-lg text-muted-foreground">
+            Making access affordable and agents finally useful.
           </p>
         </div>
-        <CapabilityMatrix />
-      </section>
 
-      <AudiencePortalSelector />
+        <div className="mt-8 w-full flex justify-center">
+          <GateForm nextPath="/" />
+        </div>
+      </main>
+    );
+  }
 
-
+  return (
+    <div className="min-h-screen bg-background animate-fade-in">
+      <HeroSection />
     </div>
   );
 }
