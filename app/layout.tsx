@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 /* ---------- metadata ---------- */
 
 export const metadata: Metadata = {
-  title: "Soft Launch",
+  title: "ADXC",
   description: "Private preview",
 };
 
