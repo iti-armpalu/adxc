@@ -4,11 +4,10 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Zap, Star, Heart, Diamond, Flame, Bot, Sparkles, Cpu } from "lucide-react"
 import { Card, CardContent } from "./ui/card"
-import { HeroSection } from "./hero-section"
 import { Badge } from "./ui/badge"
 
 // Configuration constants
-const SCROLL_THRESHOLD = 15 // px - threshold to trigger animation
+const SCROLL_THRESHOLD = 80 // 15 px - threshold to trigger animation
 const ANIMATION_DURATION = 1 // 1000ms
 const ANIMATION_EASING = [0.32, 0.72, 0, 1] as const // Custom ease-out
 const SQUARE_SIZE = 56 // px
@@ -299,7 +298,7 @@ export default function SquaresScatterToCard() {
   }, [getRandomHighlights]);
 
   return (
-    <div ref={containerRef} className="relative w-full min-h-[110vh] overflow-hidden bg-gradient-main">
+    <div ref={containerRef} className="relative w-full min-h-[110vh] overflow-visible">
       {/* Hero text */}
       {/* <HeroSection /> */}
 
@@ -407,7 +406,7 @@ export default function SquaresScatterToCard() {
       }
 
       {/* Card with slots */}
-      <div className="absolute left-1/2 top-0 -translate-x-1/2 z-0">
+      <div className="absolute h-full left-1/2 top-0 -translate-x-1/2 z-0">
 
         <Card className="bg-card/80 backdrop-blur-xl shadow-2xl border-border/50 py-0 w-[900px] max-w-[90vw]">
           <CardContent className="p-8">
@@ -714,7 +713,7 @@ export default function SquaresScatterToCard() {
 
 
       {/* Scroll indicator - only show when scattered */}
-      <motion.div
+      {/* <motion.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         initial={{ opacity: 0, y: 10 }}
         animate={{
@@ -732,7 +731,7 @@ export default function SquaresScatterToCard() {
         >
           <div className="w-1.5 h-2.5 rounded-full bg-muted-foreground/60" />
         </motion.div>
-      </motion.div>
+      </motion.div> */}
 
       {/* Scroll-to-top hint - only show when slotted and scrolled down */}
       <motion.div

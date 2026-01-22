@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight, Building2, Database, Sparkles } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
@@ -13,7 +13,7 @@ export function AudiencePortalSelector() {
   }
 
   return (
-    <main className="relative min-h-screen bg-white flex items-center justify-center p-6">
+    <main className="relative flex items-center justify-center px-6 py-12 mb-24">
 
       <div className="relative z-10 w-full max-w-4xl">
         <div className="mb-12">
@@ -23,9 +23,6 @@ export function AudiencePortalSelector() {
             <br />
             ADXC Works
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground text-balance leading-relaxed mb-8">
-            Enterprise-grade data intelligence — without ever owning the raw data
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

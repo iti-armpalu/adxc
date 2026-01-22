@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/hero-section";
 import SquaresScatterToCard from "@/components/squares-scatter-to-card";
 import { AudiencePortalSelector } from "@/components/audience-portal-selector";
 import { DemoSection } from "@/components/demo/demo-section";
+import { ProblemSolutionSection } from "@/components/problem-solution-section";
 
 const COOKIE_NAME = "site_unlocked";
 
@@ -17,9 +18,6 @@ export default async function HomePage() {
     return (
       <main className="min-h-[calc(100vh-40px)] flex flex-col items-center justify-center px-2">
         <div className="mx-auto w-full max-w-xl text-center mb-10">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-8">
-            Protected Access
-          </p>
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-foreground mb-8">
             ADXC
           </h1>
@@ -47,9 +45,14 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="min-h-full animate-fade-in">
+    <main className="min-h-full animate-fade-in bg-gradient-main">
       <HeroSection />
-      <SquaresScatterToCard />
+      <div className="flex flex-col items-start xl:flex-row">
+
+
+        <ProblemSolutionSection />
+        <SquaresScatterToCard />
+      </div>
       <DemoSection />
       <AudiencePortalSelector />
     </main>
