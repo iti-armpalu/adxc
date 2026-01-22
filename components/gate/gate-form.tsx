@@ -1,10 +1,11 @@
 "use client";
 
 import { unlockAction } from "@/lib/actions";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { Input } from "../ui/input";
-import { AlertCircle, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { AlertCircle, ArrowRight, Eye, EyeOff, Mail } from "lucide-react";
 import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 
 type Props = { nextPath: string };
 
@@ -18,8 +19,28 @@ export default function GateForm({ nextPath }: Props) {
     const [showError, setShowError] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    // Client-only fail counter
+    const [failCount, setFailCount] = useState(0);
+    const [helpOpen, setHelpOpen] = useState(false);
+
+    const contactEmail = "hello@yourdomain.com"; // <-- change me
+    const mailtoHref = useMemo(() => {
+        const subject = encodeURIComponent("Requesting access to ADXC");
+        const body = encodeURIComponent(
+            "Hi,\n\nI’d like access to ADXC. Please share the password.\n\nThanks!"
+        );
+        return `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+    }, [contactEmail]);
+
+
     useEffect(() => {
         if (!state.ok && "error" in state && state.error) {
+            setFailCount((c) => {
+                const next = c + 1;
+                if (next >= 3) setHelpOpen(true);
+                return next;
+            });
+
             // show error temporarily
             setShowError(true);
             setIsShaking(false);
@@ -34,6 +55,15 @@ export default function GateForm({ nextPath }: Props) {
                 clearTimeout(stopShake);
             };
         }
+
+        // Success (you redirect server-side, but keep tidy if behavior changes)
+        if (state.ok) {
+            setFailCount(0);
+            setHelpOpen(false);
+            setShowError(false);
+            setIsShaking(false);
+        }
+
     }, [state]);
 
     return (
@@ -89,6 +119,80 @@ export default function GateForm({ nextPath }: Props) {
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
             </form>
+
+            {/* After 3 failures: show a helpful panel */}
+            <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Need the password?</DialogTitle>
+                        <DialogDescription>
+                            If you don’t have it or it’s not working, reach out and we’ll share access.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="space-y-4">
+                        {/* Primary CTA */}
+                        <Button asChild className="w-full">
+                            <a
+                                href={mailtoHref}
+                                className="inline-flex items-center justify-center gap-2"
+                            >
+                                <Mail className="w-4 h-4" />
+                                Email us to request access
+                            </a>
+                        </Button>
+
+                        {/* Divider */}
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-background px-2 text-muted-foreground">
+                                    Or
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Email input (UX-only) */}
+                        <div className="space-y-2">
+                            <p className="text-sm text-muted-foreground">
+                                Or just drop your email here and we’ll reach out:
+                            </p>
+
+                            <Input
+                                type="email"
+                                placeholder="you@company.com"
+                                className="w-full h-11"
+                            />
+
+                            <Button
+                                type="button"
+                                variant="outline"
+                                className="w-full"
+                                onClick={() => {
+                                    // UX-only: forward to mailto for now
+                                    window.location.href = mailtoHref;
+                                }}
+                            >
+                                Send request
+                            </Button>
+                        </div>
+
+                        {/* Secondary action */}
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            className="w-full"
+                            onClick={() => setHelpOpen(false)}
+                        >
+                            I’ll try again
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+
         </div>
     );
 }
