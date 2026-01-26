@@ -3,9 +3,12 @@ import { cookies } from "next/headers";
 import GateForm from "@/components/gate/gate-form";
 import { HeroSection } from "@/components/hero-section";
 import SquaresScatterToCard from "@/components/squares-scatter-to-card";
-import { AudiencePortalSelector } from "@/components/audience-portal-selector";
+
 import { DemoSection } from "@/components/demo/demo-section";
-import { ProblemSolutionSection } from "@/components/problem-solution-section";
+import Header from "@/components/header";
+import { SolutionSection } from "@/components/solution-section";
+import { ProblemSection } from "@/components/problem-section";
+import { AudiencePortalSelector } from "@/components/audience-portal-selector";
 
 const COOKIE_NAME = "site_unlocked";
 
@@ -23,15 +26,11 @@ export default async function HomePage() {
           </h1>
 
           <p className="text-xl sm:text-2xl text-foreground/80 leading-relaxed mb-4">
-            The data exchange connecting AI agents to premium data providers, on a pay-per-query basis
-          </p>
-
-          <p className="text-lg text-muted-foreground">
-            Making access affordable and agents finally useful.
+            The data exchange connecting AI agents to premium data providers, on a pay-per-query basis; making access affordable and agents finally useful.
           </p>
         </div>
 
-        <div className="mt-8 w-full flex justify-center">
+        <div className="w-full flex justify-center">
           <GateForm nextPath="/" />
         </div>
 
@@ -45,16 +44,19 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="min-h-full animate-fade-in bg-gradient-main">
-      <HeroSection />
-      <div className="flex flex-col items-start xl:flex-row">
+    <>
+      <Header />
+      <main className="min-h-full animate-fade-in bg-gradient-main">
+        <HeroSection />
+        <ProblemSection />
+        <div className="flex flex-col items-start xl:flex-row">
+          <SolutionSection />
+          <SquaresScatterToCard />
+        </div>
+        <DemoSection />
+        <AudiencePortalSelector />
+      </main>
+    </>
 
-
-        <ProblemSolutionSection />
-        <SquaresScatterToCard />
-      </div>
-      <DemoSection />
-      <AudiencePortalSelector />
-    </main>
   );
 }

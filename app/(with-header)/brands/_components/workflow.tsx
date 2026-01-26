@@ -1,3 +1,4 @@
+import { SectionHeader } from "@/components/section-header";
 import SquaresScatterToCard from "@/components/squares-scatter-to-card";
 import { Bot, Brain, FileText, CheckCircle } from "lucide-react";
 
@@ -33,19 +34,24 @@ const Workflow = () => {
         <section className="relative py-20 md:py-28">
 
             <div className="relative z-10 mx-auto px-4 md:px-6">
-                {/* Header */}
-                <div className="mx-auto mb-12 max-w-3xl text-center">
-                    <h2 className="mb-4 text-2xl font-bold leading-tight md:text-3xl lg:text-4xl">
-                        ADXC gives you access to{" "}
-                        <span className="text-gradient">all the data you need</span>, while you only pay for what you use
+
+                {/* Section header */}
+                {/* <div className="max-w-5xl mx-auto mb-16 text-center">
+                    <h2 className="mb-4 text-3xl md:text-5xl font-black">
+                        ADXC gives you access to all the data you need, while you only pay for what you use
                     </h2>
-                    <p className="text-base text-muted-foreground md:text-lg">
+                    <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
                         ADXC is the data exchange connecting premium data providers and SMEs via AI agents, on a pay-per-use model.
                     </p>
-                </div>
+                </div> */}
+
+                <SectionHeader
+                    title="ADXC gives you access to all the data you need, while you only pay for what you use"
+                    description="ADXC is the data exchange connecting premium data providers and SMEs via AI agents, on a pay-per-use model."
+                />
 
                 {/* Two-column layout */}
-                <div className="flex flex-col items-start xl:flex-row">
+                <div className="flex flex-col items-start xl:flex-row gap-6">
                     {/* Left side - Graph */}
 
                     <SquaresScatterToCard />
@@ -53,27 +59,37 @@ const Workflow = () => {
 
                     {/* Right side - Steps */}
                     <div className="relative xl:max-w-[300px] mx-auto my-auto">
-                        {/* Connecting line */}
-                        {/* <div className="absolute left-5 top-0 h-full w-px bg-black from-primary/50 via-primary to-primary/50" /> */}
 
                         <div className="space-y-6">
                             {steps.map((step) => (
-                                <div key={step.number} className="relative flex items-center gap-5">
-                                    {/* Number badge */}
-                                    <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-background bg-black shadow-glow">
-                                        <span className="text-base font-bold text-primary-foreground">{step.number}</span>
-                                    </div>
 
-                                    {/* Content card */}
-                                    <div className="flex-1 rounded-xl border border-border bg-gradient-card p-4 transition-all hover:border-primary/30 hover:shadow-card">
-                                        <h3 className="mb-1 text-base font-semibold">{step.title}</h3>
-                                        <p className="text-sm text-muted-foreground">{step.description}</p>
+                                <div
+                                    key={step.number}
+                                    className="bg-white rounded-xl border border-slate-200 p-2 md:p-4 hover:border-adxc hover:shadow-lg transition-all duration-300"
+                                >
+                                    <div className="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center mb-3">
+
+                                        <span className="text-base font-bold text-adxc">{step.number}</span>
                                     </div>
+                                    <h3 className="text-base font-semibold text-slate-900 mb-3">
+                                        {step.title}
+                                    </h3>
+                                    <p className="text-sm text-slate-500 leading-relaxed">{step.description}</p>
                                 </div>
+
+
                             ))}
                         </div>
                     </div>
+
                 </div>
+
+                {/* Footer */}
+                <p className="text-center text-sm text-slate-500 mt-12 max-w-2xl mx-auto leading-relaxed">
+                    No long-term contracts - Access mumtiple premium datasets - Spend caps set per task/user
+                </p>
+
+
             </div>
         </section>
     );

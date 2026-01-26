@@ -9,17 +9,30 @@ import { Play, ExternalLink } from "lucide-react";
 interface DemoButtonsProps {
   videoUrl?: string;
   prototypeUrl?: string;
+  variant?: "page" | "sheet";
 }
 
 export default function DemoButtons({
-  videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder - replace with actual demo video
-  prototypeUrl = "https://example.com", // Placeholder - replace with actual prototype URL
+  videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  prototypeUrl = "https://example.com",
+  variant = "page",
 }: DemoButtonsProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
+  const wrapperClass =
+    variant === "sheet"
+      ? "mt-6 flex flex-col items-center gap-3" // always column
+      : "mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4";
+
+  const btnClass =
+    variant === "sheet"
+      ? "w-full max-w-[260px] gap-2" // or min-w, your call
+      : "min-w-[220px] gap-2 sm:min-w-0 sm:h-11 sm:px-8";
+
+
   return (
     <>
-      <div className="flex items-center justify-center gap-4 mt-8">
+      <div className={wrapperClass}>
         <Button
           variant="outline"
           size="lg"
@@ -33,7 +46,7 @@ export default function DemoButtons({
         <Button
           size="lg"
           asChild
-          className="gap-2"
+          className="min-w-[220px] bg-adxc gap-2 sm:min-w-0 sm:h-11 sm:px-8"
         >
           <a href={prototypeUrl} target="_blank" rel="noopener noreferrer">
             <ExternalLink className="w-4 h-4" />

@@ -115,6 +115,9 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+    /* ADXC purple */
+    --color-adxc: #66023C;
+
   /* Adding custom colors for animated squares */
   --color-square-1: oklch(0.646 0.222 41.116);
   --color-square-2: oklch(0.6 0.118 184.704);
@@ -166,10 +169,10 @@
 
 @keyframes flow-dots {
   0% {
-    background-position: 0 0;
+    background-position: 24px 0;
   }
   100% {
-    background-position: 24px 0;
+    background-position: 0 0;
   }
 }
 

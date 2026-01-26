@@ -298,7 +298,8 @@ export default function SquaresScatterToCard() {
   }, [getRandomHighlights]);
 
   return (
-    <div ref={containerRef} className="relative w-full min-h-[110vh] overflow-visible">
+    // <div ref={containerRef} className="relative w-full min-h-[110vh] overflow-visible">
+    <div ref={containerRef} className="relative w-full">
       {/* Hero text */}
       {/* <HeroSection /> */}
 
@@ -406,32 +407,11 @@ export default function SquaresScatterToCard() {
       }
 
       {/* Card with slots */}
-      <div className="absolute h-full left-1/2 top-0 -translate-x-1/2 z-0">
+      {/* <div className="absolute h-full left-1/2 top-0 -translate-x-1/2 z-0"> */}
+      <div className="relative z-0 flex justify-center pt-0">
 
         <Card className="bg-card/80 backdrop-blur-xl shadow-2xl border-border/50 py-0 w-[900px] max-w-[90vw]">
           <CardContent className="p-8">
-
-            {/* <div>
-              <p className="text-center text-muted-foreground text-sm mb-4 transition-opacity duration-300">
-                {animationState === "slotted" ? "Data providers connected" : "Waiting for connection"}
-              </p>
-              <div className="flex items-center justify-center gap-8">
-                {[0, 1, 2, 3, 4].map((index) => (
-                  <div
-                    key={index}
-                    ref={(el) => {
-                      slotRefs.current[index] = el
-                    }}
-                    className={`rounded-xl border-2 border-dashed transition-all duration-300 ${animationState === "slotted" ? "border-transparent" : "border-border/60"
-                      }`}
-                    style={{
-                      width: SLOT_SIZE,
-                      height: SLOT_SIZE,
-                    }}
-                  />
-                ))}
-              </div>
-            </div> */}
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -472,32 +452,41 @@ export default function SquaresScatterToCard() {
               </div>
             </div>
 
-
-            {/* Section 2: ADXC Infrastructure Bridge */}
-            <div className="mt-8 space-y-2">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Infrastructure Bridge</h3>
-              </div>
-              <motion.div
-                ref={adxcRef}
-                className="w-full bg-gradient-to-r from-primary/90 to-primary rounded-xl flex items-center justify-center py-5 border-2 border-transparent"
-                // animate={{
-                //   borderColor: hoverState.highlightedScatteredIndex !== -1 ? "rgba(102, 2, 60, 0.6)" : "transparent",
-                // }}
-                transition={{ duration: 0.2 }}
-              >
-                <span className="text-primary-foreground text-3xl font-bold tracking-[0.3em]">ADXC</span>
-              </motion.div>
-            </div>
-
-
-            {/* Section 3: Client Internal Data & AI Agentic Ecosystem - Side by Side */}
             <div className="mt-8 relative">
-              <div className="grid grid-cols-[1fr_auto_2fr] gap-0 items-stretch">
-                {/* Client Internal Data */}
+              <div className="grid grid-cols-[1fr_auto_1fr] gap-0 items-stretch">
+
+
+                {/* Section 2: ADXC Infrastructure Bridge */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Client Internal Data</h3>
+                    <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Infrastructure Bridge</h3>
+                  </div>
+                  <motion.div
+                    ref={adxcRef}
+                    className="w-full bg-gradient-to-r from-primary/90 to-primary rounded-xl flex items-center justify-center py-5 border-2 border-transparent"
+                    // animate={{
+                    //   borderColor: hoverState.highlightedScatteredIndex !== -1 ? "rgba(102, 2, 60, 0.6)" : "transparent",
+                    // }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <span className=" text-xl sm:text-3xl text-primary-foreground font-bold tracking-[0.3em]">
+                      ADXC
+                    </span>
+                  </motion.div>
+                </div>
+
+                {/* Animated Flow Line */}
+                <div className="flex items-center justify-center px-4 pt-10">
+                  <div className="flex items-center">
+                    <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[10px] border-l-primary/60" />
+                    <div className="w-16 h-[2px] animated-flow-line" />
+                  </div>
+                </div>
+
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your Internal Data</h3>
                     <span className={`text-xs px-2.5 py-1 rounded-full transition-all duration-300 ${animationState === "slotted"
                       ? "bg-green-500/15 text-green-400"
                       : "bg-muted text-muted-foreground"
@@ -515,67 +504,96 @@ export default function SquaresScatterToCard() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
 
-                {/* Animated Flow Line */}
-                <div className="flex items-center justify-center px-4 pt-10">
-                  <div className="flex items-center">
-                    <div className="w-16 h-[2px] animated-flow-line" />
-                    <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-primary/60" />
-                  </div>
-                </div>
 
-                {/* AI Agentic Ecosystem */}
-                <div className="space-y-2">
+
+            {/* Section 3: Client Internal Data & AI Agentic Ecosystem - Side by Side */}
+            {/* <div className="mt-8 relative"> */}
+            {/* <div className="grid grid-cols-[1fr_auto_1fr] gap-0 items-stretch"> */}
+            {/* Client Internal Data */}
+            {/* <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your AI Agentic Ecosystem</h3>
+                    <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your Internal Data</h3>
                     <span className={`text-xs px-2.5 py-1 rounded-full transition-all duration-300 ${animationState === "slotted"
                       ? "bg-green-500/15 text-green-400"
                       : "bg-muted text-muted-foreground"
                       }`}>
-                      {animationState === "slotted" ? "Connected" : "Waiting"}
+                      {animationState === "slotted" ? "Linked" : "Waiting"}
                     </span>
                   </div>
-                  <div
-                    ref={agentCardRef}
-                    className="relative bg-muted/30 rounded-xl p-4 border border-border/20"
-                  >
-                    <div className="flex gap-8 justify-center">
-                      {[
-                        { name: "Miro Sidekick", role: "Visual Collaboration" },
-                        { name: "Jasper AI", role: "Content Creation" },
-                        { name: "Salesforce Einstein", role: "CRM Intelligence" },
-                      ].map((agent, index) => {
-                        const isHighlighted = hoverState.isHovering && hoverState.highlightedAgentIndex === index
-                        return (
-                          <div
-                            key={index}
-                            className="flex flex-col items-center gap-3"
-                          >
-                            <div
-                              ref={(el) => {
-                                agentSlotRefs.current[index] = el
-                              }}
-                              className={`relative rounded-xl border-2 border-dashed transition-all duration-300 ${animationState === "slotted" ? "border-transparent" : "border-border/40"
-                                } ${isHighlighted ? "shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)]" : ""}`}
-                              style={{
-                                width: AGENT_SLOT_SIZE,
-                                height: AGENT_SLOT_SIZE,
-                              }}
-                            >
-                              {isHighlighted && <div className="absolute inset-0 rounded-xl bg-primary/20 animate-pulse" />}
-                            </div>
-                            <div className="text-center">
-                              <p className="text-xs font-medium text-foreground">{agent.name}</p>
-                              <p className="text-[10px] text-muted-foreground mt-0.5">{agent.role}</p>
-                            </div>
-                          </div>
-                        )
-                      })}
+                  <div className="">
+                    <div className="flex flex-wrap gap-3 mt-4">
+                      {["CRM Records", "Sales Pipeline", "Internal Docs", "Product Catalog", "Support Tickets", "Financial Data"].map((data, idx) => (
+                        <Badge key={idx} variant="outline" className="py-1 px-3">
+                          {data}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
+                </div> */}
+
+            {/* Animated Flow Line */}
+            {/* <div className="flex items-center justify-center px-4 pt-10">
+                  <div className="flex items-center">
+                    <div className="w-16 h-[2px] animated-flow-line" />
+                    <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-primary/60" />
+                  </div>
+                </div> */}
+
+            {/* AI Agentic Ecosystem */}
+            <div className="mt-8 space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your AI Agentic Ecosystem</h3>
+                <span className={`text-xs px-2.5 py-1 rounded-full transition-all duration-300 ${animationState === "slotted"
+                  ? "bg-green-500/15 text-green-400"
+                  : "bg-muted text-muted-foreground"
+                  }`}>
+                  {animationState === "slotted" ? "Connected" : "Waiting"}
+                </span>
+              </div>
+              <div
+                ref={agentCardRef}
+                className="relative bg-muted/30 rounded-xl p-4 border border-border/20"
+              >
+                <div className="flex gap-8 justify-center">
+                  {[
+                    { name: "Miro Sidekick", role: "Visual Collaboration" },
+                    { name: "Jasper AI", role: "Content Creation" },
+                    { name: "Salesforce Einstein", role: "CRM Intelligence" },
+                  ].map((agent, index) => {
+                    const isHighlighted = hoverState.isHovering && hoverState.highlightedAgentIndex === index
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-col items-center gap-3"
+                      >
+                        <div
+                          ref={(el) => {
+                            agentSlotRefs.current[index] = el
+                          }}
+                          className={`relative rounded-xl border-2 border-dashed transition-all duration-300 ${animationState === "slotted" ? "border-transparent" : "border-border/40"
+                            } ${isHighlighted ? "shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)]" : ""}`}
+                          style={{
+                            width: AGENT_SLOT_SIZE,
+                            height: AGENT_SLOT_SIZE,
+                          }}
+                        >
+                          {isHighlighted && <div className="absolute inset-0 rounded-xl bg-primary/20 animate-pulse" />}
+                        </div>
+                        <div className="text-center">
+                          <p className="text-xs font-medium text-foreground">{agent.name}</p>
+                          <p className="text-[10px] text-muted-foreground mt-0.5">{agent.role}</p>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             </div>
+            {/* </div> */}
+            {/* </div> */}
 
             {/* AI Agent frosted glass card */}
             {/* <div
@@ -661,7 +679,7 @@ export default function SquaresScatterToCard() {
                   Marketing Flow
                 </span>
               </div>
-              <div className="grid grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                 {[
                   { task: "Strategy/Brief", subtasks: ["Market understanding", "Audience sizing", "Category context"] },
                   { task: "Creative Development", subtasks: ["Insights", "Tensions", "Cultural context", "Inspiration"] },

@@ -1,25 +1,32 @@
 const HeroSection = () => {
     return (
-        <section className="relative py-16">
+        <section className="relative min-h-dvh pt-20 pb-24 px-6 overflow-hidden">
 
-            <div className="relative z-10 flex flex-col items-center justify-center text-center">
+            <div className="relative max-w-5xl mx-auto text-center">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-2 border border-stone-200 rounded-full mb-8">
+                    <div className="w-2 h-2 bg-stone-600 rounded-full" />
+                    <span className="text-stone-600 text-sm font-medium">Pay for answers, not access</span>
+                </div>
 
-                {/* Main heading */}
-                <h1 className="mb-6 max-w-4xl animate-fade-up text-5xl font-black leading-[1.1] tracking-tight md:text-7xl" style={{ animationDelay: '0.1s' }}>
-                    We can cut your data budget in half and give you the data that finally make your agents useful
+                {/* Heading */}
+                <h1 className="text-4xl md:text-[60px] font-extrabold leading-tight tracking-tight mb-8">
+                    Cut your data budget in half and get the data that finally makes your agents useful
                 </h1>
 
-                {/* Subheading */}
-                {/* <p className="mb-10 max-w-2xl animate-fade-up text-lg text-muted-foreground md:text-xl" style={{ animationDelay: '0.2s' }}>
-                    Traditional data subscriptions cost six figures and go 90% unused.
-                    ADXC gives your AI agents access to enterprise-grade data sources—and
-                    you only pay for the insights actually delivered.
-                </p> */}
+                {/* Subtitle */}
+                <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl mb-8">
+                    Unlock the power of premium data without the premium price tag. Stop buying bulk access to datasets you'll never read.
+                </p>
 
+                {/* CTA Button */}
+                <button
+                    // onClick={scrollToCalculator}
+                    className="bg-adxc text-white text-lg font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-[#7a0348] transition-colors"
+                >
+                    Calculate your savings
+                </button>
             </div>
-
-            {/* Bottom fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
         </section>
     );
 };
