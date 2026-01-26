@@ -23,7 +23,7 @@ export default function GateForm({ nextPath }: Props) {
     const [failCount, setFailCount] = useState(0);
     const [helpOpen, setHelpOpen] = useState(false);
 
-    const contactEmail = "hello@yourdomain.com"; // <-- change me
+    const contactEmail = "iti@1pa.ai";
     const mailtoHref = useMemo(() => {
         const subject = encodeURIComponent("Requesting access to ADXC");
         const body = encodeURIComponent(
@@ -141,43 +141,6 @@ export default function GateForm({ nextPath }: Props) {
                                 Email us to request access
                             </a>
                         </Button>
-
-                        {/* Divider */}
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-background px-2 text-muted-foreground">
-                                    Or
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* Email input (UX-only) */}
-                        <div className="space-y-2">
-                            <p className="text-sm text-muted-foreground">
-                                Or just drop your email here and we’ll reach out:
-                            </p>
-
-                            <Input
-                                type="email"
-                                placeholder="you@company.com"
-                                className="w-full h-11"
-                            />
-
-                            <Button
-                                type="button"
-                                variant="outline"
-                                className="w-full"
-                                onClick={() => {
-                                    // UX-only: forward to mailto for now
-                                    window.location.href = mailtoHref;
-                                }}
-                            >
-                                Send request
-                            </Button>
-                        </div>
 
                         {/* Secondary action */}
                         <Button
