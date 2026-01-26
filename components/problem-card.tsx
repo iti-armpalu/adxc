@@ -1,4 +1,4 @@
-export function ProblemSection() {
+export function ProblemCard() {
     return (
         <section className="w-full max-w-3xl mx-auto my-auto px-6 pb-16">
 

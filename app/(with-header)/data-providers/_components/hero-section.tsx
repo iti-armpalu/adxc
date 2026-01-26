@@ -6,9 +6,9 @@ export function HeroSection() {
     <section className="w-full py-20 px-4 md:px-8 lg:px-16 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Section Title */}
-        <h2 className="text-3xl md:text-4xl lg:text-5xl max-w-2xl mx-auto font-bold text-center mb-16 text-balance">
-          SMEs Want Your Data, but Can't Access it Today
-        </h2>
+        <h1 className="text-4xl md:text-[60px] max-w-3xl text-center mx-auto font-extrabold leading-tight tracking-tight mb-8 ">
+          SMEs want your data, but can't access it today
+        </h1>
 
         {/* Market Reality Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">

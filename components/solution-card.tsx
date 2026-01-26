@@ -1,4 +1,4 @@
-export function SolutionSection() {
+export function SolutionCard() {
     return (
         <section className="w-full max-w-[1200px] xl:max-w-[400px] mx-auto my-auto px-6 pb-12">
 

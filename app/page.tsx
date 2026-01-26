@@ -6,8 +6,8 @@ import SquaresScatterToCard from "@/components/squares-scatter-to-card";
 
 import { DemoSection } from "@/components/demo/demo-section";
 import Header from "@/components/header";
-import { SolutionSection } from "@/components/solution-section";
-import { ProblemSection } from "@/components/problem-section";
+import { SolutionCard } from "@/components/solution-card";
+import { ProblemCard } from "@/components/problem-card";
 import { AudiencePortalSelector } from "@/components/audience-portal-selector";
 
 const COOKIE_NAME = "site_unlocked";
@@ -48,9 +48,9 @@ export default async function HomePage() {
       <Header />
       <main className="min-h-full animate-fade-in bg-gradient-main">
         <HeroSection />
-        <ProblemSection />
+        <ProblemCard />
         <div className="flex flex-col items-start xl:flex-row">
-          <SolutionSection />
+          <SolutionCard />
           <SquaresScatterToCard />
         </div>
         <DemoSection />

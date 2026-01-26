@@ -13,8 +13,8 @@ interface DemoButtonsProps {
 }
 
 export default function DemoButtons({
-  videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  prototypeUrl = "https://example.com",
+  videoUrl = "https://vimeo.com/1158429505?share=copy&fl=sv&fe=ci",
+  prototypeUrl = "https://adxc.netlify.app/login",
   variant = "page",
 }: DemoButtonsProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
