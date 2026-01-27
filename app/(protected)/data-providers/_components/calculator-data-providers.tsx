@@ -8,31 +8,55 @@ import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "@/components/sections/section-header";
 
-const usageActivities = ['Strategy', 'Brief Writing', 'Media Planning', 'Creative Ideation', 'Audience Profiles']
+const dataTypes = ['Consumer', 'Media', 'Retail', 'Brand', 'Strategy'];
+
+interface ClientTier {
+  name: string;
+  label: string;
+  min: number;
+  max: number;
+  defaultValue: number;
+  revenueMultiplier: number;
+}
+
+const clientTiers: ClientTier[] = [
+  { name: 'micro', label: 'Micro Clients', min: 500, max: 15000, defaultValue: 5000, revenueMultiplier: 0.8 },
+  { name: 'small', label: 'Small Clients', min: 100, max: 3000, defaultValue: 800, revenueMultiplier: 2.5 },
+  { name: 'medium', label: 'Medium Clients', min: 50, max: 1000, defaultValue: 200, revenueMultiplier: 8 },
+];
 
 
 export default function CalculatorDataProviders() {
-  const calculatorRef = useRef<HTMLElement>(null)
-  const [selectedActivities, setSelectedActivities] = useState<string[]>([])
-  const [acquisitionApproach, setAcquisitionApproach] = useState<string>('seat-based')
-  const [dataSpend, setDataSpend] = useState(245000)
-  const [savingsView, setSavingsView] = useState<'annual' | 'monthly'>('annual')
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [revenueView, setRevenueView] = useState<'annual' | 'monthly'>('annual');
+  const [clientCounts, setClientCounts] = useState<Record<string, number>>({
+    micro: 5000,
+    small: 800,
+    medium: 200,
+  });
 
-  const scrollToCalculator = () => {
-    calculatorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  const toggleType = (type: string) => {
+    setSelectedTypes(prev =>
+      prev.includes(type)
+        ? prev.filter(t => t !== type)
+        : [...prev, type]
+    );
+  };
 
-  const toggleActivity = (activity: string) => {
-    setSelectedActivities(prev =>
-      prev.includes(activity)
-        ? prev.filter(a => a !== activity)
-        : [...prev, activity]
-    )
-  }
+  const updateClientCount = (tier: string, value: number) => {
+    setClientCounts(prev => ({ ...prev, [tier]: value }));
+  };
 
-  // Calculate estimated savings based on spend
-  const estimatedSavings = Math.round(dataSpend * 0.35)
-  const displaySavings = savingsView === 'annual' ? estimatedSavings : Math.round(estimatedSavings / 12)
+  // Calculate estimated revenue based on client counts and selected data types
+  const typeMultiplier = Math.max(1, selectedTypes.length * 0.4 + 0.6);
+  const estimatedRevenue = Math.round(
+    clientTiers.reduce((total, tier) => {
+      return total + (clientCounts[tier.name] * tier.revenueMultiplier);
+    }, 0) * typeMultiplier
+  );
+
+  const displayRevenue = revenueView === 'annual' ? estimatedRevenue : Math.round(estimatedRevenue / 12);
+
 
   return (
     <Section size="lg">
@@ -49,160 +73,96 @@ export default function CalculatorDataProviders() {
         <div className="flex flex-col lg:flex-row gap-16">
           {/* Calculator Form */}
           <div className="flex-1 space-y-12">
-            {/* Data Usage Activities */}
+            {/* Data Types */}
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">
-                Your Data Usage Activities <span className="text-pink-600">(Multi-select)</span>
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-5">
+                Your Data Types <span className="text-pink-600">(Multi-select)</span>
               </label>
               <div className="flex flex-wrap gap-3">
-                {usageActivities.map(activity => (
+                {dataTypes.map(type => (
                   <button
-                    key={activity}
-                    onClick={() => toggleActivity(activity)}
-                    className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedActivities.includes(activity)
-                      ? 'bg-[#66023c] text-white shadow-md'
-                      : 'bg-white border border-gray-200 text-gray-600 hover:border-gray-300'
+                    key={type}
+                    onClick={() => toggleType(type)}
+                    className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${selectedTypes.includes(type)
+                      ? 'bg-adxc text-primary-foreground shadow-md'
+                      : 'bg-card border border-border text-muted-foreground hover:border-primary/50'
                       }`}
                   >
-                    {activity}
+                    {type}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Acquisition Approach */}
+            {/* Client Tiers Sliders */}
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">
-                Your Approach to Data Acquisition
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-8">
+                Number of Clients by Tier
               </label>
-              <div className="flex flex-col md:flex-row gap-5">
-                <button
-                  onClick={() => setAcquisitionApproach('seat-based')}
-                  className={`relative flex-1 p-6 rounded-xl border-2 transition-all ${acquisitionApproach === 'seat-based'
-                    ? 'border-[#66023c] bg-pink-50/30'
-                    : 'border-gray-200 bg-white'
-                    }`}
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${acquisitionApproach === 'seat-based' ? 'bg-pink-100' : 'bg-gray-100'
-                      }`}>
-                      <svg className={`w-5 h-5 ${acquisitionApproach === 'seat-based' ? 'text-[#66023c]' : 'text-gray-500'}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-                      </svg>
+
+              <div className="space-y-10">
+                {clientTiers.map(tier => (
+                  <div key={tier.name} className="space-y-4">
+                    <div className="flex items-end justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-3 h-3 rounded-full ${tier.name === 'micro' ? 'bg-emerald-500' :
+                          tier.name === 'small' ? 'bg-amber-500' : 'bg-violet-500'
+                          }`} />
+                        <span className="text-sm font-semibold text-foreground">{tier.label}</span>
+                      </div>
+                      <div className="text-2xl font-bold text-adxc tabular-nums">
+                        {clientCounts[tier.name].toLocaleString()}
+                      </div>
                     </div>
-                    <div className={`font-bold ${acquisitionApproach === 'seat-based' ? 'text-gray-900' : 'text-gray-600'}`}>
-                      Seat-Based<br />Subscription
+
+                    <div className="relative">
+
+                      <Slider
+                        value={[clientCounts[tier.name]]}
+                        onValueChange={([v]) => updateClientCount(tier.name, v)}
+                        min={tier.min}
+                        max={tier.max}
+                        step={1}
+                      />
+                      <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                        <span>{tier.min.toLocaleString()}</span>
+                        <span>{tier.max.toLocaleString()}</span>
+                      </div>
                     </div>
                   </div>
-                  {acquisitionApproach === 'seat-based' && (
-                    <div className="absolute top-3 right-3">
-                      <Check className="w-5 h-5 text-[#66023c]" />
-                    </div>
-                  )}
-                </button>
-
-                <button
-                  onClick={() => setAcquisitionApproach('api')}
-                  className={`relative flex-1 p-6 rounded-xl border-2 transition-all ${acquisitionApproach === 'api'
-                    ? 'border-[#66023c] bg-pink-50/30'
-                    : 'border-gray-200 bg-white'
-                    }`}
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${acquisitionApproach === 'api' ? 'bg-pink-100' : 'bg-gray-100'
-                      }`}>
-                      <svg className={`w-5 h-5 ${acquisitionApproach === 'api' ? 'text-[#66023c]' : 'text-gray-500'}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M18 20V10M12 20V4M6 20v-6" />
-                      </svg>
-                    </div>
-                    <div className={`font-medium ${acquisitionApproach === 'api' ? 'text-gray-900' : 'text-gray-600'}`}>
-                      API Subscription
-                    </div>
-                  </div>
-                  {acquisitionApproach === 'api' && (
-                    <div className="absolute top-3 right-3">
-                      <Check className="w-5 h-5 text-[#66023c]" />
-                    </div>
-                  )}
-                </button>
-
-                <button
-                  onClick={() => setAcquisitionApproach('report')}
-                  className={`relative flex-1 p-6 rounded-xl border-2 transition-all ${acquisitionApproach === 'report'
-                    ? 'border-[#66023c] bg-pink-50/30'
-                    : 'border-gray-200 bg-white'
-                    }`}
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${acquisitionApproach === 'report' ? 'bg-pink-100' : 'bg-gray-100'
-                      }`}>
-                      <svg className={`w-5 h-5 ${acquisitionApproach === 'report' ? 'text-[#66023c]' : 'text-gray-500'}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="16" y1="13" x2="8" y2="13" />
-                        <line x1="16" y1="17" x2="8" y2="17" />
-                      </svg>
-                    </div>
-                    <div className={`font-medium ${acquisitionApproach === 'report' ? 'text-gray-900' : 'text-gray-600'}`}>
-                      Report Purchase
-                    </div>
-                  </div>
-                  {acquisitionApproach === 'report' && (
-                    <div className="absolute top-3 right-3">
-                      <Check className="w-5 h-5 text-[#66023c]" />
-                    </div>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Data Spend Slider */}
-            <div className="pt-2">
-              <div className="flex items-end justify-between mb-8">
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  Current Data Spend (Annual)
-                </label>
-                <div className="text-4xl font-bold text-[#66023c] tracking-tight">
-                  ${dataSpend.toLocaleString()}
-                </div>
-              </div>
-
-              <div className="relative pt-5">
-                <input
-                  type="range"
-                  min="1000"
-                  max="500000"
-                  value={dataSpend}
-                  onChange={(e) => setDataSpend(Number(e.target.value))}
-                  className="w-full h-3 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#66023c] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-8 [&::-webkit-slider-thumb]:h-8 [&::-webkit-slider-thumb]:bg-[#66023c] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-white"
-                />
-                <div className="flex justify-between text-sm text-gray-400 mt-4">
-                  <span>$1k</span>
-                  <span>$500k</span>
-                </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Savings Results Card */}
-          <div className="lg:w-[496px] bg-[#66023c] border border-pink-700 rounded-[32px] p-10 shadow-2xl relative overflow-hidden">
-            {/* Decorative blurs */}
+          {/* Revenue Results Card */}
+          <div className="lg:w-[496px] bg-adxc rounded-[32px] p-10 shadow-2xl relative overflow-hidden">
+            {/* Decorative gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+            <div className="absolute -top-32 -right-32 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+            <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-black/10 rounded-full blur-3xl" />
 
             <div className="relative">
               {/* Header */}
               <div className="flex items-center justify-between mb-10">
-                <span className="text-pink-100 text-lg font-medium">Your Estimated Savings</span>
-                <div className="flex bg-[#500724]/40 backdrop-blur border border-pink-700/50 rounded-xl p-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-primary-foreground/90 text-lg font-medium">Your Estimated Earnings</span>
+                </div>
+                <div className="flex bg-black/20 backdrop-blur border border-white/10 rounded-xl p-1.5">
                   <button
-                    onClick={() => setSavingsView('annual')}
-                    className={`px-4 py-1.5 rounded-lg text-xs font-bold ${savingsView === 'annual' ? 'bg-white text-[#66023c]' : 'text-pink-300'
+                    onClick={() => setRevenueView('annual')}
+                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${revenueView === 'annual'
+                      ? 'bg-white text-primary shadow-sm'
+                      : 'text-primary-foreground/70 hover:text-primary-foreground'
                       }`}
                   >
                     Annual
                   </button>
                   <button
-                    onClick={() => setSavingsView('monthly')}
-                    className={`px-4 py-1.5 rounded-lg text-xs font-bold ${savingsView === 'monthly' ? 'bg-white text-[#66023c]' : 'text-pink-300'
+                    onClick={() => setRevenueView('monthly')}
+                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${revenueView === 'monthly'
+                      ? 'bg-white text-primary shadow-sm'
+                      : 'text-primary-foreground/70 hover:text-primary-foreground'
                       }`}
                   >
                     Monthly
@@ -210,35 +170,35 @@ export default function CalculatorDataProviders() {
                 </div>
               </div>
 
-              {/* Savings Amount */}
-              <div className="text-white text-[80px] font-bold tracking-tight leading-none mb-4">
-                ${displaySavings.toLocaleString()}
+              {/* Revenue Amount */}
+              <div className="text-primary-foreground text-[72px] md:text-[80px] font-bold tracking-tight leading-none mb-4">
+                ${displayRevenue.toLocaleString()}
               </div>
 
               {/* Description */}
-              <p className="text-pink-200/90 text-sm font-light leading-relaxed mb-12 opacity-90">
-                Based on typical efficiency gains using ADXC's targeted acquisition strategy vs traditional seat-based models.
+              <p className="text-primary-foreground/70 text-sm font-light leading-relaxed mb-12">
+                Estimated {revenueView} revenue based on your client distribution and data offerings through ADXC's marketplace.
               </p>
 
               {/* Benefits */}
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div className="flex items-center gap-4">
-                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
                     <Check className="w-3.5 h-3.5 text-white" />
                   </div>
-                  <span className="text-white font-medium">Reduce wasted data spend by 35%</span>
+                  <span className="text-primary-foreground font-medium">Access to 500+ enterprise buyers</span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
                     <Check className="w-3.5 h-3.5 text-white" />
                   </div>
-                  <span className="text-white font-medium">Pay only for specific answers needed</span>
+                  <span className="text-primary-foreground font-medium">Automated billing & distribution</span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
                     <Check className="w-3.5 h-3.5 text-white" />
                   </div>
-                  <span className="text-white font-medium">Zero implementation overhead</span>
+                  <span className="text-primary-foreground font-medium">Real-time usage analytics</span>
                 </div>
               </div>
             </div>

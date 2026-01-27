@@ -484,14 +484,14 @@ export default function SquaresScatterToCard() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your Internal Data</h3>
-                    <span
+                    {/* <span
                       className={`text-xs px-2.5 py-1 rounded-full transition-all duration-300 ${animationState === "slotted"
                         ? "bg-green-500/15 text-green-400"
                         : "bg-muted text-muted-foreground"
                         }`}
                     >
                       {animationState === "slotted" ? "Linked" : "Waiting"}
-                    </span>
+                    </span> */}
                   </div>
 
 
