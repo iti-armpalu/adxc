@@ -6,7 +6,7 @@ import { SectionHeader } from "@/components/sections/section-header";
 
 export function WhyNowSection() {
     return (
-        <Section size="lg" className="bg-white min-h-dvh flex items-center">
+        <Section size="md" className="bg-white flex items-center">
             <Container size="md">
                 <SectionHeader
                     title="Why this matters now"
@@ -38,8 +38,8 @@ export function WhyNowSection() {
                 </div>
 
                 {/* Bottom Statement */}
-                <div className="bg-adxc rounded-xl p-8 md:p-10 text-center">
-                    <p className="text-white text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+                <div className="mb-8 bg-adxc rounded-xl p-8 md:p-10 text-center">
+                    <p className="text-white text-lg md:text-2xl lg:text-3xl leading-relaxed mx-auto">
                         <span className="block mt-2 font-semibold">
                             SMEs don’t have the data to fuel these agents. You do.
                         </span>
@@ -47,13 +47,13 @@ export function WhyNowSection() {
                 </div>
 
                 {/* Footnotes */}
-                <div className="mt-8 text-center space-y-1">
-                    <p className="text-xs text-slate-400">
+                <div className="flex flex-col items-center justify-center gap-4 text-xs text-muted-foreground sm:flex-row sm:gap-8">
+                    <span>
                         <sup>1</sup> MIT Nanda AI Report 2025
-                    </p>
-                    <p className="text-xs text-slate-400">
+                    </span>
+                    <span>
                         <sup>2</sup> PwC AI Agent Report 2025
-                    </p>
+                    </span>
                 </div>
             </Container>
         </Section>

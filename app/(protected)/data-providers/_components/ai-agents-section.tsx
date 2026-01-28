@@ -3,7 +3,7 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/sections/section-header";
-import { ArrowRight, Bot, Briefcase, Building2, Database, Lock, Search, Shield, Users } from "lucide-react";
+import { Bot, Briefcase, Building2, Database, Search, Users } from "lucide-react";
 
 const previousReality = [
     {
@@ -14,7 +14,7 @@ const previousReality = [
     {
         icon: Database,
         title: "Full Dataset Requirement",
-        description: "Full datasets required to extract value",
+        description: "Full dataset visibility required for analysis",
     },
     {
         icon: Building2,
@@ -32,11 +32,11 @@ const newReality = [
     {
         icon: Search,
         title: "Query-Based Retrieval",
-        description: "Only the information required to answer a query is retrieved",
+        description: "Only the data required to answer a query is retrieved and seen",
     },
     {
         icon: Briefcase,
-        title: "SME-Grade Workflows",
+        title: "SME-Enabled Workflows",
         description: "Enables enterprise-grade workflows for SMEs",
     },
 ]

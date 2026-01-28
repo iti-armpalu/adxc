@@ -38,7 +38,7 @@ export function DataAccessSection() {
                         </div>
 
                         <div className="mb-4 text-5xl font-bold leading-none text-adxc md:text-6xl">
-                            $500k+
+                            $200k+
                         </div>
 
                         <p className="text-lg font-medium">
@@ -46,14 +46,6 @@ export function DataAccessSection() {
                             <sup></sup>
                         </p>
                     </div>
-                </div>
-
-                {/* Key Statement */}
-                <div className="mb-8 rounded-xl bg-adxc p-8 text-center">
-                    <p className="text-lg font-medium leading-relaxed text-white md:text-xl">
-                        Data required to power AI agents is priced and packaged for
-                        enterprises, not SMEs.
-                    </p>
                 </div>
 
                 {/* Footnotes */}

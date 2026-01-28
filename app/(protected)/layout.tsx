@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Header from "@/components/header/header";
 import { COOKIE_NAME, verify } from "@/lib/gate-token";
 import { DemoVideoProvider } from "@/components/demo/demo-video-provider";
+import { AudiencePortalSection } from "@/components/audience-portal-section";
 
 export default async function ProtectedLayout({
     children,
@@ -38,6 +39,7 @@ export default async function ProtectedLayout({
             <DemoVideoProvider>
                 <Header />
                 <main className="flex-1">{children}</main>
+                <AudiencePortalSection />
             </DemoVideoProvider>
         </div>
     );

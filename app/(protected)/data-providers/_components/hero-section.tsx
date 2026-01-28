@@ -1,11 +1,11 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/sections/section-header";
-import { Building2, DollarSign, Target } from "lucide-react";
+import { Building2, DollarSign } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <Section size="lg" className="bg-white min-h-dvh flex items-center">
+    <Section size="md">
       <Container size="md">
         <SectionHeader
           title=" SMEs want your data, but can't access it today"

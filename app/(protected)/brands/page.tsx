@@ -8,6 +8,7 @@ import { Layers, Sparkles, TrendingDown } from "lucide-react";
 
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import CalculatorBrands from "./_components/calculator-brands";
+import { AudiencePortalSection } from "@/components/audience-portal-section";
 
 const steps: WorkflowStep[] = [
   { number: 1, title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },

@@ -5,7 +5,7 @@ import { SectionHeader } from "@/components/sections/section-header";
 
 const StatsSection = () => {
   return (
-    <Section size="md">
+    <Section size="sm">
       <Container size="md">
         <SectionHeader
           title="Data is expensive, and chronically underutilised"

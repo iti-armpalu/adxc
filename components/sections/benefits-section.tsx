@@ -25,7 +25,7 @@ export function BenefitsSection({
   backgroundClassName = "bg-white",
 }: BenefitsSectionProps) {
   return (
-    <Section size="lg" className={backgroundClassName}>
+    <Section size="md" className={backgroundClassName}>
       <Container>
         <SectionHeader
           title={title}

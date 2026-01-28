@@ -33,7 +33,7 @@ const features: BenefitFeature[] = [
     icon: Award,
     title: "Product Differentiation",
     description:
-      "Access to premium data creates differentiation vs blunt outputs from generic co-pilots..",
+      "Access to premium data creates differentiation vs blunt outputs from generic co-pilots.",
   },
 ];
 

@@ -12,8 +12,8 @@ const sizeClasses: Record<
   NonNullable<SectionProps["size"]>,
   string
 > = {
-  sm: "py-12",
-  md: "py-16 md:py-20",
+  sm: "py-8",
+  md: "py-12 md:py-16",
   lg: "py-20 md:py-28",
 };
 

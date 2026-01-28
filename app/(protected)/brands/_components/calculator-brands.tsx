@@ -35,7 +35,7 @@ export default function CalculatorBrands() {
   const displaySavings = savingsView === 'annual' ? estimatedSavings : Math.round(estimatedSavings / 12)
 
   return (
-    <Section size="lg">
+    <Section size="md">
       <Container>
         <div className="flex flex-col items-start">
           <SectionHeader

@@ -38,6 +38,17 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Connection line colors */
+  --agent-1: 24 95% 53%;
+  --agent-2: 24 95% 53%;
+  --agent-3: 24 95% 53%;
+  --square-1: 142 76% 36%;
+  --square-2: 142 76% 36%;
+  --square-3: 142 76% 36%;
+  --square-4: 142 76% 36%;
+  --square-5: 142 76% 36%;
+
 }
 
 .dark {
@@ -115,8 +126,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-    /* ADXC purple */
-    --color-adxc: #66023C;
+  /* ADXC purple */
+  --color-adxc: #66023C;
 
   /* Adding custom colors for animated squares */
   --color-square-1: oklch(0.646 0.222 41.116);
@@ -127,7 +138,10 @@
 
   /* Adding gradient for main background */
   --color-gradient-main: linear-gradient(135deg, oklch(0.98 0.01 260) 0%, oklch(0.96 0.02 200) 100%);
+
+
 }
+
 
 @layer base {
   * {
@@ -138,6 +152,35 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Base glow utility */
+.glow-scattered {
+  box-shadow:
+    0 0 40px 15px rgb(var(--glow-color) / 0.15),
+    0 0 60px 25px rgb(var(--glow-color) / 0.08),
+    0 0 80px 35px rgb(var(--glow-color) / 0.04);
+}
+
+/* Glow color tokens */
+.glow-pink {
+  --glow-color: 102 2 60;
+  /* original ADXC */
+}
+
+.glow-green {
+  --glow-color: 134 239 172;
+  /* tailwind green-300 */
+}
+
+.glow-emerald {
+  --glow-color: 52 211 153;
+  /* emerald-400 */
+}
+
+
+
+
+
 
 /* Shake animation (Tailwind v4 CSS-first) */
 @keyframes shake {
@@ -171,6 +214,7 @@
   0% {
     background-position: 24px 0;
   }
+
   100% {
     background-position: 0 0;
   }
