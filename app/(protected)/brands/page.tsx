@@ -8,7 +8,6 @@ import { Layers, Sparkles, TrendingDown } from "lucide-react";
 
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import CalculatorBrands from "./_components/calculator-brands";
-import { AudiencePortalSection } from "@/components/audience-portal-section";
 
 const steps: WorkflowStep[] = [
   { number: 1, title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
@@ -42,7 +41,7 @@ export default function BrandsPage() {
   return (
     <div>
       <HeroSection />
-      <StatsSection />
+      {/* <StatsSection /> */}
       <CapabilityMatrixSection
         title="For SMEs, getting the right data for the right task is prohibitive"
         description="You can't afford multiple providers, or low utilisation - so pick one or none."

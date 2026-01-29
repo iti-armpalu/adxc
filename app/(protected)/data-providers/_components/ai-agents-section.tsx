@@ -82,47 +82,47 @@ export function AIAgentsSection() {
 
                     {/* Center Divider */}
                     <div className="hidden lg:flex flex-col items-center justify-center px-4">
-                        <div className="flex-1 w-px bg-slate-200" />
+                        <div className="flex-1 w-px bg-stone-200" />
                         <div className="py-4">
-                            <div className="bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
+                            <div className="bg-adxc text-white px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
                                 Structural Shift
                             </div>
                         </div>
-                        <div className="flex-1 w-px bg-slate-200" />
+                        <div className="flex-1 w-px bg-stone-200" />
                     </div>
 
                     {/* Mobile Divider */}
                     <div className="flex lg:hidden items-center justify-center gap-4 py-2">
-                        <div className="flex-1 h-px bg-slate-200" />
-                        <div className="bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                        <div className="flex-1 h-px bg-stone-200" />
+                        <div className="bg-adxc text-white px-4 py-2 rounded-full text-sm font-semibold">
                             Structural Shift
                         </div>
-                        <div className="flex-1 h-px bg-slate-200" />
+                        <div className="flex-1 h-px bg-stone-200" />
                     </div>
 
                     {/* Right Column - New Reality */}
-                    <div className="bg-white rounded-xl border border-emerald-200 p-6 md:p-8 relative overflow-hidden">
+                    <div className="bg-white rounded-xl border border-stone-200 p-6 md:p-8 relative overflow-hidden">
                         {/* Subtle glow effect */}
-                        <div className="absolute inset-0 bg-emerald-50 pointer-events-none" />
+                        <div className="absolute inset-0 bg-stone-50 pointer-events-none" />
 
                         <div className="relative z-10">
                             <div className="mb-8">
-                                <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-600 mb-4">
+                                <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-adxc mb-4">
                                     New Reality
                                 </span>
-                                <h3 className="text-2xl lg:text-3xl font-semibold text-slate-900">
+                                <h3 className="text-2xl lg:text-3xl font-semibold text-stone-900">
                                     Agent-Native Data Access
                                 </h3>
                             </div>
                             <div className="space-y-6">
                                 {newReality.map((item, index) => (
                                     <div key={index} className="flex items-start gap-4">
-                                        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                                            <item.icon className="w-5 h-5 text-emerald-600" />
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center">
+                                            <item.icon className="w-5 h-5 text-adxc" />
                                         </div>
                                         <div>
-                                            <h4 className="font-medium text-slate-900 mb-1">{item.title}</h4>
-                                            <p className="text-sm text-slate-500 leading-relaxed">
+                                            <h4 className="font-medium text-stone-900 mb-1">{item.title}</h4>
+                                            <p className="text-sm text-stone-500 leading-relaxed">
                                                 {item.description}
                                             </p>
                                         </div>

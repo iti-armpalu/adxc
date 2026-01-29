@@ -40,14 +40,15 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* Connection line colors */
-  --agent-1: 24 95% 53%;
-  --agent-2: 24 95% 53%;
-  --agent-3: 24 95% 53%;
-  --square-1: 142 76% 36%;
-  --square-2: 142 76% 36%;
-  --square-3: 142 76% 36%;
-  --square-4: 142 76% 36%;
-  --square-5: 142 76% 36%;
+  --agent-1: 325 96% 20%;
+  --agent-2: 325 96% 20%;
+  --agent-3: 325 96% 20%;
+  --square-1: 30 10% 50%;
+  --square-2: 30 10% 50%;
+  --square-3: 30 10% 50%;
+  --square-4: 30 10% 50%;
+  --square-5: 30 10% 50%;
+
 
 }
 

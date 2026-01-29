@@ -1,7 +1,7 @@
 import { Section } from "@/components/layout/section";
-import { StatCard } from "./stat-card";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "@/components/sections/section-header";
+import { StatCard } from "@/components/cards/stat-card";
 
 
 export function WhyNowSection() {
@@ -15,26 +15,27 @@ export function WhyNowSection() {
                 />
 
                 {/* Metrics Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                    {/* Metric 1 */}
-                    <div className="bg-white rounded-xl border border p-8 text-center">
-                        <p className="text-5xl md:text-6xl lg:text-7xl font-bold text-adxc mb-4">
-                            80%
-                        </p>
-                        <p className="text-muted-foreground text-lg">
-                            of businesses already use AI<sup>1</sup>
-                        </p>
-                    </div>
+                <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
 
-                    {/* Metric 2 */}
-                    <div className="bg-white rounded-xl border border p-8 text-center">
-                        <p className="text-5xl md:text-6xl lg:text-7xl font-bold text-adxc mb-4">
-                            88%
-                        </p>
-                        <p className="text-muted-foreground text-lg">
-                            plan to increase AI budgets over the next 12 months<sup>2</sup>
-                        </p>
-                    </div>
+                    <StatCard
+                        value="80%"
+                        description={
+                            <>
+                                of businesses already use AI
+                                <sup className="ml-0.5 text-[0.65em] align-super">1</sup>
+                            </>
+                        }
+                    />
+
+                    <StatCard
+                        value="88%"
+                        description={
+                            <>
+                                plan to increase AI budgets over the next 12 months
+                                <sup className="ml-0.5 text-[0.65em] align-super">2</sup>
+                            </>
+                        }
+                    />
                 </div>
 
                 {/* Bottom Statement */}
@@ -48,12 +49,26 @@ export function WhyNowSection() {
 
                 {/* Footnotes */}
                 <div className="flex flex-col items-center justify-center gap-4 text-xs text-muted-foreground sm:flex-row sm:gap-8">
-                    <span>
-                        <sup>1</sup> MIT Nanda AI Report 2025
-                    </span>
-                    <span>
-                        <sup>2</sup> PwC AI Agent Report 2025
-                    </span>
+                    <a
+                        href="https://mlq.ai/media/quarterly_decks/v0.1_State_of_AI_in_Business_2025_Report.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline underline-offset-4"
+                    >
+                        <span>
+                            <sup>1</sup> MIT Nanda AI Report 2025
+                        </span>
+                    </a>
+                    <a
+                        href="https://www.pwc.com/us/en/tech-effect/ai-analytics/ai-agent-survey.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline underline-offset-4"
+                    >
+                        <span>
+                            <sup>2</sup> PwC AI Agent Report 2025
+                        </span>
+                    </a>
                 </div>
             </Container>
         </Section>

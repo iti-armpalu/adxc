@@ -57,11 +57,11 @@ function PortalCard({ portal }: { portal: Portal }) {
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2
       "
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-100 transition-colors group-hover:bg-pink-200">
+      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-pink-100 transition-colors group-hover:bg-pink-200">
         <Icon className="h-6 w-6 text-adxc" />
       </div>
 
-      <h3 className="mt-4 text-xl font-semibold text-gray-900">{title}</h3>
+      <h3 className="mt-4 text-xl font-semibold text-adxc">{title}</h3>
 
       <p className="mb-4 flex-grow text-sm leading-relaxed text-gray-600">
         {description}

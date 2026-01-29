@@ -105,9 +105,7 @@ export default function CalculatorDataProviders() {
                   <div key={tier.name} className="space-y-4">
                     <div className="flex items-end justify-between">
                       <div className="flex items-center gap-3">
-                        <div className={`w-3 h-3 rounded-full ${tier.name === 'micro' ? 'bg-emerald-500' :
-                          tier.name === 'small' ? 'bg-amber-500' : 'bg-violet-500'
-                          }`} />
+                        <div className={`w-3 h-3 rounded-full bg-stone-300`} />
                         <span className="text-sm font-semibold text-foreground">{tier.label}</span>
                       </div>
                       <div className="text-2xl font-bold text-adxc tabular-nums">

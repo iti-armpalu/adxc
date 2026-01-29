@@ -18,9 +18,9 @@ import Logo from "./logo";
 import { logoutAction } from "@/lib/gate-logout";
 
 const NAV_ITEMS = [
-    { href: "/brands", label: "Brands & SMEs" },
-    { href: "/data-providers", label: "Data Providers" },
-    { href: "/ai-platforms", label: "AI Platforms" },
+    { href: "/brands", label: "For brands" },
+    { href: "/data-providers", label: "For data providers" },
+    { href: "/ai-platforms", label: "For AI platforms" },
 ] as const;
 
 export default function Header() {
@@ -38,7 +38,7 @@ export default function Header() {
                     {/* Hamburger */}
                     <Sheet open={open} onOpenChange={setOpen}>
                         <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon" aria-label="Open menu" className="bg-pink-100">
+                            <Button variant="ghost" size="icon" aria-label="Open menu" className="bg-pink-100 hover:bg-pink-200">
                                 <Menu className="h-5 w-5 text-adxc" />
                             </Button>
                         </SheetTrigger>

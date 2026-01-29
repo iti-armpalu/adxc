@@ -42,7 +42,7 @@ export default function WorkflowSection({
               {steps.map((step) => (
                 <div
                   key={step.number}
-                  className="rounded-xl border border bg-white p-2 transition-all duration-300 hover:border-adxc hover:shadow-lg md:p-4"
+                  className="rounded-xl border border bg-white p-2 md:p-4"
                 >
                   <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-pink-100">
                     <span className="text-base font-bold text-adxc">

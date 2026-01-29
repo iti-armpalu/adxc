@@ -38,7 +38,7 @@ export function BenefitsSection({
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="rounded-xl border border bg-white p-6 transition-all duration-300 hover:border-adxc hover:shadow-lg md:p-8"
+              className="rounded-xl border border bg-white p-6 md:p-8"
             >
               <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-pink-100">
                 <feature.icon className="h-6 w-6 text-adxc" />

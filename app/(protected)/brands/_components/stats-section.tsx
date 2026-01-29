@@ -1,47 +1,66 @@
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "@/components/sections/section-header";
+import { StatCard } from "@/components/cards/stat-card";
 
 
 const StatsSection = () => {
   return (
     <Section size="sm">
-      <Container size="md">
-        <SectionHeader
+      <Container size="md" className="-mt-48">
+        {/* <SectionHeader
           title="Data is expensive, and chronically underutilised"
           size="md"
           align="center"
-        />
+        /> */}
 
-        <div className="flex flex-col gap-12 md:flex-row md:justify-center">
-          {/* Stat 1 */}
-          <div className="flex-1 rounded-2xl border border-gray-100 bg-gray-50 p-10 text-center">
-            <div className="mb-4 text-[60px] font-bold leading-none text-[#66023c]">
-              $200k+
-            </div>
-            <div className="mb-2 text-lg font-semibold text-gray-900">
-              Entry level price to access
-            </div>
-            <div className="text-sm text-gray-500">
-              GWI + Kantar + Nielsen
-            </div>
-          </div>
+        {/* Highlight Box */}
+        <div className="mb-12 bg-white shadow-sm rounded-xl border border-stone-200 p-6 md:p-8 relative overflow-hidden">
+          {/* Subtle glow effect */}
+          <div className="absolute inset-0 bg-stone-50 pointer-events-none" />
 
-          {/* Stat 2 */}
-          <div className="flex-1 rounded-2xl border border-gray-100 bg-gray-50 p-10 text-center">
-            <div className="mb-4 text-[60px] font-bold leading-none text-[#66023c]">
-              73%
-            </div>
-            <div className="mb-2 text-lg font-semibold text-gray-900">
-              All data within businesses goes unused
-            </div>
-            <a
-              href="#"
-              className="text-sm text-pink-600 underline decoration-pink-300"
-            >
-              (Forrester)
-            </a>
+          <div className="relative z-10 flex flex-col">
+            {/* <div className="flex items-center gap-4"> */}
+              <h3 className="text-xl font-bold text-center sm:text-3xl md:text-4xl">
+                Data is expensive, and chronically underutilised
+              </h3>
+            {/* </div> */}
           </div>
+        </div>
+
+
+        <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <StatCard
+            value="$200k+"
+            description={
+              <>
+                entry level price to access ( GWI + Kantar + Nielsen)
+              </>
+            }
+          />
+          <StatCard
+            value="73%"
+            description={
+              <>
+                all data within businesses goes unused
+                <sup className="ml-0.5 text-[0.65em] align-super">1</sup>
+              </>
+            }
+          />
+        </div>
+
+
+        <div className="flex flex-col items-center justify-center gap-4 text-xs text-muted-foreground sm:flex-row sm:gap-8">
+          <a
+            href="https://www.forrester.com/blogs/hadoop-is-datas-darling-for-a-reason/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline underline-offset-4"
+          >
+            <span>
+              <sup>1</sup> Forrester 2016
+            </span>
+          </a>
         </div>
       </Container>
     </Section>

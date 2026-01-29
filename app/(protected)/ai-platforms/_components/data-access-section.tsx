@@ -27,7 +27,7 @@ export function DataAccessSection() {
 
                         <p className="text-lg font-medium">
                             Lack of access to relevant data is the second-largest barrier to AI tool adoption among marketers
-                            <sup>2</sup>
+                            <sup>1</sup>
                         </p>
                     </div>
 
@@ -43,20 +43,24 @@ export function DataAccessSection() {
 
                         <p className="text-lg font-medium">
                             Typical entry-level cost to access premium data providers (e.g. GWI, Kantar, Nielsen)
-                            <sup></sup>
                         </p>
                     </div>
                 </div>
 
                 {/* Footnotes */}
                 <div className="flex flex-col items-center justify-center gap-4 text-xs text-muted-foreground sm:flex-row sm:gap-8">
-                    <span>
-                        <sup>1</sup> Jasper AI Marketing Report 2025
-                    </span>
-                    <span>
-                        <sup>2</sup> Salesforce State of Marketing Report 2025
-                    </span>
+                    <a
+                        href="https://www.salesforce.com/content/dam/web/en_us/www/documents/marketingcloud/S-MC-State-of-Marketing-Report-9th-Edition.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline underline-offset-4"
+                    >
+                        <span>
+                            <sup>1</sup> Salesforce State of Marketing Report 2025
+                        </span>
+                    </a>
                 </div>
+
             </Container>
         </Section>
     );
