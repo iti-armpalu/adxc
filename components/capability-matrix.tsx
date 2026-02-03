@@ -15,6 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState } from "react";
+
+const GAP_THRESHOLD = 2; // Values at or below this are considered "gaps"
 
 // Marketing stages
 const stages = [
@@ -75,13 +78,45 @@ function getColorClass(value: number) {
 }
 
 export default function CapabilityMatrix() {
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+  const isHoverActive = true;
+
+  // Determine if a cell should be highlighted as a gap (row hover only)
+  const isGapHighlighted = (rowIdx: number, value: number) => {
+    const isGap = value <= GAP_THRESHOLD;
+    return hoveredRow === rowIdx && isGap;
+  };
+
+  // Determine if a cell should be dimmed (not a gap but in hovered row)
+  const isDimmed = (rowIdx: number, value: number) => {
+    const isGap = value <= GAP_THRESHOLD;
+    return hoveredRow === rowIdx && !isGap;
+  };
+
   return (
     <Card className="border-2">
       <CardHeader>
-        <CardTitle className="text-2xl">Marketing Data Capabilities</CardTitle>
+        <CardTitle className="text-2xl">Marketing Data Coverage</CardTitle>
         <CardDescription className="text-base">
-          Illustrates how individual data providers contribute to different stages of the marketing workflow, and why multiple sources are often required to complete a single task.
+          Each data provider covers part of the marketing process, but none cover it all.
         </CardDescription>
+        <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-emerald-400" />
+            Strong (4-5)
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-amber-400" />
+            Moderate (3)
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-red-400" />
+            Gap (0-2)
+          </span>
+          <span className="text-xs italic ml-2">
+            Hover over a data provider to highlight gaps
+          </span>
+        </div>
       </CardHeader>
 
       <CardContent>
@@ -96,11 +131,11 @@ export default function CapabilityMatrix() {
                 {stages.map((stage) => (
                   <TableHead
                     key={stage.id}
-                    className="w-[140px] px-1 py-2 text-center text-xs font-medium text-muted-foreground whitespace-normal"
+                    className="w-[140px] px-1 py-2 text-center text-xs font-medium whitespace-normal text-muted-foreground"
                   >
                     <span className="hidden sm:inline">{stage.label}</span>
                     <span className="sm:hidden">{stage.short}</span>
-                    <p className="mt-1 text-[10px] leading-tight text-muted-foreground/70 whitespace-normal">
+                    <p className="mt-1 text-[10px] leading-tight whitespace-normal text-muted-foreground/70">
                       {stage.task}
                     </p>
                   </TableHead>
@@ -109,24 +144,47 @@ export default function CapabilityMatrix() {
             </TableHeader>
 
             <TableBody>
-              {dataSources.map((source, idx) => (
+              {dataSources.map((source, rowIdx) => (
                 <TableRow
-                  key={idx}
+                  key={rowIdx}
+                  className={`cursor-pointer transition-colors duration-200 ${hoveredRow === rowIdx ? "bg-muted/30" : ""
+                    }`}
+                  onMouseEnter={() => setHoveredRow(rowIdx)}
+                  onMouseLeave={() => setHoveredRow(null)}
                 >
-                  <TableCell className="sticky left-0 z-10 w-[140px] bg-background text-sm font-medium">
+                  <TableCell
+                    className={`sticky left-0 z-10 w-[140px] text-sm font-medium transition-colors duration-200 ${hoveredRow === rowIdx
+                        ? "bg-muted/50 text-foreground"
+                        : "bg-background"
+                      }`}
+                  >
                     {source.name}
                   </TableCell>
 
-                  {source.data.map((value, stageIdx) => (
-                    <TableCell key={stageIdx} className="w-[140px] px-2">
-                      <div className="relative h-3 w-full rounded-full bg-muted">
-                        <div
-                          className={`h-full rounded-full ${getColorClass(value)}`}
-                          style={{ width: `${(value / MAX_VALUE) * 100}%` }}
-                        />
-                      </div>
-                    </TableCell>
-                  ))}
+                  {source.data.map((value, colIdx) => {
+                    const gapHighlighted = isGapHighlighted(rowIdx, value);
+                    const dimmed = isDimmed(rowIdx, value);
+
+                    return (
+                      <TableCell
+                        key={colIdx}
+                        className={`w-[140px] px-2 transition-all duration-200 ${gapHighlighted ? "bg-red-100 dark:bg-red-950/40" : ""
+                          }`}
+                      >
+                        <div className="relative h-3 w-full rounded-full bg-muted overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-200 ${getColorClass(value)} ${dimmed ? "opacity-30" : ""} ${gapHighlighted ? "animate-pulse" : ""}`}
+                            style={{ width: `${(value / MAX_VALUE) * 100}%` }}
+                          />
+                          {gapHighlighted && (
+                            <span className="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] text-red-600 dark:text-red-400 font-medium">
+                              Gap
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))}
             </TableBody>

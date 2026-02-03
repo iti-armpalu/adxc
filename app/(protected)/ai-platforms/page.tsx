@@ -3,7 +3,6 @@
 import WorkflowSection, { WorkflowStep } from "@/components/sections/workflow-section";
 import { DataAccessSection } from "./_components/data-access-section";
 import HeroSection from "./_components/hero-section";
-import { SolutionSection } from "./_components/solution-section";
 import { Award, Shield, Target } from "lucide-react";
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import CapabilityMatrixSection from "@/components/sections/capability-matrix-section";
@@ -42,7 +41,6 @@ export default function AiPlatformsPage() {
     <div>
       <HeroSection />
       <DataAccessSection />
-      <SolutionSection />
 
       <CapabilityMatrixSection
         title="Marketers need diverse data from a range of providers for Agents to be useful end-to-end"

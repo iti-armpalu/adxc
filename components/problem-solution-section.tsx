@@ -16,14 +16,14 @@ export function ProblemSolutionSection() {
         {/* 2) Solution + Squares below */}
         <div className="mt-8 flex flex-col-reverse gap-6 xl:flex-row xl:items-start">
           {/* Left on desktop, second on mobile */}
-          <div className="w-full xl:max-w-[400px] my-auto">
+          <div className="mx-auto mt-24 max-w-3xl my-auto">
             <SolutionCard />
           </div>
 
           {/* Right on desktop, first on mobile */}
-          <div className="w-full flex-1">
+          {/* <div className="w-full flex-1"> */}
             <SquaresScatterToCard />
-          </div>
+          {/* </div> */}
         </div>
       </Container>
     </Section>

@@ -30,7 +30,7 @@ export function HeroSection() {
             description={
               <>
                 untapped market
-                <p className="text-xs opacity-50">Estimated annual SME research and data spend (UK + US)</p>
+                <span className="block text-xs opacity-50">Estimated annual SME research and data spend (UK + US)</span>
               </>
             }
           />
@@ -53,7 +53,7 @@ export function HeroSection() {
                 $4.5M
               </div>
               <div className="text-sm leading-relaxed text-stone-500 sm:text-base">
-                Estimated revenue via ADXC for Kantar within 24 months
+                Estimated revenue via ADXC for a large-size data provider within 24 months
               </div>
               {/* </div> */}
             </div>

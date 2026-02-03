@@ -5,15 +5,30 @@ import { motion, useReducedMotion } from "framer-motion"
 import { Sparkles, Database } from "lucide-react"
 import { Card, CardContent } from "./ui/card"
 
+type SubtaskRoute = {
+  label: string;
+  agentIndex: number;
+  providerIndex: number[];
+};
+
+type TaskColumn = {
+  task: string;
+  subtasks: SubtaskRoute[];
+};
+
 // --- Animation config
 const ANIMATION_DURATION = 1
 const ANIMATION_EASING = [0.32, 0.72, 0, 1] as const
 
 // Keep sizes unchanged (per your request)
-const SQUARE_SIZE = 52
-const SLOT_SIZE = 52
-const AGENT_SQUARE_SIZE = 52
-const AGENT_SLOT_SIZE = 52
+// const SQUARE_SIZE = 52
+// const SLOT_SIZE = 52
+// const AGENT_SQUARE_SIZE = 52
+// const AGENT_SLOT_SIZE = 52
+
+
+
+const AGENT_COLUMN_WIDTH = 90
 
 // Desktop scattered positions (5)
 const SCATTERED_POSITIONS = [
@@ -36,10 +51,8 @@ const AGENT_SCATTERED_POSITIONS = [
   { x: "15%", y: "35%", rotate: -15 },
   { x: "72%", y: "28%", rotate: 20 },
   { x: "88%", y: "46%", rotate: -8 },
+  { x: "72%", y: "38%", rotate: 4 },
 ]
-
-const SQUARE_ICONS = [Database, Database, Database, Database, Database]
-const AGENT_ICONS = [Sparkles, Sparkles, Sparkles]
 
 // Providers (5 on desktop, 3 on mobile)
 const PROVIDERS_ALL = [
@@ -55,7 +68,52 @@ const AGENTS_ALL = [
   { name: "Miro Sidekick", role: "Visual Collaboration" },
   { name: "Jasper AI", role: "Content Creation" },
   { name: "Salesforce Einstein", role: "CRM Intelligence" },
+  { name: "Your execution agent", role: "X" },
 ] as const
+
+const WORKFLOW_TASKS: TaskColumn[] = [
+  {
+    task: "Strategy / Brief",
+    subtasks: [
+      { label: "Market understanding", agentIndex: 0, providerIndex: [0, 1, 2] },
+      { label: "Audience sizing", agentIndex: 0, providerIndex: [1, 2] },
+      { label: "Category context", agentIndex: 0, providerIndex: [0, 3] },
+    ],
+  },
+  {
+    task: "Creative Development",
+    subtasks: [
+      { label: "Cultural tensions, insights ", agentIndex: 1, providerIndex: [0, 4] },
+      { label: "Inspiration", agentIndex: 1, providerIndex: [4] },
+      { label: "Messaging development", agentIndex: 1, providerIndex: [0] },
+    ],
+  },
+  {
+    task: "Media Strategy / Planning",
+    subtasks: [
+      { label: "Reach, frequency", agentIndex: 0, providerIndex: [4] },
+      { label: "Channel effectiveness", agentIndex: 0, providerIndex: [4] },
+      { label: "Planning", agentIndex: 0, providerIndex: [4] },
+    ],
+  },
+  {
+    task: "Activation / Execution",
+    subtasks: [
+      { label: "Campaign activation", agentIndex: 3, providerIndex: [2] },
+      { label: "Retail media", agentIndex: 3, providerIndex: [3] },
+      { label: "Commerce activation", agentIndex: 3, providerIndex: [3] },
+    ],
+  },
+  {
+    task: "Measurement & Optimization",
+    subtasks: [
+      { label: "Effectiveness", agentIndex: 2, providerIndex: [0, 1] },
+      { label: "Sales impact", agentIndex: 2, providerIndex: [3] },
+      { label: "Optimization", agentIndex: 2, providerIndex: [0, 1, 3] },
+    ],
+  },
+];
+
 
 type AnimationState = "scattered" | "slotted"
 
@@ -94,6 +152,8 @@ export default function SquaresScatterToCard() {
   const isSm = useIsSm()
   const prefersReducedMotion = useReducedMotion()
 
+  const SIZE = isSm ? 36 : 52
+
   // Only show 3 providers on mobile
   const providers = isSm ? PROVIDERS_ALL.slice(0, 3) : PROVIDERS_ALL
   const providerCount = providers.length
@@ -119,6 +179,8 @@ export default function SquaresScatterToCard() {
     hoveredTaskColumnRef: null,
 
   })
+
+
 
   // Track which elements should pulse (triggered when dot arrives)
   const [pulsingAgent, setPulsingAgent] = useState<number | null>(null)
@@ -193,21 +255,22 @@ export default function SquaresScatterToCard() {
     }
   }, [hoverState.isHovering, hoverState.highlightedAgentIndex, hoverState.highlightedProviderIndex])
 
+  // Get highlights for a specific subtask (falls back to first mapping if not found)
+  const getHighlightsForSubtask = useCallback((subtaskName: string) => {
 
+    const allSubtasks = WORKFLOW_TASKS.flatMap((t) => t.subtasks);
+    const route = allSubtasks.find((s) => s.label === subtaskName);
 
-  // Randomly highlight one agent and two provider squares
-  const getRandomHighlights = useCallback(() => {
-    // Random agent (3 total)
-    const agentIndex = Math.floor(Math.random() * 3)
-
-    // Random set of provider indices (no duplicates)
-    const providerIndex: number[] = []
-    while (providerIndex.length < 2) {
-      const idx = Math.floor(Math.random() * providerCount)
-      if (!providerIndex.includes(idx)) providerIndex.push(idx)
+    if (route) {
+      // Filter provider indices to only include visible ones (mobile shows 3, desktop shows 5)
+      const visibleProviderIndex = route.providerIndex.filter(idx => idx < providerCount)
+      return {
+        agentIndex: route.agentIndex,
+        providerIndex: visibleProviderIndex.length > 0 ? visibleProviderIndex : [0, 1].filter(idx => idx < providerCount)
+      }
     }
-
-    return { agentIndex, providerIndex }
+    // Fallback
+    return { agentIndex: 0, providerIndex: [0, 1].filter(idx => idx < providerCount) }
   }, [providerCount])
 
 
@@ -237,8 +300,8 @@ export default function SquaresScatterToCard() {
     const scatter = (isSm ? SCATTERED_POSITIONS_MOBILE : SCATTERED_POSITIONS).slice(0, providerCount)
 
     return scatter.map((pos) => ({
-      x: (Number.parseFloat(pos.x) / 100) * containerRect.width - SQUARE_SIZE / 2,
-      y: (Number.parseFloat(pos.y) / 100) * containerRect.height - SQUARE_SIZE / 2,
+      x: (Number.parseFloat(pos.x) / 100) * containerRect.width - SIZE / 2,
+      y: (Number.parseFloat(pos.y) / 100) * containerRect.height - SIZE / 2,
       rotate: pos.rotate,
       scale: 1,
     }))
@@ -253,8 +316,8 @@ export default function SquaresScatterToCard() {
       if (!slot) return { x: 0, y: 0, rotate: 0, scale: 1 }
       const slotRect = slot.getBoundingClientRect()
       return {
-        x: slotRect.left - containerRect.left + (SLOT_SIZE - SQUARE_SIZE) / 2,
-        y: slotRect.top - containerRect.top + (SLOT_SIZE - SQUARE_SIZE) / 2,
+        x: slotRect.left - containerRect.left,
+        y: slotRect.top - containerRect.top,
         rotate: 0,
         scale: 1,
       }
@@ -266,8 +329,8 @@ export default function SquaresScatterToCard() {
     const containerRect = containerRef.current.getBoundingClientRect()
 
     return AGENT_SCATTERED_POSITIONS.map((pos) => ({
-      x: (parseFloat(pos.x) / 100) * containerRect.width - AGENT_SQUARE_SIZE / 2,
-      y: (parseFloat(pos.y) / 100) * containerRect.height - AGENT_SQUARE_SIZE / 2,
+      x: (parseFloat(pos.x) / 100) * containerRect.width - SIZE / 2,
+      y: (parseFloat(pos.y) / 100) * containerRect.height - SIZE / 2,
       rotate: pos.rotate,
       scale: 1,
     }))
@@ -281,8 +344,8 @@ export default function SquaresScatterToCard() {
       if (!slot) return { x: 0, y: 0, rotate: 0, scale: 1 }
       const slotRect = slot.getBoundingClientRect()
       return {
-        x: slotRect.left - containerRect.left + (AGENT_SLOT_SIZE - AGENT_SQUARE_SIZE) / 2,
-        y: slotRect.top - containerRect.top + (AGENT_SLOT_SIZE - AGENT_SQUARE_SIZE) / 2,
+        x: slotRect.left - containerRect.left,
+        y: slotRect.top - containerRect.top,
         rotate: 0,
         scale: 1,
       }
@@ -404,7 +467,8 @@ export default function SquaresScatterToCard() {
       if (currentStateRef.current !== "slotted") return;
 
       if (isHovering && subtaskElement && taskColumnElement) {
-        const { agentIndex, providerIndex } = getRandomHighlights();
+        const subtaskName = subtaskElement.textContent || ""
+        const { agentIndex, providerIndex } = getHighlightsForSubtask(subtaskName)
         setHoverState({
           isHovering: true,
           highlightedAgentIndex: agentIndex,
@@ -422,14 +486,16 @@ export default function SquaresScatterToCard() {
         });
       }
     },
-    [getRandomHighlights]
+    [getHighlightsForSubtask]
   );
 
 
 
   return (
-    <div ref={containerRef} className="relative w-full">
-
+    <div
+      ref={containerRef}
+      className="relative w-full"
+    >
 
       {/* SVG Connection Lines */}
       {hoverState.isHovering && (
@@ -454,16 +520,9 @@ export default function SquaresScatterToCard() {
         </svg>
       )}
 
-
-
-
-
-
-
       {/* Provider squares (only 3 on mobile, 5 on desktop) */}
       {isReady &&
         squarePositions.slice(0, providerCount).map((pos, index) => {
-          const Icon = SQUARE_ICONS[index]
           const isHighlighted = hoverState.isHovering && hoverState.highlightedProviderIndex.includes(index)
 
           const defaultShadow =
@@ -479,10 +538,13 @@ export default function SquaresScatterToCard() {
             <motion.div
               key={index}
               ref={(el) => { squareRefs.current[index] = el; }}
-              className={`absolute z-20 rounded-xl shadow-lg bg-stone-200 border border-stone-300 flex items-center justify-center`}
+              className={`absolute z-20 rounded-lg shadow-lg flex items-center justify-center transition-colors duration-300 ${isHighlighted
+                ? "bg-[#66023C]/20 border-2 border-[#66023C]"
+                : "bg-stone-200 border border-stone-300"
+                }`}
               style={{
-                width: SQUARE_SIZE,
-                height: SQUARE_SIZE,
+                width: SIZE,
+                height: SIZE,
                 willChange: isAnimating.current ? "transform" : "auto",
                 boxShadow
               }}
@@ -503,11 +565,16 @@ export default function SquaresScatterToCard() {
                 isAnimating.current = false
               }}
             >
-              <span className="relative w-5 h-5 text-stone-600 relative flex items-center">
+              <span
+                className={`relative w-5 h-5 relative flex items-center transition-colors duration-300 ${isHighlighted
+                  ? "text-adxc"
+                  : "text-stone-600"
+                  }`}
+              >
                 {pulsingProviders.includes(index) && !prefersReducedMotion && (
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#66023C] opacity-75"></span>
                 )}
-                <Icon className="" strokeWidth={2} />
+                <Database strokeWidth={2} />
               </span>
 
             </motion.div>
@@ -517,7 +584,6 @@ export default function SquaresScatterToCard() {
       {/* Agent squares */}
       {isReady &&
         agentSquarePositions.map((pos, index) => {
-          const Icon = AGENT_ICONS[index]
           const isHighlighted = hoverState.isHovering && hoverState.highlightedAgentIndex === index
 
           const defaultShadow =
@@ -532,10 +598,14 @@ export default function SquaresScatterToCard() {
             <motion.div
               key={`agent-${index}`}
               ref={(el) => { agentSquareRefs.current[index] = el; }}
-              className={`absolute z-20 rounded-lg shadow-lg bg-stone-200 border border-stone-300 flex items-center justify-center`}
+              // className={`absolute z-20 rounded-lg shadow-lg bg-stone-200 border border-stone-300 flex items-center justify-center`}
+              className={`absolute z-20 rounded-lg shadow-lg flex items-center justify-center transition-colors duration-300 ${isHighlighted
+                ? "bg-adxc/20 border-2 border-[#66023C]"
+                : "bg-stone-200 border border-stone-300"
+                }`}
               style={{
-                width: AGENT_SQUARE_SIZE,
-                height: AGENT_SQUARE_SIZE,
+                width: SIZE,
+                height: SIZE,
                 willChange: isAnimating.current ? "transform" : "auto",
                 boxShadow
               }}
@@ -556,14 +626,17 @@ export default function SquaresScatterToCard() {
                 isAnimating.current = false
               }}
             >
-              {/* <Icon className="w-5 h-5 text-white" strokeWidth={2.5} /> */}
-              <span className="relative w-5 h-5 text-stone-600 relative flex items-center">
-
+              <span
+                className={`relative w-5 h-5 relative flex items-center transition-colors duration-300 ${isHighlighted
+                  ? "text-adxc"
+                  : "text-stone-600"
+                  }`}
+              >
                 {/* {isHighlighted && !prefersReducedMotion && ( */}
                 {pulsingAgent === index && !prefersReducedMotion && (
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#66023C] opacity-75"></span>
                 )}
-                <Icon className="" strokeWidth={2} />
+                <Sparkles strokeWidth={2} />
               </span>
 
             </motion.div>
@@ -572,24 +645,20 @@ export default function SquaresScatterToCard() {
 
       {/* Card in normal flow (container grows naturally; no min-h hacks) */}
       <div ref={cardWrapRef} className="relative z-0 flex justify-center pt-0">
-        <Card className="bg-card/80 backdrop-blur-xl shadow-2xl border-border/50 py-0 w-[900px] max-w-[90vw]">
-          <CardContent className="p-4 sm:p-8">
-
-
-
-
+        <Card className="bg-card/80 backdrop-blur-xl shadow-2xl border-border/50 py-0 max-w-full">
+          <CardContent className="p-4 md:p-8">
 
             {/* Data Providers */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Data Providers</h3>
               </div>
-              <div className="relative bg-stone-50/30 rounded-xl p-4 border border-border/20">
-                <div className="flex gap-12 justify-center">
+              <div className="relative bg-stone-50/30 rounded-xl p-2 border border-border/20">
+                <div className="flex gap-6 xs:gap-12 lg:gap-18 justify-center">
                   {providers.map((provider, index) => (
                     <div
                       key={provider.name}
-                      className="flex flex-col items-center gap-3"
+                      className="flex flex-col items-center gap-3 w-[50px] md:w-[60px]"
                       ref={(el) => {
                         providerContainerRefs.current[index] = el
                       }}
@@ -600,11 +669,11 @@ export default function SquaresScatterToCard() {
                         }}
                         className={`rounded-xl border-2 border-dashed transition-all duration-300 ${animationState === "slotted" ? "border-transparent" : "border-border/50"
                           }`}
-                        style={{ width: SLOT_SIZE, height: SLOT_SIZE }}
+                        style={{ width: SIZE, height: SIZE }}
                       />
-                      <div className="text-center">
-                        <p className="text-xs font-medium text-foreground">{provider.name}</p>
-                      </div>
+                      {/* <div className="text-center"> */}
+                        <p className="text-[10px] sm:text-xs text-stone-600 text-center">{provider.name}</p>
+                      {/* </div> */}
                     </div>
                   ))}
                 </div>
@@ -612,15 +681,15 @@ export default function SquaresScatterToCard() {
             </div>
 
             {/* Bridge + internal data */}
-            <div className="mt-8 relative">
-              <div className="grid sm:grid-cols-[2fr_auto_1fr] gap-0 items-center">
+            <div className="mt-6 2xl:mt-8 relative">
+              <div className="grid grid-cols-[2fr_auto_1fr] gap-0 items-center">
 
                 <div>
                   <div className="flex items-center justify-between">
                   </div>
                   <motion.div
                     ref={adxcRef}
-                    className="w-full bg-adxc rounded-xl flex items-center justify-center py-5 border-2 border-transparent"
+                    className="w-full bg-adxc rounded-xl flex items-center justify-center p-2 sm:p-4 border-2 border-transparent"
                   >
                     {pulsingADXC && !prefersReducedMotion && (
                       <span className="absolute w-8 h-8 animate-ping rounded-full bg-pink-700 opacity-75"></span>
@@ -629,13 +698,13 @@ export default function SquaresScatterToCard() {
                   </motion.div>
                 </div>
 
-                <div className="hidden sm:flex items-center justify-center px-4">
-                  <div className="w-16 h-[1px] rounded-full bg-stone-300" style={{ background: 'repeating-linear-gradient(90deg, #d6d3d1 0, #d6d3d1 4px, transparent 4px, transparent 12px)' }} />
+                <div className="flex items-center justify-center px-4">
+                  <div className="w-4 sm:w-16 h-[1px] rounded-full bg-stone-300" style={{ background: 'repeating-linear-gradient(90deg, #d6d3d1 0, #d6d3d1 4px, transparent 4px, transparent 12px)' }} />
                 </div>
 
                 <div ref={internalDataRef}>
-                  <div className="w-full bg-stone-100 rounded-xl flex items-center justify-center py-5 border-2 border-stone-200">
-                    <span className="text-sm font-medium text-stone-600">Internal / 1P Data</span>
+                  <div className="w-full bg-stone-100 rounded-xl flex items-center justify-center p-2 sm:p-4 border-2 border-stone-200">
+                    <span className="text-xs md:text-sm font-medium text-stone-600 text-center">Internal / 1P Data</span>
                   </div>
                 </div>
               </div>
@@ -643,56 +712,49 @@ export default function SquaresScatterToCard() {
 
 
             {/* AI Agentic Ecosystem */}
-            <div className="mt-8 space-y-2">
+            <div className="mt-6 2xl:mt-8 space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your AI Agentic Ecosystem</h3>
               </div>
 
-              <div className="relative bg-stone-50/30 rounded-xl p-4 border border-border/20">
-                <div className="flex gap-8 justify-center">
-                  {AGENTS_ALL.map((agent, index) => {
-                    // const isHighlighted = hoverState.isHovering && hoverState.highlightedAgentIndex === index
-                    return (
+              <div className="relative bg-stone-50/30 rounded-xl p-2 border border-border/20">
+                <div className="flex gap-6 xs:gap-12 lg:gap-18 justify-center">
+                  {AGENTS_ALL.map((agent, index) => (
+                    <div
+                      key={agent.name}
+                      className="flex flex-col items-center gap-3 w-[60px] md:w-[60px]"
+                      ref={(el) => {
+                        agentContainerRefs.current[index] = el
+                      }}
+                    >
                       <div
-                        key={agent.name}
-                        className="flex flex-col items-center gap-3"
                         ref={(el) => {
-                          agentContainerRefs.current[index] = el
+                          agentSlotRefs.current[index] = el
                         }}
-                      >
-                        <div
-                          ref={(el) => {
-                            agentSlotRefs.current[index] = el
-                          }}
-                          className={`relative rounded-xl border-2 border-dashed transition-all duration-300 ${animationState === "slotted" ? "border-transparent" : "border-border/40"}`}
-                          style={{ width: AGENT_SLOT_SIZE, height: AGENT_SLOT_SIZE }}
-                        >
-                        </div>
-                        <div className="text-center">
-                          <p className="text-xs font-medium text-foreground">{agent.name}</p>
-                        </div>
-                      </div>
-                    )
-                  })}
+                        className={`relative rounded-xl border-2 border-dashed transition-all duration-300 ${animationState === "slotted" ? "border-transparent" : "border-border/40"
+                          }`}
+                        style={{ width: SIZE, height: SIZE }}
+                      />
+
+                      <p className="text-[10px] sm:text-xs text-stone-600 text-center">
+                        {agent.name}
+                      </p>
+                    </div>
+                  ))}
                 </div>
+
               </div>
             </div>
 
             {/* Workflow Tasks */}
-            <div className="mt-8 space-y-2">
+            <div className="mt-6 2xl:mt-8 space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Workflow Tasks</h3>
               </div>
 
-              <div className="relative bg-stone-50/30 rounded-xl p-4 border border-border/20">
+              {/* <div className="relative bg-stone-50/30 rounded-xl p-2 border border-border/20">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1 sm:gap-1">
-                  {[
-                    { task: "Strategy / Brief", subtasks: ["Market understanding", "Audience sizing", "Category context"] },
-                    { task: "Creative  Development", subtasks: ["Tensions", "Cultural context", "Inspiration"] },
-                    { task: "Media Strategy / Planning", subtasks: ["Reach, frequency", "Channel effectiveness", "Planning"] },
-                    { task: "Activation / Execution", subtasks: ["Campaign delivery", "Retail media", "Execution"] },
-                    { task: "Measurement & Optimization", subtasks: ["Effectiveness", "Sales impact", "Optimization"] },
-                  ].map((item) => (
+                  {WORKFLOW_TASKS.map((item) => (
                     <div
                       key={item.task}
                       className="p-2"
@@ -702,16 +764,13 @@ export default function SquaresScatterToCard() {
                       </p>
                       <div className="flex flex-col items-center gap-2">
                         {item.subtasks.map((subtask) => {
-                          const isThisSubtaskHovered = hoverState.hoveredSubtaskRef?.textContent === subtask
+                          const isThisSubtaskHovered = hoverState.hoveredSubtaskRef?.textContent === subtask.label
                           const shouldPulse = pulsingSubtask && isThisSubtaskHovered
 
                           return (
                             <span
-                              key={subtask}
-                              className="w-full px-1 py-1 rounded-full bg-stone-50 text-stone-600 text-xs text-center flex items-center justify-center cursor-pointer border border-transparent hover:bg-stone-100 hover:border-stone-300 transition-colors duration-200"
-
-
-                              // onMouseEnter={(e) => handleSubtaskHover(true, e.currentTarget)}
+                              key={subtask.label}
+                              className="w-full px-1 py-1 rounded-full bg-stone-50 text-stone-600 text-xs text-center flex items-center justify-center cursor-pointer border border-transparent hover:bg-adxc/10 hover:border-adxc transition-colors duration-200"
 
                               onMouseEnter={(e) => {
                                 const taskColumn = e.currentTarget.closest('.p-2') as HTMLElement
@@ -723,7 +782,7 @@ export default function SquaresScatterToCard() {
                               {shouldPulse && (
                                 <span className="absolute absolute w-4 h-4 rounded-full bg-[#66023C] opacity-75 animate-ping" />
                               )}
-                              <span className="relative">{subtask}</span>
+                              <span className="relative">{subtask.label}</span>
 
                             </span>
                           )
@@ -732,9 +791,57 @@ export default function SquaresScatterToCard() {
                     </div>
                   ))}
                 </div>
+              </div> */}
+
+              <div className="relative rounded-xl border border-border/20 bg-stone-50/30 p-2">
+                {/* Horizontal scroll wrapper */}
+                <div className="-mx-2 overflow-x-auto px-2">
+                  <div
+                    className="grid grid-cols-5 gap-1"
+                    style={{ minWidth: 900 }} // tweak until it feels right
+                  >
+                    {WORKFLOW_TASKS.map((item) => (
+                      <div key={item.task} className="p-2" data-task-column>
+                        <p className="mb-3 flex min-h-[50px] w-full items-center justify-center rounded-full bg-stone-200 px-2 py-2 text-center text-xs font-semibold text-adxc">
+                          {item.task}
+                        </p>
+
+                        <div className="flex flex-col items-center gap-2">
+                          {item.subtasks.map((subtask) => {
+                            const isThisSubtaskHovered =
+                              hoverState.hoveredSubtaskRef?.textContent === subtask.label
+                            const shouldPulse = pulsingSubtask && isThisSubtaskHovered
+
+                            return (
+                              <span
+                                key={subtask.label}
+                                className="relative flex w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-stone-50 px-1 py-1 text-center text-xs text-stone-600 transition-colors duration-200 hover:border-adxc hover:bg-adxc/10"
+                                onMouseEnter={(e) => {
+                                  const taskColumn = e.currentTarget.closest(
+                                    "[data-task-column]"
+                                  ) as HTMLElement | null
+                                  handleSubtaskHover(true, e.currentTarget, taskColumn)
+                                }}
+                                onMouseLeave={() => handleSubtaskHover(false)}
+                              >
+                                {shouldPulse && (
+                                  <span className="absolute h-4 w-4 animate-ping rounded-full bg-[#66023C] opacity-75" />
+                                )}
+                                <span className="relative">{subtask.label}</span>
+                              </span>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
+
+
+
             </div>
-            <p className="mx-auto mt-12 max-w-3xl text-center text-xs italic text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-3xl text-center text-xs italic text-muted-foreground">
               For illustrative purposes only
             </p>
           </CardContent>
@@ -942,7 +1049,7 @@ function ConnectionLines({
               id={`connection-path-${index}`}
               d={path.d}
               fill="none"
-              stroke="#e5e7eb"
+              stroke="#77244d"
               strokeWidth="3"
               strokeDasharray="1 8"
               strokeLinecap="round"
@@ -997,8 +1104,8 @@ function ConnectionLines({
             <motion.circle
               cx={startX}
               cy={startY}
-              r="4"
-              fill={path.color}
+              r="3"
+              fill="#f1e5ea"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.2, delay: index * 0.15 }}
@@ -1006,8 +1113,8 @@ function ConnectionLines({
             <motion.circle
               cx={endX}
               cy={endY}
-              r="4"
-              fill={path.color}
+              r="3"
+              fill="#f1e5ea"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.2, delay: index * 0.15 + 0.35 }}

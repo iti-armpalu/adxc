@@ -34,12 +34,12 @@ const HeroSection = () => {
             value="$200k+"
             description={
               <>
-                entry level price to access ( GWI + Kantar + Nielsen)
+                entry level price to access ( GWI / Kantar / Nielsen)
               </>
             }
           />
           <StatCard
-            value="73%"
+            value="60%"
             description={
               <>
                 all data within businesses goes unused
@@ -52,13 +52,13 @@ const HeroSection = () => {
 
         <div className="flex flex-col items-center justify-center gap-4 text-xs text-muted-foreground sm:flex-row sm:gap-8">
           <a
-            href="https://www.forrester.com/blogs/hadoop-is-datas-darling-for-a-reason/"
+            href="https://services.global.ntt/en-us/newsroom/new-ntt-survey-finds-that-unnecessary-data-storage-hinders-sustainability-goals-for-most-businesses"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline underline-offset-4"
           >
             <span>
-              <sup>1</sup> Forrester 2016
+              <sup>1</sup> NTT Ltd 2023
             </span>
           </a>
         </div>

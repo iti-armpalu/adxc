@@ -5,10 +5,10 @@ import { AudiencePortalSection } from "@/components/audience-portal-section";
 
 export default function HomePage() {
     return (
-        <main className="min-h-full animate-fade-in bg-gradient-main">
+        <>
             <HeroSection />
             <ProblemSolutionSection />
             <DemoSection />
-        </main>
+        </>
     );
 }

@@ -25,13 +25,13 @@ export default function DemoButtons({
 
   const wrapperClass =
     variant === "sheet"
-      ? "mt-6 flex flex-col items-center gap-3"
-      : "mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4";
+      ? "flex flex-col items-center gap-3"
+      : "flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4";
 
   const btnClass =
     variant === "sheet"
       ? "w-full max-w-[260px] gap-2"
-      : "min-w-[220px] gap-2 sm:min-w-0 sm:h-11 sm:px-8";
+      : "min-w-[220px] gap-2 sm:min-w-0 sm:px-8";
 
   return (
     <div className={wrapperClass}>

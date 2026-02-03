@@ -35,12 +35,12 @@ export default async function ProtectedLayout({
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-background">
-            <DemoVideoProvider>
-                <Header />
-                <main className="flex-1">{children}</main>
+        <DemoVideoProvider>
+            <Header />
+            {/* <div className="min-h-screen flex flex-col bg-background"> */}
+                <main className="min-h-screen flex flex-col mt-15">{children}</main>
                 <AudiencePortalSection />
-            </DemoVideoProvider>
-        </div>
+            {/* </div> */}
+        </DemoVideoProvider>
     );
 }

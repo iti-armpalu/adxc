@@ -1,7 +1,6 @@
 
 import HeroSection from "./_components/hero-section";
 import ProblemSection from "./_components/problem-section";
-import StatsSection from "./_components/stats-section";
 import CapabilityMatrixSection from "@/components/sections/capability-matrix-section";
 import WorkflowSection, { WorkflowStep } from "@/components/sections/workflow-section";
 import { Layers, Sparkles, TrendingDown } from "lucide-react";
@@ -41,7 +40,6 @@ export default function BrandsPage() {
   return (
     <div>
       <HeroSection />
-      {/* <StatsSection /> */}
       <CapabilityMatrixSection
         title="For SMEs, getting the right data for the right task is prohibitive"
         description="You can't afford multiple providers, or low utilisation - so pick one or none."

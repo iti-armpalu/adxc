@@ -27,18 +27,25 @@ export default function Header() {
     const [open, setOpen] = useState(false);
 
     return (
-        <header className="w-full border-b border-border bg-background">
+        <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
                 {/* Logo */}
                 <Link href="/">
                     <Logo size="md" variant="full" theme="light" showGlow />
                 </Link>
+                <div className="hidden sm:inline-flex">
+                    <DemoButtons />
+                </div>
+
                 <div className="flex items-center gap-2">
 
+
+
+                    {/* <div > */}
                     {/* Hamburger */}
                     <Sheet open={open} onOpenChange={setOpen}>
                         <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon" aria-label="Open menu" className="bg-pink-100 hover:bg-pink-200">
+                            <Button variant="ghost" size="icon" aria-label="Open menu" className="h-10 w-10 bg-pink-100 hover:bg-pink-200">
                                 <Menu className="h-5 w-5 text-adxc" />
                             </Button>
                         </SheetTrigger>
@@ -86,9 +93,9 @@ export default function Header() {
                             className="text-muted-foreground hover:text-foreground"
                         >
                             <LogOut className="w-4 h-4" />
-                            <span className="hidden sm:inline">Logout</span>
                         </Button>
                     </form>
+                    {/* </div> */}
                 </div>
             </div>
         </header>

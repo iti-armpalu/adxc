@@ -1,61 +1,131 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { useMemo, useState } from "react";
 import { Slider } from "@/components/ui/slider";
-import { ArrowRight, Check, TrendingUp } from "lucide-react";
+import { Check } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "@/components/sections/section-header";
 
-const dataTypes = ['Consumer', 'Media', 'Retail', 'Brand', 'Strategy'];
+type PhaseId = "strategy" | "creative" | "media" | "execution" | "optimisation";
+type view = "annual" | "monthly";
+type TierId = "micro" | "small" | "medium";
 
-interface ClientTier {
-  name: string;
+const PROVIDER_PAYOUT_PER_QUERY_USD = 6;
+const USEFUL_DATA_FACTOR = 0.75;
+
+const phases = [
+  { id: "strategy", label: "Strategy / brief", weight: 0.30 },
+  { id: "creative", label: "Creative ideation", weight: 0.25 },
+  { id: "media", label: "Channel / media planning", weight: 0.25 },
+  { id: "execution", label: "Execution", weight: 0.1 },
+  { id: "optimisation", label: "Optimisation", weight: 0.1 },
+] as const satisfies readonly { id: PhaseId; label: string; weight: number }[];
+
+const clientTiers = [
+  {
+    id: "micro",
+    label: "Micro clients",
+    min: 0,
+    max: 50000,
+    defaultValue: 500,
+    activeUsersPerClient: 2,
+    avgQueriesPerUserPerMonth: 5,
+  },
+  {
+    id: "small",
+    label: "Small clients",
+    min: 0,
+    max: 10000,
+    defaultValue: 50,
+    activeUsersPerClient: 8,
+    avgQueriesPerUserPerMonth: 10,
+  },
+  {
+    id: "medium",
+    label: "Medium clients",
+    min: 0,
+    max: 1000,
+    defaultValue: 5,
+    activeUsersPerClient: 20,
+    avgQueriesPerUserPerMonth: 20,
+  },
+] as const satisfies readonly {
+  id: TierId;
   label: string;
   min: number;
   max: number;
   defaultValue: number;
-  revenueMultiplier: number;
-}
+  activeUsersPerClient: number;
+  avgQueriesPerUserPerMonth: number;
+}[];
 
-const clientTiers: ClientTier[] = [
-  { name: 'micro', label: 'Micro Clients', min: 500, max: 15000, defaultValue: 5000, revenueMultiplier: 0.8 },
-  { name: 'small', label: 'Small Clients', min: 100, max: 3000, defaultValue: 800, revenueMultiplier: 2.5 },
-  { name: 'medium', label: 'Medium Clients', min: 50, max: 1000, defaultValue: 200, revenueMultiplier: 8 },
-];
+type PhaseToggles = Record<PhaseId, boolean>;
+type ClientCounts = Record<TierId, number>;
 
+const formatUsd = (n: number) =>
+  n.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
 export default function CalculatorDataProviders() {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [revenueView, setRevenueView] = useState<'annual' | 'monthly'>('annual');
-  const [clientCounts, setClientCounts] = useState<Record<string, number>>({
-    micro: 5000,
-    small: 800,
-    medium: 200,
+  const [view, setView] = useState<view>("annual");
+
+  const [selectedPhases, setSelectedPhases] = useState<PhaseToggles>({
+    strategy: true,
+    creative: false,
+    media: true,
+    execution: false,
+    optimisation: false,
   });
 
-  const toggleType = (type: string) => {
-    setSelectedTypes(prev =>
-      prev.includes(type)
-        ? prev.filter(t => t !== type)
-        : [...prev, type]
-    );
+  const [clientCounts, setClientCounts] = useState<ClientCounts>({
+    micro: clientTiers.find(t => t.id === "micro")?.defaultValue ?? 0,
+    small: clientTiers.find(t => t.id === "small")?.defaultValue ?? 0,
+    medium: clientTiers.find(t => t.id === "medium")?.defaultValue ?? 0,
+  });
+
+  const togglePhase = (id: PhaseId) => {
+    setSelectedPhases(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const updateClientCount = (tier: string, value: number) => {
+  const updateClientCount = (tier: TierId, value: number) => {
     setClientCounts(prev => ({ ...prev, [tier]: value }));
   };
 
-  // Calculate estimated revenue based on client counts and selected data types
-  const typeMultiplier = Math.max(1, selectedTypes.length * 0.4 + 0.6);
-  const estimatedRevenue = Math.round(
-    clientTiers.reduce((total, tier) => {
-      return total + (clientCounts[tier.name] * tier.revenueMultiplier);
-    }, 0) * typeMultiplier
-  );
+  const {
+    phaseFactor,
+    estimatedMonthly,
+    estimatedAnnual,
+  } = useMemo(() => {
+    // 1) sum weights for selected phases
+    const phaseFactor = phases.reduce((sum, p) => {
+      return sum + (selectedPhases[p.id] ? p.weight : 0);
+    }, 0);
 
-  const displayRevenue = revenueView === 'annual' ? estimatedRevenue : Math.round(estimatedRevenue / 12);
+    // 2) total expected queries across tiers:
+    // clients * (activeUsersPerClient * avgQueriesPerUserPerMonth)
+    const expectedMonthlyQueries = clientTiers.reduce((sum, tier) => {
+      const clients = clientCounts[tier.id];
+      const queriesPerClient =
+        tier.activeUsersPerClient * tier.avgQueriesPerUserPerMonth;
+
+      return sum + clients * queriesPerClient;
+    }, 0);
+
+    // 3) payout
+    const grossPayout = expectedMonthlyQueries * PROVIDER_PAYOUT_PER_QUERY_USD;
+    const usablePayout = grossPayout * USEFUL_DATA_FACTOR;
+
+    // 4) apply phase factor (your definition)
+    const estimatedMonthly = usablePayout * phaseFactor;
+    const estimatedAnnual = estimatedMonthly * 12;
+
+    return { phaseFactor, estimatedMonthly, estimatedAnnual };
+  }, [clientCounts, selectedPhases]);
+
+  const displayRevenue =
+    view === "annual" ? estimatedAnnual : estimatedMonthly;
+
+  const isLargeNumber = displayRevenue >= 10_000_000;
 
 
   return (
@@ -73,24 +143,31 @@ export default function CalculatorDataProviders() {
         <div className="flex flex-col lg:flex-row gap-16">
           {/* Calculator Form */}
           <div className="flex-1 space-y-12">
-            {/* Data Types */}
+            {/* Phases */}
             <div>
               <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-5">
-                Your Data Types <span className="text-pink-600">(Multi-select)</span>
+                Marketing Phases Your Data Supports <span className="text-pink-600">(Multi-select)</span>
               </label>
-              <div className="flex flex-wrap gap-3">
-                {dataTypes.map(type => (
-                  <button
-                    key={type}
-                    onClick={() => toggleType(type)}
-                    className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${selectedTypes.includes(type)
-                      ? 'bg-adxc text-primary-foreground shadow-md'
-                      : 'bg-card border border-border text-muted-foreground hover:border-primary/50'
-                      }`}
-                  >
-                    {type}
-                  </button>
-                ))}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {phases.map(phase => {
+                  const isOn = selectedPhases[phase.id];
+                  return (
+                    <button
+                      key={phase.id}
+                      type="button"
+                      onClick={() => togglePhase(phase.id)}
+                      className={[
+                        "w-full px-2 py-3 rounded-lg text-sm font-medium transition-all duration-200",
+                        isOn
+                          ? "bg-adxc text-primary-foreground shadow-md"
+                          : "bg-card border border-border text-muted-foreground hover:border-primary/50",
+                      ].join(" ")}
+                    >
+                      {phase.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -102,30 +179,30 @@ export default function CalculatorDataProviders() {
 
               <div className="space-y-10">
                 {clientTiers.map(tier => (
-                  <div key={tier.name} className="space-y-4">
+                  <div key={tier.id} className="space-y-4">
                     <div className="flex items-end justify-between">
                       <div className="flex items-center gap-3">
-                        <div className={`w-3 h-3 rounded-full bg-stone-300`} />
-                        <span className="text-sm font-semibold text-foreground">{tier.label}</span>
+                        <span className="text-sm font-semibold text-foreground">
+                          {tier.label}
+                        </span>
                       </div>
+
                       <div className="text-2xl font-bold text-adxc tabular-nums">
-                        {clientCounts[tier.name].toLocaleString()}
+                        {clientCounts[tier.id].toLocaleString()}
                       </div>
                     </div>
 
-                    <div className="relative">
+                    <Slider
+                      value={[clientCounts[tier.id]]}
+                      onValueChange={([v]) => updateClientCount(tier.id, v)}
+                      min={tier.min}
+                      max={tier.max}
+                      step={1}
+                    />
 
-                      <Slider
-                        value={[clientCounts[tier.name]]}
-                        onValueChange={([v]) => updateClientCount(tier.name, v)}
-                        min={tier.min}
-                        max={tier.max}
-                        step={1}
-                      />
-                      <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                        <span>{tier.min.toLocaleString()}</span>
-                        <span>{tier.max.toLocaleString()}</span>
-                      </div>
+                    <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                      <span>{tier.min.toLocaleString()}</span>
+                      <span>{tier.max.toLocaleString()}</span>
                     </div>
                   </div>
                 ))}
@@ -135,69 +212,74 @@ export default function CalculatorDataProviders() {
 
           {/* Revenue Results Card */}
           <div className="lg:w-[496px] bg-adxc rounded-[32px] p-10 shadow-2xl relative overflow-hidden">
-            {/* Decorative gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
             <div className="absolute -top-32 -right-32 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
             <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-black/10 rounded-full blur-3xl" />
 
             <div className="relative">
-              {/* Header */}
               <div className="flex items-center justify-between mb-10">
-                <div className="flex items-center gap-2">
-                  <span className="text-primary-foreground/90 text-lg font-medium">Your Estimated Earnings</span>
-                </div>
+                <span className="text-primary-foreground/90 text-lg font-medium">
+                  Your estimated earnings
+                </span>
+
                 <div className="flex bg-black/20 backdrop-blur border border-white/10 rounded-xl p-1.5">
                   <button
-                    onClick={() => setRevenueView('annual')}
-                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${revenueView === 'annual'
-                      ? 'bg-white text-primary shadow-sm'
-                      : 'text-primary-foreground/70 hover:text-primary-foreground'
-                      }`}
+                    type="button"
+                    onClick={() => setView("annual")}
+                    className={[
+                      "px-4 py-1.5 rounded-lg text-xs font-bold transition-all",
+                      view === "annual"
+                        ? "bg-white text-primary shadow-sm"
+                        : "text-primary-foreground/70 hover:text-primary-foreground",
+                    ].join(" ")}
                   >
                     Annual
                   </button>
                   <button
-                    onClick={() => setRevenueView('monthly')}
-                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${revenueView === 'monthly'
-                      ? 'bg-white text-primary shadow-sm'
-                      : 'text-primary-foreground/70 hover:text-primary-foreground'
-                      }`}
+                    type="button"
+                    onClick={() => setView("monthly")}
+                    className={[
+                      "px-4 py-1.5 rounded-lg text-xs font-bold transition-all",
+                      view === "monthly"
+                        ? "bg-white text-primary shadow-sm"
+                        : "text-primary-foreground/70 hover:text-primary-foreground",
+                    ].join(" ")}
                   >
                     Monthly
                   </button>
                 </div>
               </div>
 
-              {/* Revenue Amount */}
-              <div className="text-primary-foreground text-[72px] md:text-[80px] font-bold tracking-tight leading-none mb-4">
-                ${displayRevenue.toLocaleString()}
+              <div
+                className={[
+                  "text-primary-foreground font-bold tracking-tight leading-none mb-4 transition-all",
+                  isLargeNumber
+                    ? "text-[56px] md:text-[64px]"
+                    : "text-[72px] md:text-[80px]",
+                ].join(" ")}
+              >
+                ${formatUsd(displayRevenue)}
               </div>
 
-              {/* Description */}
               <p className="text-primary-foreground/70 text-sm font-light leading-relaxed mb-12">
-                Estimated {revenueView} revenue based on your client distribution and data offerings through ADXC's marketplace.
+                Estimated {view} revenue based on selected phases,
+                client distribution, provider payout (${PROVIDER_PAYOUT_PER_QUERY_USD}/query),
+                and {Math.round(USEFUL_DATA_FACTOR * 100)}% useful-data availability.
               </p>
 
-              {/* Benefits */}
               <div className="space-y-5">
-                <div className="flex items-center gap-4">
-                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                    <Check className="w-3.5 h-3.5 text-white" />
+                {[
+                  "Access to 500+ enterprise buyers",
+                  "Automated billing & distribution",
+                  "Real-time usage analytics",
+                ].map(text => (
+                  <div key={text} className="flex items-center gap-4">
+                    <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
+                      <Check className="w-3.5 h-3.5 text-white" />
+                    </div>
+                    <span className="text-primary-foreground font-medium">{text}</span>
                   </div>
-                  <span className="text-primary-foreground font-medium">Access to 500+ enterprise buyers</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                    <Check className="w-3.5 h-3.5 text-white" />
-                  </div>
-                  <span className="text-primary-foreground font-medium">Automated billing & distribution</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                    <Check className="w-3.5 h-3.5 text-white" />
-                  </div>
-                  <span className="text-primary-foreground font-medium">Real-time usage analytics</span>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -205,5 +287,4 @@ export default function CalculatorDataProviders() {
       </Container>
     </Section>
   );
-};
-
+}
