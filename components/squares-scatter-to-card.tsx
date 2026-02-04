@@ -129,7 +129,7 @@ export default function SquaresScatterToCard() {
   // Responsive size (same size used for squares + slots)
   const SIZE = isSm ? 36 : 52
 
-  // Only show 3 providers on mobile
+  // Show all providers on mobile
   const providers = isSm ? PROVIDERS_ALL.slice(0, 5) : PROVIDERS_ALL
   const providerCount = providers.length
 
@@ -535,7 +535,7 @@ export default function SquaresScatterToCard() {
             </div>
 
             {/* Bridge + internal data */}
-            <div className="mt-8 relative">
+            <div className="mt-16 sm:mt-12 relative">
               <div className="grid grid-cols-[2fr_auto_1fr] gap-0 items-center">
 
                 <div>
@@ -566,7 +566,7 @@ export default function SquaresScatterToCard() {
 
 
             {/* AI Agentic Ecosystem */}
-            <div className="mt-8 space-y-2">
+            <div className="mt-12 sm:mt-8 space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your AI Agentic Ecosystem</h3>
               </div>
@@ -601,7 +601,7 @@ export default function SquaresScatterToCard() {
             </div>
 
             {/* Workflow Tasks (click to lock selection) */}
-            <div className="mt-8 space-y-2">
+            <div className="mt-12 sm:mt-8 space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Workflow Tasks</h3>
               </div>

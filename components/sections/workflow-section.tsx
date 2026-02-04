@@ -3,6 +3,7 @@ import SquaresScatterToCard from "@/components/squares-scatter-to-card";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "./section-header";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 
 export type WorkflowStep = {
@@ -37,30 +38,35 @@ export default function WorkflowSection({
         <div className="flex flex-col items-start gap-6 xl:flex-row">
           <SquaresScatterToCard />
 
-          <div className="relative mx-auto my-auto w-full xl:max-w-[300px]">
-            <div className="space-y-6">
-              {steps.map((step) => (
-                <div
-                  key={step.number}
-                  className="rounded-xl border border bg-white p-2 md:p-4"
-                >
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-pink-100">
-                    <span className="text-base font-bold text-adxc">
-                      {step.number}
-                    </span>
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-6">
+            {steps.map((step) => (
+              <Card key={step.number} className="flex-1 basis-0 gap-3 py-4">
+                <CardHeader>
+                  <CardTitle>
 
-                  <h3 className="mb-3 text-base font-semibold text-adxc">
-                    {step.title}
-                  </h3>
+                    <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-pink-100">
+                        <span className="text-base font-bold text-adxc">
+                          {step.number}
+                        </span>
+                      </div>
 
+                      <h3 className="text-base font-semibold text-adxc">
+                        {step.title}
+                      </h3>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {step.description}
                   </p>
-                </div>
-              ))}
-            </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
+
+
         </div>
 
         {footer && (
