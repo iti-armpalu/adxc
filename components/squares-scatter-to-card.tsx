@@ -1,60 +1,48 @@
 "use client"
 
-import { useRef, useState, useEffect, useCallback } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
-import { Sparkles, Database } from "lucide-react"
+import { Database, Sparkles } from "lucide-react"
 import { Card, CardContent } from "./ui/card"
 
+/**
+ * Single source of truth:
+ * - WORKFLOW_TASKS defines the UI + the routing (agentIndex/providerIndex) per subtask.
+ * - No separate map needed.
+ */
+
 type SubtaskRoute = {
-  label: string;
-  agentIndex: number;
-  providerIndex: number[];
-};
+  label: string
+  agentIndex: number
+  providerIndex: number[]
+}
 
 type TaskColumn = {
-  task: string;
-  subtasks: SubtaskRoute[];
-};
+  task: string
+  subtasks: SubtaskRoute[]
+}
 
 // --- Animation config
 const ANIMATION_DURATION = 1
 const ANIMATION_EASING = [0.32, 0.72, 0, 1] as const
 
-// Keep sizes unchanged (per your request)
-// const SQUARE_SIZE = 52
-// const SLOT_SIZE = 52
-// const AGENT_SQUARE_SIZE = 52
-// const AGENT_SLOT_SIZE = 52
-
-
-
-const AGENT_COLUMN_WIDTH = 90
-
-// Desktop scattered positions (5)
-const SCATTERED_POSITIONS = [
+// --- Scattered positions
+const PROVIDER_SCATTERED_POSITIONS = [
   { x: "8%", y: "10%", rotate: -12 },
   { x: "95%", y: "8%", rotate: 18 },
   { x: "5%", y: "35%", rotate: 8 },
   { x: "82%", y: "52%", rotate: -15 },
   { x: "21%", y: "47%", rotate: 22 },
-]
+] as const
 
-// Mobile scattered positions (3) — tuned for narrow screens
-const SCATTERED_POSITIONS_MOBILE = [
-  { x: "12%", y: "10%", rotate: -12 },
-  { x: "86%", y: "12%", rotate: 18 },
-  { x: "50%", y: "26%", rotate: 10 },
-]
-
-// Agent scattered positions (3)
 const AGENT_SCATTERED_POSITIONS = [
   { x: "15%", y: "35%", rotate: -15 },
   { x: "72%", y: "28%", rotate: 20 },
   { x: "88%", y: "46%", rotate: -8 },
   { x: "72%", y: "38%", rotate: 4 },
-]
+] as const
 
-// Providers (5 on desktop, 3 on mobile)
+// Providers
 const PROVIDERS_ALL = [
   { name: "Kantar", role: "Market Research" },
   { name: "Nielsen", role: "Audience Data" },
@@ -68,9 +56,10 @@ const AGENTS_ALL = [
   { name: "Miro Sidekick", role: "Visual Collaboration" },
   { name: "Jasper AI", role: "Content Creation" },
   { name: "Salesforce Einstein", role: "CRM Intelligence" },
-  { name: "Your execution agent", role: "X" },
+  { name: "Your agent", role: "X" },
 ] as const
 
+// Single source of truth for tasks + selection routes
 const WORKFLOW_TASKS: TaskColumn[] = [
   {
     task: "Strategy / Brief",
@@ -83,7 +72,7 @@ const WORKFLOW_TASKS: TaskColumn[] = [
   {
     task: "Creative Development",
     subtasks: [
-      { label: "Cultural tensions, insights ", agentIndex: 1, providerIndex: [0, 4] },
+      { label: "Cultural tensions, insights", agentIndex: 1, providerIndex: [0, 4] },
       { label: "Inspiration", agentIndex: 1, providerIndex: [4] },
       { label: "Messaging development", agentIndex: 1, providerIndex: [0] },
     ],
@@ -101,7 +90,7 @@ const WORKFLOW_TASKS: TaskColumn[] = [
     subtasks: [
       { label: "Campaign activation", agentIndex: 3, providerIndex: [2] },
       { label: "Retail media", agentIndex: 3, providerIndex: [3] },
-      { label: "Commerce activation", agentIndex: 3, providerIndex: [3] },
+      { label: "Execution", agentIndex: 3, providerIndex: [3] },
     ],
   },
   {
@@ -112,31 +101,17 @@ const WORKFLOW_TASKS: TaskColumn[] = [
       { label: "Optimization", agentIndex: 2, providerIndex: [0, 1, 3] },
     ],
   },
-];
+]
 
+const DEFAULT_SUBTASK_LABEL = "Market understanding"
 
 type AnimationState = "scattered" | "slotted"
 
-interface HoverState {
-  isHovering: boolean
-  highlightedAgentIndex: number
-  highlightedProviderIndex: number[]
-  hoveredSubtaskRef: HTMLElement | null
-  hoveredTaskColumnRef: HTMLElement | null
+type SquarePosition = { x: number; y: number; rotate: number; scale: number }
 
-}
-
-interface SquarePosition {
-  x: number
-  y: number
-  rotate: number
-  scale: number
-}
-
-// Small helper: detect <= sm screens in JS (so we can change rendering + measurements)
+// Small helper: detect <= sm screens (only used to scale sizes)
 function useIsSm() {
   const [isSm, setIsSm] = useState(false)
-
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px)")
     const onChange = () => setIsSm(mq.matches)
@@ -144,7 +119,6 @@ function useIsSm() {
     mq.addEventListener("change", onChange)
     return () => mq.removeEventListener("change", onChange)
   }, [])
-
   return isSm
 }
 
@@ -152,129 +126,46 @@ export default function SquaresScatterToCard() {
   const isSm = useIsSm()
   const prefersReducedMotion = useReducedMotion()
 
+  // Responsive size (same size used for squares + slots)
   const SIZE = isSm ? 36 : 52
 
   // Only show 3 providers on mobile
-  const providers = isSm ? PROVIDERS_ALL.slice(0, 3) : PROVIDERS_ALL
+  const providers = isSm ? PROVIDERS_ALL.slice(0, 5) : PROVIDERS_ALL
   const providerCount = providers.length
 
+  // --- Refs for measuring layout
   const containerRef = useRef<HTMLDivElement>(null)
-  const cardWrapRef = useRef<HTMLDivElement>(null) // observed by IntersectionObserver
+  const cardWrapRef = useRef<HTMLDivElement>(null)
   const slotRefs = useRef<(HTMLDivElement | null)[]>([])
   const agentSlotRefs = useRef<(HTMLDivElement | null)[]>([])
-  const adxcRef = useRef<HTMLDivElement>(null)
-  const squareRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const agentSquareRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  // Outer container refs (square + name) for connection line targeting
   const providerContainerRefs = useRef<(HTMLDivElement | null)[]>([])
   const agentContainerRefs = useRef<(HTMLDivElement | null)[]>([])
+  const adxcRef = useRef<HTMLDivElement>(null)
   const internalDataRef = useRef<HTMLDivElement>(null)
-
-  const [hoverState, setHoverState] = useState<HoverState>({
-    isHovering: false,
-    highlightedAgentIndex: 0,
-    highlightedProviderIndex: [],
-    hoveredSubtaskRef: null,
-    hoveredTaskColumnRef: null,
-
-  })
+  const taskColumnRefs = useRef<(HTMLDivElement | null)[]>([])
 
 
+  // --- Selection state (click to lock)
+  const [selectedSubtaskLabel, setSelectedSubtaskLabel] = useState<string | null>(null)
+  const [selectedTaskColumnEl, setSelectedTaskColumnEl] = useState<HTMLElement | null>(null)
+  const [highlightedAgentIndex, setHighlightedAgentIndex] = useState(0)
+  const [highlightedProviderIndex, setHighlightedProviderIndex] = useState<number[]>([])
 
-  // Track which elements should pulse (triggered when dot arrives)
+  const isActive = !!selectedSubtaskLabel && !!selectedTaskColumnEl
+
+  // --- Pulse state (timed with the traveling dots)
   const [pulsingAgent, setPulsingAgent] = useState<number | null>(null)
   const [pulsingProviders, setPulsingProviders] = useState<number[]>([])
   const [pulsingADXC, setPulsingADXC] = useState(false)
   const [pulsingSubtask, setPulsingSubtask] = useState(false)
 
   // Timing constants for dot arrival pulses
-  const DOT_TRAVEL_TIME = 3000 // 3s matches animateMotion dur
-  const PATH_STAGGER = 150 // 0.15s delay between paths
-  const INITIAL_DELAY = 400 // 0.4s initial delay
+  const DOT_TRAVEL_TIME = 3000
+  const PATH_STAGGER = 150
+  const INITIAL_DELAY = 400
+  const REVERSE_DOT_OFFSET = 1500
 
-
-
-  // Set up pulse timers when hover state changes
-  useEffect(() => {
-    if (!hoverState.isHovering) {
-      setPulsingAgent(null)
-      setPulsingProviders([])
-      setPulsingADXC(false)
-      setPulsingSubtask(false)
-      return
-    }
-
-    const timers: NodeJS.Timeout[] = []
-
-    // Function to trigger pulse cycle
-    const startPulseCycle = () => {
-      // Agent pulse (path 0 arrives)
-      const agentDelay = INITIAL_DELAY + DOT_TRAVEL_TIME
-      timers.push(setTimeout(() => {
-        setPulsingAgent(hoverState.highlightedAgentIndex)
-        setTimeout(() => setPulsingAgent(null), 300)
-      }, agentDelay))
-
-      // ADXC pulse (path 1 arrives)
-      const adxcDelay = INITIAL_DELAY + PATH_STAGGER + DOT_TRAVEL_TIME
-      timers.push(setTimeout(() => {
-        setPulsingADXC(true)
-        setTimeout(() => setPulsingADXC(false), 300)
-      }, adxcDelay))
-
-      // Provider pulses (paths 2 and 3 arrive)
-      hoverState.highlightedProviderIndex.forEach((providerIndex, i) => {
-        const providerDelay = INITIAL_DELAY + (2 + i) * PATH_STAGGER + DOT_TRAVEL_TIME
-        timers.push(setTimeout(() => {
-          setPulsingProviders(prev => [...prev, providerIndex])
-          setTimeout(() => setPulsingProviders(prev => prev.filter(p => p !== providerIndex)), 300)
-        }, providerDelay))
-      })
-
-      // Subtask pulse when reverse dot arrives back (starts 1.5s after forward, takes 3s)
-      // The first path (task → agent) returns, so: INITIAL_DELAY + 1500 (reverse start offset) + DOT_TRAVEL_TIME
-      const REVERSE_DOT_OFFSET = 1500 // 1.5s offset from forward dot
-      const subtaskReturnDelay = INITIAL_DELAY + REVERSE_DOT_OFFSET + DOT_TRAVEL_TIME
-      timers.push(setTimeout(() => {
-        setPulsingSubtask(true)
-        setTimeout(() => setPulsingSubtask(false), 300)
-      }, subtaskReturnDelay))
-    }
-
-    // Start initial cycle
-    startPulseCycle()
-
-    // Repeat every DOT_TRAVEL_TIME
-    const intervalId = setInterval(startPulseCycle, DOT_TRAVEL_TIME)
-    timers.push(intervalId as unknown as NodeJS.Timeout)
-
-    return () => {
-      timers.forEach(t => clearTimeout(t))
-      clearInterval(intervalId)
-    }
-  }, [hoverState.isHovering, hoverState.highlightedAgentIndex, hoverState.highlightedProviderIndex])
-
-  // Get highlights for a specific subtask (falls back to first mapping if not found)
-  const getHighlightsForSubtask = useCallback((subtaskName: string) => {
-
-    const allSubtasks = WORKFLOW_TASKS.flatMap((t) => t.subtasks);
-    const route = allSubtasks.find((s) => s.label === subtaskName);
-
-    if (route) {
-      // Filter provider indices to only include visible ones (mobile shows 3, desktop shows 5)
-      const visibleProviderIndex = route.providerIndex.filter(idx => idx < providerCount)
-      return {
-        agentIndex: route.agentIndex,
-        providerIndex: visibleProviderIndex.length > 0 ? visibleProviderIndex : [0, 1].filter(idx => idx < providerCount)
-      }
-    }
-    // Fallback
-    return { agentIndex: 0, providerIndex: [0, 1].filter(idx => idx < providerCount) }
-  }, [providerCount])
-
-
-  // Cached position sets
+  // --- Animation state + cached positions
   const scatteredPositions = useRef<SquarePosition[]>([])
   const slottedPositions = useRef<SquarePosition[]>([])
   const agentScatteredPositions = useRef<SquarePosition[]>([])
@@ -282,137 +173,114 @@ export default function SquaresScatterToCard() {
 
   const [animationState, setAnimationState] = useState<AnimationState>("scattered")
   const currentStateRef = useRef<AnimationState>("scattered")
-
-  const [squarePositions, setSquarePositions] = useState<SquarePosition[]>([])
+  const [providerSquarePositions, setProviderSquarePositions] = useState<SquarePosition[]>([])
   const [agentSquarePositions, setAgentSquarePositions] = useState<SquarePosition[]>([])
   const [isReady, setIsReady] = useState(false)
 
-  // Keep refs aligned with rendered provider slots
+  // Keep refs aligned
   useEffect(() => {
     slotRefs.current = slotRefs.current.slice(0, providerCount)
+    providerContainerRefs.current = providerContainerRefs.current.slice(0, providerCount)
+    agentSlotRefs.current = agentSlotRefs.current.slice(0, AGENTS_ALL.length)
+    agentContainerRefs.current = agentContainerRefs.current.slice(0, AGENTS_ALL.length)
   }, [providerCount])
 
-  // Scattered positions depend on container size + breakpoint (3 vs 5)
-  const calculateScatteredPositions = useCallback((): SquarePosition[] => {
+  // --- Helpers: compute positions from DOM measurements
+  const calculateProviderScattered = useCallback((): SquarePosition[] => {
     if (!containerRef.current) return []
-    const containerRect = containerRef.current.getBoundingClientRect()
+    const rect = containerRef.current.getBoundingClientRect()
 
-    const scatter = (isSm ? SCATTERED_POSITIONS_MOBILE : SCATTERED_POSITIONS).slice(0, providerCount)
-
-    return scatter.map((pos) => ({
-      x: (Number.parseFloat(pos.x) / 100) * containerRect.width - SIZE / 2,
-      y: (Number.parseFloat(pos.y) / 100) * containerRect.height - SIZE / 2,
+    return PROVIDER_SCATTERED_POSITIONS.slice(0, providerCount).map((pos) => ({
+      x: (parseFloat(pos.x) / 100) * rect.width - SIZE / 2,
+      y: (parseFloat(pos.y) / 100) * rect.height - SIZE / 2,
       rotate: pos.rotate,
       scale: 1,
     }))
-  }, [isSm, providerCount])
+  }, [providerCount, SIZE])
 
-  // Slotted positions come from measuring the rendered slots
-  const calculateSlottedPositions = useCallback((): SquarePosition[] => {
+  const calculateProviderSlotted = useCallback((): SquarePosition[] => {
     if (!containerRef.current) return []
     const containerRect = containerRef.current.getBoundingClientRect()
 
     return slotRefs.current.slice(0, providerCount).map((slot) => {
       if (!slot) return { x: 0, y: 0, rotate: 0, scale: 1 }
-      const slotRect = slot.getBoundingClientRect()
-      return {
-        x: slotRect.left - containerRect.left,
-        y: slotRect.top - containerRect.top,
-        rotate: 0,
-        scale: 1,
-      }
+      const r = slot.getBoundingClientRect()
+      return { x: r.left - containerRect.left, y: r.top - containerRect.top, rotate: 0, scale: 1 }
     })
   }, [providerCount])
 
-  const calculateAgentScatteredPositions = useCallback((): SquarePosition[] => {
+  const calculateAgentScattered = useCallback((): SquarePosition[] => {
     if (!containerRef.current) return []
-    const containerRect = containerRef.current.getBoundingClientRect()
+    const rect = containerRef.current.getBoundingClientRect()
 
-    return AGENT_SCATTERED_POSITIONS.map((pos) => ({
-      x: (parseFloat(pos.x) / 100) * containerRect.width - SIZE / 2,
-      y: (parseFloat(pos.y) / 100) * containerRect.height - SIZE / 2,
+    return AGENT_SCATTERED_POSITIONS.slice(0, AGENTS_ALL.length).map((pos) => ({
+      x: (parseFloat(pos.x) / 100) * rect.width - SIZE / 2,
+      y: (parseFloat(pos.y) / 100) * rect.height - SIZE / 2,
       rotate: pos.rotate,
       scale: 1,
     }))
-  }, [])
+  }, [SIZE])
 
-  const calculateAgentSlottedPositions = useCallback((): SquarePosition[] => {
+  const calculateAgentSlotted = useCallback((): SquarePosition[] => {
     if (!containerRef.current) return []
     const containerRect = containerRef.current.getBoundingClientRect()
 
     return agentSlotRefs.current.map((slot) => {
       if (!slot) return { x: 0, y: 0, rotate: 0, scale: 1 }
-      const slotRect = slot.getBoundingClientRect()
-      return {
-        x: slotRect.left - containerRect.left,
-        y: slotRect.top - containerRect.top,
-        rotate: 0,
-        scale: 1,
-      }
+      const r = slot.getBoundingClientRect()
+      return { x: r.left - containerRect.left, y: r.top - containerRect.top, rotate: 0, scale: 1 }
     })
   }, [])
 
-  // Init (and re-init when breakpoint/provider count changes)
+  // --- Init positions + resize
   useEffect(() => {
-    const initPositions = () => {
+    const init = () => {
       if (!containerRef.current) return
 
-      const scattered = calculateScatteredPositions()
-      const slotted = calculateSlottedPositions()
-      const agentScattered = calculateAgentScatteredPositions()
-      const agentSlotted = calculateAgentSlottedPositions()
+      const pScatter = calculateProviderScattered()
+      const pSlot = calculateProviderSlotted()
+      const aScatter = calculateAgentScattered()
+      const aSlot = calculateAgentSlotted()
 
-      // If slotted is empty, refs likely haven't attached yet
-      if (scattered.length === 0 || slotted.length === 0) return
+      if (pScatter.length === 0 || pSlot.length === 0) return
 
-      scatteredPositions.current = scattered
-      slottedPositions.current = slotted
-      agentScatteredPositions.current = agentScattered
-      agentSlottedPositions.current = agentSlotted
+      scatteredPositions.current = pScatter
+      slottedPositions.current = pSlot
+      agentScatteredPositions.current = aScatter
+      agentSlottedPositions.current = aSlot
 
-      // Start scattered; IntersectionObserver will set the correct state immediately
       currentStateRef.current = "scattered"
       setAnimationState("scattered")
-      setSquarePositions(scattered)
-      setAgentSquarePositions(agentScattered)
-
+      setProviderSquarePositions(pScatter)
+      setAgentSquarePositions(aScatter)
       setIsReady(true)
     }
 
-    // Wait for layout to settle (refs, wrapping)
-    requestAnimationFrame(() => requestAnimationFrame(initPositions))
+    requestAnimationFrame(() => requestAnimationFrame(init))
 
-    // Recalculate on resize
-    const handleResize = () => {
-      const scattered = calculateScatteredPositions()
-      const slotted = calculateSlottedPositions()
-      const agentScattered = calculateAgentScatteredPositions()
-      const agentSlotted = calculateAgentSlottedPositions()
+    const onResize = () => {
+      const pScatter = calculateProviderScattered()
+      const pSlot = calculateProviderSlotted()
+      const aScatter = calculateAgentScattered()
+      const aSlot = calculateAgentSlotted()
 
-      if (scattered.length > 0) scatteredPositions.current = scattered
-      if (slotted.length > 0) slottedPositions.current = slotted
-      if (agentScattered.length > 0) agentScatteredPositions.current = agentScattered
-      if (agentSlotted.length > 0) agentSlottedPositions.current = agentSlotted
+      if (pScatter.length) scatteredPositions.current = pScatter
+      if (pSlot.length) slottedPositions.current = pSlot
+      if (aScatter.length) agentScatteredPositions.current = aScatter
+      if (aSlot.length) agentSlottedPositions.current = aSlot
 
-      setSquarePositions(currentStateRef.current === "scattered" ? scattered : slotted)
-      setAgentSquarePositions(currentStateRef.current === "scattered" ? agentScattered : agentSlotted)
+      setProviderSquarePositions(currentStateRef.current === "scattered" ? pScatter : pSlot)
+      setAgentSquarePositions(currentStateRef.current === "scattered" ? aScatter : aSlot)
     }
 
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [
-    calculateScatteredPositions,
-    calculateSlottedPositions,
-    calculateAgentScatteredPositions,
-    calculateAgentSlottedPositions,
-  ])
+    window.addEventListener("resize", onResize)
+    return () => window.removeEventListener("resize", onResize)
+  }, [calculateProviderScattered, calculateProviderSlotted, calculateAgentScattered, calculateAgentSlotted])
 
-  // IntersectionObserver drives scattered <-> slotted (no scroll listener)
+  // --- IntersectionObserver drives scattered <-> slotted
   useEffect(() => {
-    if (!isReady) return
-    if (!cardWrapRef.current) return
+    if (!isReady || !cardWrapRef.current) return
 
-    // Mobile triggers later (more card visible before slotting)
     const triggerRatio = isSm ? 0.35 : 0.6
 
     const observer = new IntersectionObserver(
@@ -422,74 +290,156 @@ export default function SquaresScatterToCard() {
 
         const shouldSlot = entry.isIntersecting && entry.intersectionRatio >= triggerRatio
         const newState: AnimationState = shouldSlot ? "slotted" : "scattered"
-
         if (newState === currentStateRef.current) return
 
         currentStateRef.current = newState
         setAnimationState(newState)
 
-        const targetPositions = newState === "scattered" ? scatteredPositions.current : slottedPositions.current
-        const agentTargetPositions =
-          newState === "scattered" ? agentScatteredPositions.current : agentSlottedPositions.current
+        const p = newState === "scattered" ? scatteredPositions.current : slottedPositions.current
+        const a = newState === "scattered" ? agentScatteredPositions.current : agentSlottedPositions.current
 
-        if (targetPositions.length > 0) setSquarePositions(targetPositions)
-        if (agentTargetPositions.length > 0) setAgentSquarePositions(agentTargetPositions)
+        if (p.length) setProviderSquarePositions(p)
+        if (a.length) setAgentSquarePositions(a)
       },
-      {
-        root: null,
-        // multiple thresholds => more reliable ratio updates across browsers
-        threshold: [0, 0.1, 0.2, 0.35, 0.5, 0.75, 1],
-      }
+      { threshold: [0, 0.1, 0.2, 0.35, 0.5, 0.75, 1] }
     )
 
     observer.observe(cardWrapRef.current)
     return () => observer.disconnect()
   }, [isReady, isSm])
 
+  // --- If we leave "slotted", clear selection (so nothing triggers off-screen)
   useEffect(() => {
-    if (animationState !== "slotted" && hoverState.isHovering) {
-      setHoverState({
-        isHovering: false,
-        highlightedAgentIndex: 0,
-        highlightedProviderIndex: [],
-        hoveredSubtaskRef: null,
-        hoveredTaskColumnRef: null
-      });
+    if (animationState !== "slotted" && isActive) {
+      setSelectedSubtaskLabel(null)
+      setSelectedTaskColumnEl(null)
+      setHighlightedProviderIndex([])
+      setHighlightedAgentIndex(0)
     }
-  }, [animationState, hoverState.isHovering]);
+  }, [animationState, isActive])
+
+  // --- Subtask lookup (single source of truth)
+  const getRouteForSubtask = useCallback((label: string) => {
+    const flat = WORKFLOW_TASKS.flatMap((t) => t.subtasks)
+    return flat.find((s) => s.label === label) ?? null
+  }, [])
+
+  // --- Auto-select the default once everything is slotted
+  useEffect(() => {
+    // Only apply once we're slotted, and only if nothing is selected yet.
+    if (animationState !== "slotted") return
+    if (selectedSubtaskLabel) return
+
+    const route = getRouteForSubtask(DEFAULT_SUBTASK_LABEL)
+    if (!route) return
+
+    // Find which task column contains the default subtask.
+    const taskIdx = WORKFLOW_TASKS.findIndex((t) =>
+      t.subtasks.some((s) => s.label === DEFAULT_SUBTASK_LABEL)
+    )
+    if (taskIdx === -1) return
+
+    const colEl = taskColumnRefs.current[taskIdx]
+    if (!colEl) return
+
+    setSelectedSubtaskLabel(DEFAULT_SUBTASK_LABEL)
+    setSelectedTaskColumnEl(colEl)
+    setHighlightedAgentIndex(route.agentIndex)
+    setHighlightedProviderIndex(route.providerIndex)
+  }, [animationState, selectedSubtaskLabel, getRouteForSubtask])
+
+
+  // --- Click handler: click to lock / click again to clear
+  const handleSubtaskSelect = useCallback(
+    (subtaskLabel: string, taskColumnEl: HTMLElement) => {
+      // Block interaction until slotted
+      if (currentStateRef.current !== "slotted") return
+
+      // Toggle off if clicking same subtask
+      if (selectedSubtaskLabel === subtaskLabel) {
+        setSelectedSubtaskLabel(null)
+        setSelectedTaskColumnEl(null)
+        setHighlightedProviderIndex([])
+        setHighlightedAgentIndex(0)
+        return
+      }
+
+      const route = getRouteForSubtask(subtaskLabel)
+      if (!route) return
+
+      setSelectedSubtaskLabel(subtaskLabel)
+      setSelectedTaskColumnEl(taskColumnEl)
+      setHighlightedAgentIndex(route.agentIndex)
+      setHighlightedProviderIndex(route.providerIndex)
+    },
+    [getRouteForSubtask, selectedSubtaskLabel]
+  )
+
+  // --- Pulse timers: run while selection is active
+  useEffect(() => {
+    if (!isActive) {
+      setPulsingAgent(null)
+      setPulsingProviders([])
+      setPulsingADXC(false)
+      setPulsingSubtask(false)
+      return
+    }
+
+    const timers: ReturnType<typeof setTimeout>[] = []
+
+    const startPulseCycle = () => {
+      // Agent pulse
+      timers.push(
+        setTimeout(() => {
+          setPulsingAgent(highlightedAgentIndex)
+          setTimeout(() => setPulsingAgent(null), 300)
+        }, INITIAL_DELAY + DOT_TRAVEL_TIME)
+      )
+
+      // ADXC pulse
+      timers.push(
+        setTimeout(() => {
+          setPulsingADXC(true)
+          setTimeout(() => setPulsingADXC(false), 300)
+        }, INITIAL_DELAY + PATH_STAGGER + DOT_TRAVEL_TIME)
+      )
+
+      // Provider pulses
+      highlightedProviderIndex.forEach((idx, i) => {
+        timers.push(
+          setTimeout(() => {
+            setPulsingProviders((prev) => [...prev, idx])
+            setTimeout(() => setPulsingProviders((prev) => prev.filter((p) => p !== idx)), 300)
+          }, INITIAL_DELAY + (2 + i) * PATH_STAGGER + DOT_TRAVEL_TIME)
+        )
+      })
+
+      // Subtask return pulse (reverse dot)
+      timers.push(
+        setTimeout(() => {
+          setPulsingSubtask(true)
+          setTimeout(() => setPulsingSubtask(false), 300)
+        }, INITIAL_DELAY + REVERSE_DOT_OFFSET + DOT_TRAVEL_TIME)
+      )
+    }
+
+    startPulseCycle()
+    const intervalId = setInterval(startPulseCycle, DOT_TRAVEL_TIME)
+    timers.push(intervalId as unknown as ReturnType<typeof setTimeout>)
+
+    return () => {
+      timers.forEach(clearTimeout)
+      clearInterval(intervalId)
+    }
+  }, [isActive, highlightedAgentIndex, highlightedProviderIndex])
+
+  // --- Shadows
+  const defaultShadow =
+    "0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+  const scatteredShadow =
+    "0 0 40px 15px rgba(102, 2, 60, 0.15), 0 0 60px 25px rgba(102, 2, 60, 0.08), 0 0 80px 35px rgba(102, 2, 60, 0.04)"
 
   const isAnimating = useRef(false)
-
-  // Hover highlight handler (desktop UX; harmless on mobile)
-  const handleSubtaskHover = useCallback(
-    (isHovering: boolean, subtaskElement?: HTMLElement | null, taskColumnElement?: HTMLElement | null) => {
-      // block all hover interactions until slotted
-      if (currentStateRef.current !== "slotted") return;
-
-      if (isHovering && subtaskElement && taskColumnElement) {
-        const subtaskName = subtaskElement.textContent || ""
-        const { agentIndex, providerIndex } = getHighlightsForSubtask(subtaskName)
-        setHoverState({
-          isHovering: true,
-          highlightedAgentIndex: agentIndex,
-          highlightedProviderIndex: providerIndex,
-          hoveredSubtaskRef: subtaskElement,
-          hoveredTaskColumnRef: taskColumnElement,
-        });
-      } else {
-        setHoverState({
-          isHovering: false,
-          highlightedAgentIndex: 0,
-          highlightedProviderIndex: [],
-          hoveredSubtaskRef: null,
-          hoveredTaskColumnRef: null,
-        });
-      }
-    },
-    [getHighlightsForSubtask]
-  );
-
-
 
   return (
     <div
@@ -497,47 +447,33 @@ export default function SquaresScatterToCard() {
       className="relative w-full"
     >
 
-      {/* SVG Connection Lines */}
-      {hoverState.isHovering && (
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-30">
-          <defs>
-            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
-            </linearGradient>
-          </defs>
+      {/* Only show lines when slotted + a selection exists */}
+      {animationState === "slotted" && isActive && (
+        <svg className="pointer-events-none absolute inset-0 z-30 h-full w-full">
           <ConnectionLines
             containerRef={containerRef}
             adxcRef={adxcRef}
             internalDataRef={internalDataRef}
             providerContainerRefs={providerContainerRefs}
             agentContainerRefs={agentContainerRefs}
-            highlightedAgentIndex={hoverState.highlightedAgentIndex}
-            highlightedProviderIndex={hoverState.highlightedProviderIndex}
-            hoveredSubtaskRef={hoverState.hoveredSubtaskRef}
-            hoveredTaskColumnRef={hoverState.hoveredTaskColumnRef}
+            highlightedAgentIndex={highlightedAgentIndex}
+            highlightedProviderIndex={highlightedProviderIndex}
+            taskColumnEl={selectedTaskColumnEl}
           />
         </svg>
       )}
 
-      {/* Provider squares (only 3 on mobile, 5 on desktop) */}
+      {/* --- Provider squares */}
       {isReady &&
-        squarePositions.slice(0, providerCount).map((pos, index) => {
-          const isHighlighted = hoverState.isHovering && hoverState.highlightedProviderIndex.includes(index)
-
-          const defaultShadow =
-            "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-
-          const scatteredShadow =
-            "0 0 40px 15px rgba(102, 2, 60, 0.15), 0 0 60px 25px rgba(102, 2, 60, 0.08), 0 0 80px 35px rgba(102, 2, 60, 0.04)"
-
+        providerSquarePositions.slice(0, providerCount).map((pos, index) => {
+          const isHighlighted = isActive && highlightedProviderIndex.includes(index)
 
           const boxShadow = isHighlighted || animationState === "scattered" ? scatteredShadow : defaultShadow
 
           return (
             <motion.div
-              key={index}
-              ref={(el) => { squareRefs.current[index] = el; }}
+              key={`provider-${index}`}
+              // ref={(el) => { squareRefs.current[index] = el; }}
               className={`absolute z-20 rounded-lg shadow-lg flex items-center justify-center transition-colors duration-300 ${isHighlighted
                 ? "bg-[#66023C]/20 border-2 border-[#66023C]"
                 : "bg-stone-200 border border-stone-300"
@@ -581,26 +517,18 @@ export default function SquaresScatterToCard() {
           )
         })}
 
-      {/* Agent squares */}
+      {/* --- Agent squares */}
       {isReady &&
         agentSquarePositions.map((pos, index) => {
-          const isHighlighted = hoverState.isHovering && hoverState.highlightedAgentIndex === index
-
-          const defaultShadow =
-            "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-
-          const scatteredShadow =
-            "0 0 40px 15px rgba(102, 2, 60, 0.15), 0 0 60px 25px rgba(102, 2, 60, 0.08), 0 0 80px 35px rgba(102, 2, 60, 0.04)"
+          const isHighlighted = isActive && highlightedAgentIndex === index
 
           const boxShadow = isHighlighted || animationState === "scattered" ? scatteredShadow : defaultShadow
 
           return (
             <motion.div
               key={`agent-${index}`}
-              ref={(el) => { agentSquareRefs.current[index] = el; }}
-              // className={`absolute z-20 rounded-lg shadow-lg bg-stone-200 border border-stone-300 flex items-center justify-center`}
               className={`absolute z-20 rounded-lg shadow-lg flex items-center justify-center transition-colors duration-300 ${isHighlighted
-                ? "bg-adxc/20 border-2 border-[#66023C]"
+                ? "bg-adxc/20 border-2 border-adxc"
                 : "bg-stone-200 border border-stone-300"
                 }`}
               style={{
@@ -632,7 +560,6 @@ export default function SquaresScatterToCard() {
                   : "text-stone-600"
                   }`}
               >
-                {/* {isHighlighted && !prefersReducedMotion && ( */}
                 {pulsingAgent === index && !prefersReducedMotion && (
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#66023C] opacity-75"></span>
                 )}
@@ -643,7 +570,7 @@ export default function SquaresScatterToCard() {
           )
         })}
 
-      {/* Card in normal flow (container grows naturally; no min-h hacks) */}
+      {/* --- Card in normal flow */}
       <div ref={cardWrapRef} className="relative z-0 flex justify-center pt-0">
         <Card className="bg-card/80 backdrop-blur-xl shadow-2xl border-border/50 py-0 max-w-full">
           <CardContent className="p-4 md:p-8">
@@ -654,11 +581,11 @@ export default function SquaresScatterToCard() {
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Data Providers</h3>
               </div>
               <div className="relative bg-stone-50/30 rounded-xl p-2 border border-border/20">
-                <div className="flex gap-6 xs:gap-12 lg:gap-18 justify-center">
+                <div className="flex gap-4 sm:gap-8 md:gap-16 justify-center">
                   {providers.map((provider, index) => (
                     <div
                       key={provider.name}
-                      className="flex flex-col items-center gap-3 w-[50px] md:w-[60px]"
+                      className="flex flex-col items-center gap-3 w-[50px] md:w-[70px]"
                       ref={(el) => {
                         providerContainerRefs.current[index] = el
                       }}
@@ -672,7 +599,7 @@ export default function SquaresScatterToCard() {
                         style={{ width: SIZE, height: SIZE }}
                       />
                       {/* <div className="text-center"> */}
-                        <p className="text-[10px] sm:text-xs text-stone-600 text-center">{provider.name}</p>
+                      <p className="text-[10px] sm:text-xs text-stone-600 text-center">{provider.name}</p>
                       {/* </div> */}
                     </div>
                   ))}
@@ -681,7 +608,7 @@ export default function SquaresScatterToCard() {
             </div>
 
             {/* Bridge + internal data */}
-            <div className="mt-6 2xl:mt-8 relative">
+            <div className="mt-8 relative">
               <div className="grid grid-cols-[2fr_auto_1fr] gap-0 items-center">
 
                 <div>
@@ -712,13 +639,13 @@ export default function SquaresScatterToCard() {
 
 
             {/* AI Agentic Ecosystem */}
-            <div className="mt-6 2xl:mt-8 space-y-2">
+            <div className="mt-8 space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Your AI Agentic Ecosystem</h3>
               </div>
 
               <div className="relative bg-stone-50/30 rounded-xl p-2 border border-border/20">
-                <div className="flex gap-6 xs:gap-12 lg:gap-18 justify-center">
+                <div className="flex gap-4 sm:gap-8 md:gap-16 justify-center">
                   {AGENTS_ALL.map((agent, index) => (
                     <div
                       key={agent.name}
@@ -746,83 +673,45 @@ export default function SquaresScatterToCard() {
               </div>
             </div>
 
-            {/* Workflow Tasks */}
-            <div className="mt-6 2xl:mt-8 space-y-2">
+            {/* Workflow Tasks (click to lock selection) */}
+            <div className="mt-8 space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Workflow Tasks</h3>
               </div>
 
-              {/* <div className="relative bg-stone-50/30 rounded-xl p-2 border border-border/20">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1 sm:gap-1">
-                  {WORKFLOW_TASKS.map((item) => (
-                    <div
-                      key={item.task}
-                      className="p-2"
-                    >
-                      <p className="w-full px-2 py-2 rounded-full min-h-[50px] bg-stone-200 text-adxc font-semibold text-xs text-center mb-3 flex items-center justify-center">
-                        {item.task}
-                      </p>
-                      <div className="flex flex-col items-center gap-2">
-                        {item.subtasks.map((subtask) => {
-                          const isThisSubtaskHovered = hoverState.hoveredSubtaskRef?.textContent === subtask.label
-                          const shouldPulse = pulsingSubtask && isThisSubtaskHovered
-
-                          return (
-                            <span
-                              key={subtask.label}
-                              className="w-full px-1 py-1 rounded-full bg-stone-50 text-stone-600 text-xs text-center flex items-center justify-center cursor-pointer border border-transparent hover:bg-adxc/10 hover:border-adxc transition-colors duration-200"
-
-                              onMouseEnter={(e) => {
-                                const taskColumn = e.currentTarget.closest('.p-2') as HTMLElement
-                                handleSubtaskHover(true, e.currentTarget, taskColumn)
-                              }}
-
-                              onMouseLeave={() => handleSubtaskHover(false)}
-                            >
-                              {shouldPulse && (
-                                <span className="absolute absolute w-4 h-4 rounded-full bg-[#66023C] opacity-75 animate-ping" />
-                              )}
-                              <span className="relative">{subtask.label}</span>
-
-                            </span>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
-
               <div className="relative rounded-xl border border-border/20 bg-stone-50/30 p-2">
-                {/* Horizontal scroll wrapper */}
                 <div className="-mx-2 overflow-x-auto px-2">
-                  <div
-                    className="grid grid-cols-5 gap-1"
-                    style={{ minWidth: 900 }} // tweak until it feels right
-                  >
-                    {WORKFLOW_TASKS.map((item) => (
-                      <div key={item.task} className="p-2" data-task-column>
+                  <div className="grid grid-cols-5 gap-1" style={{ minWidth: 900 }}>
+                    {WORKFLOW_TASKS.map((item, taskIdx) => (
+                      <div
+                        key={item.task}
+                        className="p-2"
+                        data-task-column
+                        ref={(el) => {
+                          taskColumnRefs.current[taskIdx] = el
+                        }}
+                      >
                         <p className="mb-3 flex min-h-[50px] w-full items-center justify-center rounded-full bg-stone-200 px-2 py-2 text-center text-xs font-semibold text-adxc">
                           {item.task}
                         </p>
 
                         <div className="flex flex-col items-center gap-2">
                           {item.subtasks.map((subtask) => {
-                            const isThisSubtaskHovered =
-                              hoverState.hoveredSubtaskRef?.textContent === subtask.label
-                            const shouldPulse = pulsingSubtask && isThisSubtaskHovered
+                            const isSelected = selectedSubtaskLabel === subtask.label
+                            const shouldPulse = pulsingSubtask && isSelected
 
                             return (
                               <span
                                 key={subtask.label}
-                                className="relative flex w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-stone-50 px-1 py-1 text-center text-xs text-stone-600 transition-colors duration-200 hover:border-adxc hover:bg-adxc/10"
-                                onMouseEnter={(e) => {
-                                  const taskColumn = e.currentTarget.closest(
-                                    "[data-task-column]"
-                                  ) as HTMLElement | null
-                                  handleSubtaskHover(true, e.currentTarget, taskColumn)
+                                className={`relative flex w-full cursor-pointer items-center justify-center rounded-full border px-1 py-1 text-center text-xs transition-colors duration-200 ${isSelected
+                                  ? "border-adxc bg-adxc/10 text-adxc"
+                                  : "border-transparent bg-stone-50 text-stone-600 hover:border-adxc hover:bg-adxc/10"
+                                  }`}
+                                onClick={(e) => {
+                                  const col = e.currentTarget.closest("[data-task-column]") as HTMLElement | null
+                                  if (!col) return
+                                  handleSubtaskSelect(subtask.label, col)
                                 }}
-                                onMouseLeave={() => handleSubtaskHover(false)}
                               >
                                 {shouldPulse && (
                                   <span className="absolute h-4 w-4 animate-ping rounded-full bg-[#66023C] opacity-75" />
@@ -837,10 +726,9 @@ export default function SquaresScatterToCard() {
                   </div>
                 </div>
               </div>
-
-
-
             </div>
+
+
             <p className="mx-auto mt-6 max-w-3xl text-center text-xs italic text-muted-foreground">
               For illustrative purposes only
             </p>
@@ -868,13 +756,14 @@ export default function SquaresScatterToCard() {
           </svg>
         </button>
       </motion.div>
-    </div>
+    </div >
   )
 }
 
 
-
-// Connection Lines Component
+/* ------------------------------------------
+   Connection Lines (dotted, light grey)
+------------------------------------------ */
 function ConnectionLines({
   containerRef,
   adxcRef,
@@ -883,8 +772,7 @@ function ConnectionLines({
   agentContainerRefs,
   highlightedAgentIndex,
   highlightedProviderIndex,
-  hoveredSubtaskRef,
-  hoveredTaskColumnRef,
+  taskColumnEl,
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>
   adxcRef: React.RefObject<HTMLDivElement | null>
@@ -893,10 +781,9 @@ function ConnectionLines({
   agentContainerRefs: React.MutableRefObject<(HTMLDivElement | null)[]>
   highlightedAgentIndex: number
   highlightedProviderIndex: number[]
-  hoveredSubtaskRef: HTMLElement | null
-  hoveredTaskColumnRef: HTMLElement | null
+  taskColumnEl: HTMLElement | null
 }) {
-  const [paths, setPaths] = useState<{ d: string; color: string; isOneWay?: boolean }[]>([])
+  const [paths, setPaths] = useState<{ d: string; isOneWay?: boolean }[]>([])
 
   // Generate soft-cornered angled path (L-shape with rounded corner)
   const createCurvedPath = (x1: number, y1: number, x2: number, y2: number): string => {
@@ -940,86 +827,61 @@ function ConnectionLines({
     const agentContainer = agentContainerRefs.current[highlightedAgentIndex]
 
     // if (!container || !adxc || !agentContainer || !hoveredSubtaskRef) return
-    if (!container || !adxc || !agentContainer || !hoveredSubtaskRef || !hoveredTaskColumnRef) return
-
+    if (!container || !adxc || !agentContainer || !taskColumnEl) return
 
     const containerRect = container.getBoundingClientRect()
     const adxcRect = adxc.getBoundingClientRect()
+    const taskRect = taskColumnEl.getBoundingClientRect()
+    const agentRect = agentContainer.getBoundingClientRect()
 
-    const taskColumnRect = hoveredTaskColumnRef.getBoundingClientRect()
+    const newPaths: { d: string; isOneWay?: boolean }[] = []
 
+    // Start point = task column top center (stable + looks clean)
+    const taskX = taskRect.left - containerRect.left + taskRect.width / 2
+    const taskY = taskRect.top - containerRect.top
 
+    // Agent point = agent container bottom center
+    const agentX = agentRect.left - containerRect.left + agentRect.width / 2
+    const agentTopY = agentRect.top - containerRect.top
+    const agentBottomY = agentRect.bottom - containerRect.top
 
-
-    const subtaskRect = hoveredSubtaskRef.getBoundingClientRect()
-    const agentContainerRect = agentContainer.getBoundingClientRect()
-
-    const newPaths: { d: string; color: string; isOneWay?: boolean }[] = []
-
-    // const subtaskCenterX = subtaskRect.left - containerRect.left + subtaskRect.width / 2
-    // const subtaskTopY = subtaskRect.top - containerRect.top
-
-    // Use task column center and top for the starting point
-    const taskColumnCenterX = taskColumnRect.left - containerRect.left + taskColumnRect.width / 2
-    const taskColumnTopY = taskColumnRect.top - containerRect.top
-
-
-    // Use outer container (square + name) bounds for agent
-    const agentCenterX = agentContainerRect.left - containerRect.left + agentContainerRect.width / 2
-    const agentBottomY = agentContainerRect.bottom - containerRect.top
-    const agentTopY = agentContainerRect.top - containerRect.top
-
-    const adxcCenterX = adxcRect.left - containerRect.left + adxcRect.width / 2
+    // ADXC points
+    const adxcX = adxcRect.left - containerRect.left + adxcRect.width / 2
     const adxcTopY = adxcRect.top - containerRect.top
     const adxcBottomY = adxcRect.bottom - containerRect.top
 
-    // Path 1: Subtask → AI Agent outer container
-    // newPaths.push({
-    //   d: createCurvedPath(subtaskCenterX, subtaskTopY, agentCenterX, agentBottomY + 5),
-    //   color: `hsl(var(--agent-${highlightedAgentIndex + 1}))`,
-    // })
-
-    // Path 1: Task column top → AI Agent outer container
+    // Path 1: Task → Agent
     newPaths.push({
-      d: createCurvedPath(taskColumnCenterX, taskColumnTopY, agentCenterX, agentBottomY + 5),
-      color: `hsl(var(--agent-${highlightedAgentIndex + 1}))`,
+      d: createCurvedPath(taskX, taskY, agentX, agentBottomY + 5),
     })
 
-    // Path 2: AI Agent outer container → ADXC
+    // Path 2: Agent → ADXC
     newPaths.push({
-      d: createCurvedPath(agentCenterX, agentTopY - 5, adxcCenterX, adxcBottomY + 5),
-      color: "hsl(var(--primary))",
+      d: createCurvedPath(agentX, agentTopY - 5, adxcX, adxcBottomY + 5),
     })
 
-    // Paths 3 & 4: ADXC → Provider outer containers
+    // Path 3: ADXC → Providers
     highlightedProviderIndex.forEach((providerIndex) => {
       const providerContainer = providerContainerRefs.current[providerIndex]
-      if (providerContainer) {
-        const providerRect = providerContainer.getBoundingClientRect()
-        const providerCenterX = providerRect.left - containerRect.left + providerRect.width / 2
-        const providerBottomY = providerRect.bottom - containerRect.top
-
-        newPaths.push({
-          d: createCurvedPath(adxcCenterX, adxcTopY - 5, providerCenterX, providerBottomY + 5),
-          color: `hsl(var(--square-${providerIndex + 1}))`,
-        })
-      }
-    })
-
-    // Path 5: Internal Data → ADXC (one-way only)
-    if (internalData) {
-      const internalDataRect = internalData.getBoundingClientRect()
-      const internalDataCenterX = internalDataRect.left - containerRect.left + internalDataRect.width / 2
-      const internalDataLeftX = internalDataRect.left - containerRect.left
-      const adxcRightX = adxcRect.right - containerRect.left
-      const adxcCenterY = adxcRect.top - containerRect.top + adxcRect.height / 2
-
-      // Create a simple horizontal path from Internal Data to ADXC
-      const pathD = `M ${internalDataLeftX - 5} ${adxcCenterY} L ${adxcRightX + 5} ${adxcCenterY}`
+      if (!providerContainer) return
+      const r = providerContainer.getBoundingClientRect()
+      const px = r.left - containerRect.left + r.width / 2
+      const py = r.bottom - containerRect.top
 
       newPaths.push({
-        d: pathD,
-        color: "hsl(var(--primary))",
+        d: createCurvedPath(adxcX, adxcTopY - 5, px, py + 5),
+      })
+    })
+
+
+    // Path 4: Internal Data → ADXC (one-way)
+    if (internalData) {
+      const internalRect = internalData.getBoundingClientRect()
+      const internalLeftX = internalRect.left - containerRect.left
+      const adxcRightX = adxcRect.right - containerRect.left
+      const adxcCenterY = adxcRect.top - containerRect.top + adxcRect.height / 2
+      newPaths.push({
+        d: `M ${internalLeftX - 5} ${adxcCenterY} L ${adxcRightX + 5} ${adxcCenterY}`,
         isOneWay: true,
       })
     }
@@ -1033,7 +895,7 @@ function ConnectionLines({
     agentContainerRefs,
     highlightedAgentIndex,
     highlightedProviderIndex,
-    hoveredSubtaskRef,
+    taskColumnEl,
   ])
 
   return (
@@ -1062,7 +924,7 @@ function ConnectionLines({
               }}
             />
             {/* Forward traveling dot - muted light color */}
-            <circle r="5" fill="hsl(30 10% 70%)">
+            <circle r="5" fill="#f1e5ea">
               <animateMotion
                 dur="3s"
                 repeatCount="indefinite"

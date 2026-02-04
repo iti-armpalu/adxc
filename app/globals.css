@@ -154,35 +154,6 @@
   }
 }
 
-/* Base glow utility */
-.glow-scattered {
-  box-shadow:
-    0 0 40px 15px rgb(var(--glow-color) / 0.15),
-    0 0 60px 25px rgb(var(--glow-color) / 0.08),
-    0 0 80px 35px rgb(var(--glow-color) / 0.04);
-}
-
-/* Glow color tokens */
-.glow-pink {
-  --glow-color: 102 2 60;
-  /* original ADXC */
-}
-
-.glow-green {
-  --glow-color: 134 239 172;
-  /* tailwind green-300 */
-}
-
-.glow-emerald {
-  --glow-color: 52 211 153;
-  /* emerald-400 */
-}
-
-
-
-
-
-
 /* Shake animation (Tailwind v4 CSS-first) */
 @keyframes shake {
 
@@ -225,4 +196,24 @@
   background-image: linear-gradient(to right, var(--border) 50%, transparent 50%);
   background-size: 12px 2px;
   animation: flow-dots 0.5s linear infinite;
+}
+
+
+@keyframes pulseWindow {
+  0%   { transform: scale(0.85); opacity: 0; }
+  2%   { opacity: .75; }
+  10%  { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(0.85); opacity: 0; }
+}
+
+.pulseRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #66023C;
+  animation-name: pulseWindow;
+  animation-duration: 3000ms; /* must match animateMotion dur="3s" */
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  pointer-events: none;
 }
