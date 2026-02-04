@@ -153,17 +153,6 @@ export default function SquaresScatterToCard() {
 
   const isActive = !!selectedSubtaskLabel && !!selectedTaskColumnEl
 
-  // --- Pulse state (timed with the traveling dots)
-  const [pulsingAgent, setPulsingAgent] = useState<number | null>(null)
-  const [pulsingProviders, setPulsingProviders] = useState<number[]>([])
-  const [pulsingADXC, setPulsingADXC] = useState(false)
-  const [pulsingSubtask, setPulsingSubtask] = useState(false)
-
-  // Timing constants for dot arrival pulses
-  const DOT_TRAVEL_TIME = 3000
-  const PATH_STAGGER = 150
-  const INITIAL_DELAY = 400
-  const REVERSE_DOT_OFFSET = 1500
 
   // --- Animation state + cached positions
   const scatteredPositions = useRef<SquarePosition[]>([])
@@ -375,64 +364,6 @@ export default function SquaresScatterToCard() {
     [getRouteForSubtask, selectedSubtaskLabel]
   )
 
-  // --- Pulse timers: run while selection is active
-  useEffect(() => {
-    if (!isActive) {
-      setPulsingAgent(null)
-      setPulsingProviders([])
-      setPulsingADXC(false)
-      setPulsingSubtask(false)
-      return
-    }
-
-    const timers: ReturnType<typeof setTimeout>[] = []
-
-    const startPulseCycle = () => {
-      // Agent pulse
-      timers.push(
-        setTimeout(() => {
-          setPulsingAgent(highlightedAgentIndex)
-          setTimeout(() => setPulsingAgent(null), 300)
-        }, INITIAL_DELAY + DOT_TRAVEL_TIME)
-      )
-
-      // ADXC pulse
-      timers.push(
-        setTimeout(() => {
-          setPulsingADXC(true)
-          setTimeout(() => setPulsingADXC(false), 300)
-        }, INITIAL_DELAY + PATH_STAGGER + DOT_TRAVEL_TIME)
-      )
-
-      // Provider pulses
-      highlightedProviderIndex.forEach((idx, i) => {
-        timers.push(
-          setTimeout(() => {
-            setPulsingProviders((prev) => [...prev, idx])
-            setTimeout(() => setPulsingProviders((prev) => prev.filter((p) => p !== idx)), 300)
-          }, INITIAL_DELAY + (2 + i) * PATH_STAGGER + DOT_TRAVEL_TIME)
-        )
-      })
-
-      // Subtask return pulse (reverse dot)
-      timers.push(
-        setTimeout(() => {
-          setPulsingSubtask(true)
-          setTimeout(() => setPulsingSubtask(false), 300)
-        }, INITIAL_DELAY + REVERSE_DOT_OFFSET + DOT_TRAVEL_TIME)
-      )
-    }
-
-    startPulseCycle()
-    const intervalId = setInterval(startPulseCycle, DOT_TRAVEL_TIME)
-    timers.push(intervalId as unknown as ReturnType<typeof setTimeout>)
-
-    return () => {
-      timers.forEach(clearTimeout)
-      clearInterval(intervalId)
-    }
-  }, [isActive, highlightedAgentIndex, highlightedProviderIndex])
-
   // --- Shadows
   const defaultShadow =
     "0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
@@ -507,9 +438,7 @@ export default function SquaresScatterToCard() {
                   : "text-stone-600"
                   }`}
               >
-                {pulsingProviders.includes(index) && !prefersReducedMotion && (
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#66023C] opacity-75"></span>
-                )}
+                {/* <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#66023C] opacity-75"></span> */}
                 <Database strokeWidth={2} />
               </span>
 
@@ -560,9 +489,7 @@ export default function SquaresScatterToCard() {
                   : "text-stone-600"
                   }`}
               >
-                {pulsingAgent === index && !prefersReducedMotion && (
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#66023C] opacity-75"></span>
-                )}
+                {/* <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#66023C] opacity-75"></span> */}
                 <Sparkles strokeWidth={2} />
               </span>
 
@@ -618,9 +545,9 @@ export default function SquaresScatterToCard() {
                     ref={adxcRef}
                     className="w-full bg-adxc rounded-xl flex items-center justify-center p-2 sm:p-4 border-2 border-transparent"
                   >
-                    {pulsingADXC && !prefersReducedMotion && (
-                      <span className="absolute w-8 h-8 animate-ping rounded-full bg-pink-700 opacity-75"></span>
-                    )}
+
+                    {/* <span className="absolute w-8 h-8 animate-ping rounded-full bg-pink-700 opacity-75"></span> */}
+
                     <span className="text-xl sm:text-3xl text-primary-foreground font-bold tracking-[0.3em]">ADXC</span>
                   </motion.div>
                 </div>
@@ -698,7 +625,6 @@ export default function SquaresScatterToCard() {
                         <div className="flex flex-col items-center gap-2">
                           {item.subtasks.map((subtask) => {
                             const isSelected = selectedSubtaskLabel === subtask.label
-                            const shouldPulse = pulsingSubtask && isSelected
 
                             return (
                               <span
@@ -713,9 +639,7 @@ export default function SquaresScatterToCard() {
                                   handleSubtaskSelect(subtask.label, col)
                                 }}
                               >
-                                {shouldPulse && (
-                                  <span className="absolute h-4 w-4 animate-ping rounded-full bg-[#66023C] opacity-75" />
-                                )}
+                                {/* <span className="absolute h-4 w-4 animate-ping rounded-full bg-[#66023C] opacity-75" /> */}
                                 <span className="relative">{subtask.label}</span>
                               </span>
                             )

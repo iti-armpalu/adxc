@@ -29,6 +29,7 @@ const clientTiers = [
     min: 0,
     max: 50000,
     defaultValue: 500,
+    step: 100,
     activeUsersPerClient: 2,
     avgQueriesPerUserPerMonth: 5,
   },
@@ -38,6 +39,7 @@ const clientTiers = [
     min: 0,
     max: 10000,
     defaultValue: 50,
+    step: 10,
     activeUsersPerClient: 8,
     avgQueriesPerUserPerMonth: 10,
   },
@@ -47,6 +49,7 @@ const clientTiers = [
     min: 0,
     max: 1000,
     defaultValue: 5,
+    step: 1,
     activeUsersPerClient: 20,
     avgQueriesPerUserPerMonth: 20,
   },
@@ -56,6 +59,7 @@ const clientTiers = [
   min: number;
   max: number;
   defaultValue: number;
+  step: number;
   activeUsersPerClient: number;
   avgQueriesPerUserPerMonth: number;
 }[];
@@ -92,7 +96,6 @@ export default function CalculatorDataProviders() {
   };
 
   const {
-    phaseFactor,
     estimatedMonthly,
     estimatedAnnual,
   } = useMemo(() => {
@@ -158,7 +161,7 @@ export default function CalculatorDataProviders() {
                       type="button"
                       onClick={() => togglePhase(phase.id)}
                       className={[
-                        "w-full px-2 py-3 rounded-lg text-sm font-medium transition-all duration-200",
+                        "w-full px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200",
                         isOn
                           ? "bg-adxc text-primary-foreground shadow-md"
                           : "bg-card border border-border text-muted-foreground hover:border-primary/50",
@@ -197,7 +200,7 @@ export default function CalculatorDataProviders() {
                       onValueChange={([v]) => updateClientCount(tier.id, v)}
                       min={tier.min}
                       max={tier.max}
-                      step={1}
+                      step={tier.step}
                     />
 
                     <div className="flex justify-between text-xs text-muted-foreground mt-2">
@@ -212,12 +215,9 @@ export default function CalculatorDataProviders() {
 
           {/* Revenue Results Card */}
           <div className="lg:w-[496px] bg-adxc rounded-[32px] p-10 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-            <div className="absolute -top-32 -right-32 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
-            <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-black/10 rounded-full blur-3xl" />
 
             <div className="relative">
-              <div className="flex items-center justify-between mb-10">
+              <div className="flex items-center justify-between mb-20">
                 <span className="text-primary-foreground/90 text-lg font-medium">
                   Your estimated earnings
                 </span>
@@ -250,37 +250,22 @@ export default function CalculatorDataProviders() {
                 </div>
               </div>
 
+
               <div
                 className={[
                   "text-primary-foreground font-bold tracking-tight leading-none mb-4 transition-all",
                   isLargeNumber
                     ? "text-[56px] md:text-[64px]"
-                    : "text-[72px] md:text-[80px]",
+                    : "text-[68px] md:text-[76px]",
                 ].join(" ")}
               >
                 ${formatUsd(displayRevenue)}
               </div>
 
               <p className="text-primary-foreground/70 text-sm font-light leading-relaxed mb-12">
-                Estimated {view} revenue based on selected phases,
-                client distribution, provider payout (${PROVIDER_PAYOUT_PER_QUERY_USD}/query),
-                and {Math.round(USEFUL_DATA_FACTOR * 100)}% useful-data availability.
+                Estimated {view} revenue based on selected phases, average ADXC spend per client type,
+                and the percentage of queries present in available data.
               </p>
-
-              <div className="space-y-5">
-                {[
-                  "Access to 500+ enterprise buyers",
-                  "Automated billing & distribution",
-                  "Real-time usage analytics",
-                ].map(text => (
-                  <div key={text} className="flex items-center gap-4">
-                    <div className="w-7 h-7 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                      <Check className="w-3.5 h-3.5 text-white" />
-                    </div>
-                    <span className="text-primary-foreground font-medium">{text}</span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
