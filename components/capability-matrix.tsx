@@ -100,23 +100,31 @@ export default function CapabilityMatrix() {
         <CardDescription className="text-base">
           Each data provider covers part of the marketing process, but none cover it all.
         </CardDescription>
-        <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-emerald-400" />
-            Strong (4-5)
+        <div className="mt-3 flex flex-col gap-2 text-xs text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
+              <span className="w-3 h-3 rounded-full bg-emerald-400 shrink-0" />
+              Strong (4–5)
+            </span>
+
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
+              <span className="w-3 h-3 rounded-full bg-amber-400 shrink-0" />
+              Moderate (3)
+            </span>
+
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
+              <span className="w-3 h-3 rounded-full bg-red-400 shrink-0" />
+              Gap (0–2)
+            </span>
+          </div>
+
+          <span className="italic sm:ml-2">
+            <span className="hidden sm:inline">Hover over a data provider to highlight gaps</span>
+            <span className="sm:hidden">Tap a data provider to highlight gaps</span>
           </span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-amber-400" />
-            Moderate (3)
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-red-400" />
-            Gap (0-2)
-          </span>
-          <span className="text-xs italic ml-2">
-            Hover over a data provider to highlight gaps
-          </span>
+
         </div>
+
       </CardHeader>
 
       <CardContent>
@@ -124,7 +132,7 @@ export default function CapabilityMatrix() {
           <Table className="table-fixed min-w-[960px] w-full [&_tr]:border-0">
             <TableHeader>
               <TableRow className="border-none">
-                <TableHead className="sticky left-0 z-10 w-[140px] bg-background">
+                <TableHead className="sticky left-0 z-10 w-[120px] sm:w-[140px] bg-background">
                   Data Source
                 </TableHead>
 
@@ -135,9 +143,9 @@ export default function CapabilityMatrix() {
                   >
                     <span className="hidden sm:inline">{stage.label}</span>
                     <span className="sm:hidden">{stage.short}</span>
-                    <p className="mt-1 text-[10px] leading-tight whitespace-normal text-muted-foreground/70">
+                    <span className="mt-1 block text-[10px] leading-tight whitespace-normal text-muted-foreground/70">
                       {stage.task}
-                    </p>
+                    </span>
                   </TableHead>
                 ))}
               </TableRow>
@@ -153,9 +161,9 @@ export default function CapabilityMatrix() {
                   onMouseLeave={() => setHoveredRow(null)}
                 >
                   <TableCell
-                    className={`sticky left-0 z-10 w-[140px] text-sm font-medium transition-colors duration-200 ${hoveredRow === rowIdx
-                        ? "bg-muted/50 text-foreground"
-                        : "bg-background"
+                    className={`sticky left-0 z-10 w-[120px] sm:w-[140px] text-xs sm:text-sm font-medium transition-colors duration-200 ${hoveredRow === rowIdx
+                      ? "bg-muted/50 text-foreground"
+                      : "bg-background"
                       }`}
                   >
                     {source.name}
@@ -168,10 +176,10 @@ export default function CapabilityMatrix() {
                     return (
                       <TableCell
                         key={colIdx}
-                        className={`w-[140px] px-2 transition-all duration-200 ${gapHighlighted ? "bg-red-100 dark:bg-red-950/40" : ""
+                        className={`w-[120px] sm:w-[140px] px-2 transition-all duration-200 ${gapHighlighted ? "bg-red-100 dark:bg-red-950/40" : ""
                           }`}
                       >
-                        <div className="relative h-3 w-full rounded-full bg-muted overflow-hidden">
+                        <div className="relative h-2 sm:h-3 w-full rounded-full bg-muted overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-200 ${getColorClass(value)} ${dimmed ? "opacity-30" : ""} ${gapHighlighted ? "animate-pulse" : ""}`}
                             style={{ width: `${(value / MAX_VALUE) * 100}%` }}

@@ -7,6 +7,7 @@ import WorkflowSection, { WorkflowStep } from "@/components/sections/workflow-se
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import { DollarSign, RefreshCw, Workflow } from "lucide-react";
 import CalculatorDataProviders from "./_components/calculator-data-providers";
+import { MiroSection } from "./_components/miro-section";
 
 const steps: WorkflowStep[] = [
   { number: 1, title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
@@ -58,6 +59,9 @@ export default function ProvidersPage() {
         title="This unlocks a new revenue stream for you, without disrupting your core business"
         features={features}
       />
+
+      <MiroSection />
+
       <CalculatorDataProviders />
     </div>
   );

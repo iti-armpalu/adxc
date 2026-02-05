@@ -36,7 +36,6 @@ export default async function ProtectedLayout({
 
     return (
         <DemoVideoProvider>
-            <Header />
             <main className="min-h-screen flex flex-col mt-15">{children}</main>
             <AudiencePortalSection />
         </DemoVideoProvider>

@@ -67,8 +67,14 @@ const clientTiers = [
 type PhaseToggles = Record<PhaseId, boolean>;
 type ClientCounts = Record<TierId, number>;
 
-const formatUsd = (n: number) =>
-  n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+// UI-only: force "$" (not "US$") and round to whole dollars
+const formatUsdUI = (n: number) =>
+  n.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    currencyDisplay: "narrowSymbol",
+    maximumFractionDigits: 0,
+  });
 
 export default function CalculatorDataProviders() {
   const [view, setView] = useState<view>("annual");
@@ -177,7 +183,7 @@ export default function CalculatorDataProviders() {
             {/* Client Tiers Sliders */}
             <div>
               <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-8">
-                Number of Clients by Tier
+                Number of ADXC Clients by Tier
               </label>
 
               <div className="space-y-10">
@@ -259,7 +265,7 @@ export default function CalculatorDataProviders() {
                     : "text-[68px] md:text-[76px]",
                 ].join(" ")}
               >
-                ${formatUsd(displayRevenue)}
+                {formatUsdUI(displayRevenue)}
               </div>
 
               <p className="text-primary-foreground/70 text-sm font-light leading-relaxed mb-12">

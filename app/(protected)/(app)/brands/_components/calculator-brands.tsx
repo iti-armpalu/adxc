@@ -1,7 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from "react";
-import { Check } from "lucide-react";
+import { useMemo, useState } from "react";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "@/components/sections/section-header";
@@ -27,18 +26,18 @@ const TEAM_SIZES = [
 
 type PhaseToggles = Record<PhaseId, boolean>;
 
-const formatUsd0 = (n: number) =>
-  n.toLocaleString(undefined, {
+// UI-only: force "$" (not "US$") and round to whole dollars
+const formatUsdUI = (n: number) =>
+  n.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
+    currencyDisplay: "narrowSymbol",
     maximumFractionDigits: 0,
   });
 
 const sizeClassForBigMoney = (value: number) => {
-  if (value >= 50_000_000) return "text-[40px] md:text-[48px]";
-  if (value >= 20_000_000) return "text-[48px] md:text-[56px]";
-  if (value >= 10_000_000) return "text-[56px] md:text-[64px]";
-  return "text-[72px] md:text-[80px]";
+  if (value >= 1_000_000) return "text-[48px] sm:text-[56px] md:text-[64px] xl:text-[72px]";
+  return "text-[56px] sm:text-[64px] md:text-[72px] xl:text-[80px]";
 };
 
 export default function CalculatorBrands() {
@@ -102,17 +101,19 @@ export default function CalculatorBrands() {
           />
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-16">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start lg:items-center">
           {/* Calculator Form */}
-          <div className="flex-1 space-y-12">
+          <div className="flex-1 w-full space-y-10 md:space-y-12">
             {/* Phase selection */}
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">
-                Marketing Phases Where You Use Data <span className="text-pink-600">(Multi-select)</span>
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4 md:mb-5">
+                Marketing Phases Where You Use Data{" "}
+                <span className="text-adxc">(Multi-select)</span>
               </label>
 
               {/* grid so they can fit in one row on large screens */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-2 sm:gap-3">
+
                 {PHASES.map(phase => {
                   const isOn = selectedPhases[phase.id];
                   return (
@@ -136,11 +137,11 @@ export default function CalculatorBrands() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4 md:mb-5">
                 Team Size
               </label>
 
-              <div className="flex flex-col md:flex-row gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-5">
                 {TEAM_SIZES.map(opt => {
                   const isOn = teamSize === opt.id;
                   return (
@@ -149,8 +150,10 @@ export default function CalculatorBrands() {
                       type="button"
                       onClick={() => setTeamSize(opt.id)}
                       className={[
-                        "relative flex-1 p-6 rounded-xl border-1 transition-all",
-                        isOn ? "border-adxc bg-pink-50/30" : "hover:border-primary/50 bg-white",
+                        "relative p-4 sm:p-5 md:p-6 rounded-xl border transition-all",
+                        isOn
+                          ? "border-adxc bg-pink-50/30"
+                          : "hover:border-primary/50 bg-white",
                       ].join(" ")}
                     >
                       <div className="flex flex-col items-center text-center">
@@ -163,7 +166,7 @@ export default function CalculatorBrands() {
                           <svg
                             className={[
                               "w-5 h-5",
-                              isOn ? "text-adxc" : "text-gray-500",
+                              isOn ? "text-adxc" : "text-muted-foreground",
                             ].join(" ")}
                             viewBox="0 0 24 24"
                             fill="none"
@@ -174,7 +177,12 @@ export default function CalculatorBrands() {
                           </svg>
                         </div>
 
-                        <div className={isOn ? "font-bold text-gray-900" : "font-bold text-gray-600"}>
+                        <div
+                          className={[
+                            "font-semibold text-sm sm:text-base",
+                            isOn ? "text-foreground" : "text-muted-foreground",
+                          ].join(" ")}
+                        >
                           {opt.label}
                         </div>
                       </div>
@@ -186,13 +194,13 @@ export default function CalculatorBrands() {
 
             {/* Annual research budget slider */}
             <div className="pt-2">
-              <div className="flex items-end justify-between mb-8">
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-4 mb-6 md:mb-8">
+                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider">
                   Your Annual Research Budget
                 </label>
 
-                <div className="text-4xl font-bold text-[#66023c] tracking-tight tabular-nums">
-                  {formatUsd0(annualResearchBudgetUsd)}
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-adxc tracking-tight tabular-nums">
+                  {formatUsdUI(annualResearchBudgetUsd)}
                 </div>
               </div>
 
@@ -202,9 +210,10 @@ export default function CalculatorBrands() {
                 min={0}
                 max={500_000}
                 step={1_000}
+                className="w-full"
               />
 
-              <div className="flex justify-between text-sm text-gray-400 mt-4">
+              <div className="flex justify-between text-sm text-muted-foreground mt-4">
                 <span>$0</span>
                 <span>$500k</span>
               </div>
@@ -213,23 +222,23 @@ export default function CalculatorBrands() {
 
 
           {/* Results Card */}
-          <div className="lg:w-[496px] bg-[#66023c] border border-pink-700 rounded-[32px] p-10 shadow-2xl relative overflow-hidden">
+          <div className="w-full lg:w-[480px] lg:shrink-0 bg-adxc rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
             <div className="relative">
               {/* Header */}
-              <div className="flex items-center justify-between mb-8">
-                <span className="text-pink-100 text-lg font-medium">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
+                <span className="text-primary-foreground/80 text-base sm:text-lg font-medium">
                   Your estimated savings
                 </span>
 
-                <div className="flex bg-black/20 backdrop-blur border border-white/10 rounded-xl p-1.5">
+                <div className="flex w-full sm:w-auto bg-black/20 backdrop-blur border border-white/10 rounded-xl p-1.5">
                   <button
                     type="button"
                     onClick={() => setView("annual")}
                     className={[
-                      "px-4 py-1.5 rounded-lg text-xs font-bold transition-all",
+                      "flex-1 sm:flex-none px-3 sm:px-4 py-2 sm:py-1.5 rounded-lg text-xs font-bold transition-all",
                       view === "annual"
-                        ? "bg-white text-[#66023c] shadow-sm"
-                        : "text-pink-100/70 hover:text-pink-100",
+                        ? "bg-white text-adxc shadow-sm"
+                        : "text-primary-foreground/70 hover:text-primary-foreground",
                     ].join(" ")}
                   >
                     Annual
@@ -238,10 +247,10 @@ export default function CalculatorBrands() {
                     type="button"
                     onClick={() => setView("monthly")}
                     className={[
-                      "px-4 py-1.5 rounded-lg text-xs font-bold transition-all",
+                      "flex-1 sm:flex-none px-3 sm:px-4 py-2 sm:py-1.5 rounded-lg text-xs font-bold transition-all",
                       view === "monthly"
-                        ? "bg-white text-[#66023c] shadow-sm"
-                        : "text-pink-100/70 hover:text-pink-100",
+                        ? "bg-white text-primary shadow-sm"
+                        : "text-primary-foreground/70 hover:text-primary-foreground",
                     ].join(" ")}
                   >
                     Monthly
@@ -249,43 +258,44 @@ export default function CalculatorBrands() {
                 </div>
               </div>
 
-              {/* Equivalent cost (smaller, top row) */}
-              <div className="mb-12">
-                <div className="flex items-baseline justify-between gap-4">
-                  <div className="text-xs font-bold uppercase tracking-wider text-pink-100/70">
+              {/* Equivalent cost */}
+              <div className="mb-6 sm:mb-8 lg:mb-10">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                  <div className="text-xs font-bold uppercase tracking-wider text-primary-foreground/70">
                     Equivalent data cost via subscriptions
                   </div>
-                  <div className="text-pink-50 text-xl font-semibold tabular-nums whitespace-nowrap">
-                    {formatUsd0(displayEquivalent)}
+                  <div className="text-primary-foreground text-lg sm:text-xl font-semibold tabular-nums whitespace-nowrap">
+                    {formatUsdUI(displayEquivalent)}
                   </div>
                 </div>
 
-                <p className="mt-2 text-xs text-pink-100/70 leading-relaxed">
+                <p className="mt-2 text-xs text-primary-foreground/70 leading-relaxed">
                   Assumes access to 2+ premium data providers per phase
                 </p>
               </div>
 
               {/* Savings label */}
-              <div className="text-xs font-bold uppercase tracking-wider text-pink-100/70 mb-3">
+              <div className="text-xs font-bold uppercase tracking-wider text-primary-foreground/70 mb-3">
                 Savings vs subscriptions
               </div>
 
-              {/* Savings Amount (big) */}
+              {/* Savings Amount */}
               <div
                 className={[
                   "text-white font-bold tracking-tight leading-none mb-4 tabular-nums whitespace-nowrap transition-all duration-300",
                   sizeClassForBigMoney(displaySavings),
                 ].join(" ")}
               >
-                {formatUsd0(displaySavings)}
+                {formatUsdUI(displaySavings)}
               </div>
 
-              {/* Optional: small supporting line (keep or remove) */}
-              <p className="text-pink-200/90 text-sm font-light leading-relaxed mb-10 opacity-90">
-                Savings vs equivalent subscription costs for your selected activities, adjusted by team size.
+              <p className="text-primary-foreground/80 text-sm sm:text-[15px] font-light leading-relaxed">
+                Savings vs equivalent subscription costs for your selected
+                activities, adjusted by team size.
               </p>
             </div>
           </div>
+
 
         </div>
       </Container>

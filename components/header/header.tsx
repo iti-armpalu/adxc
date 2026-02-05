@@ -23,7 +23,7 @@ const NAV_ITEMS = [
     { href: "/ai-platforms", label: "For AI platforms" },
 ] as const;
 
-export default function Header() {
+export default function Header({ showDemoButtons = true }: { showDemoButtons?: boolean }) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -34,14 +34,10 @@ export default function Header() {
                     <Logo size="md" variant="full" theme="light" showGlow />
                 </Link>
                 <div className="hidden sm:inline-flex">
-                    <DemoButtons />
+                    {showDemoButtons ? <DemoButtons /> : null}
                 </div>
 
                 <div className="flex items-center gap-2">
-
-
-
-                    {/* <div > */}
                     {/* Hamburger */}
                     <Sheet open={open} onOpenChange={setOpen}>
                         <SheetTrigger asChild>
@@ -95,7 +91,6 @@ export default function Header() {
                             <LogOut className="w-4 h-4" />
                         </Button>
                     </form>
-                    {/* </div> */}
                 </div>
             </div>
         </header>
