@@ -5,7 +5,7 @@ import { DataAccessSection } from "./_components/data-access-section";
 import HeroSection from "./_components/hero-section";
 import { Award, Shield, Target } from "lucide-react";
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
-import CapabilityMatrixSection from "@/components/sections/capability-matrix-section";
+import CapabilityMatrixSection from "@/components/sections/data-coverage-matrix-section";
 
 const steps: WorkflowStep[] = [
   { number: 1, title: "Agent Connection", description: "Customer connects ADXC to their chosen AI agent (e.g. Miro)" },

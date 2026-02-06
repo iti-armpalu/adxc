@@ -1,18 +1,18 @@
-import CapabilityMatrix from "@/components/capability-matrix";
+import { ReactNode } from "react";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "./section-header";
-import { ReactNode } from "react";
+import DataCoverageMatrix from "../data-coverage-matrix";
 
-type CapabilityMatrixSectionProps = {
+type DataCoverageMatrixProps = {
   title: ReactNode;
   description?: ReactNode;
 };
 
-export default function CapabilityMatrixSection({
+export default function DataCoverageMatrixSection({
   title,
   description,
-}: CapabilityMatrixSectionProps) {
+}: DataCoverageMatrixProps) {
   return (
     <Section size="lg">
       <Container>
@@ -22,8 +22,7 @@ export default function CapabilityMatrixSection({
           size="md"
           align="center"
         />
-
-        <CapabilityMatrix />
+        <DataCoverageMatrix />
       </Container>
     </Section>
   );

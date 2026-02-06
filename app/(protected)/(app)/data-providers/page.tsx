@@ -2,12 +2,13 @@
 import { AIAgentsSection } from "./_components/ai-agents-section";
 import { HeroSection } from "./_components/hero-section";
 import { WhyNowSection } from "./_components/why-now-section";
-import CapabilityMatrixSection from "@/components/sections/capability-matrix-section";
+import DataCoverageMatrixSection from "@/components/sections/data-coverage-matrix-section";
 import WorkflowSection, { WorkflowStep } from "@/components/sections/workflow-section";
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import { DollarSign, RefreshCw, Workflow } from "lucide-react";
 import CalculatorDataProviders from "./_components/calculator-data-providers";
 import { MiroSection } from "./_components/miro-section";
+
 
 const steps: WorkflowStep[] = [
   { number: 1, title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
@@ -42,7 +43,7 @@ export default function ProvidersPage() {
     <div>
       <HeroSection />
       <WhyNowSection />
-      <CapabilityMatrixSection
+      <DataCoverageMatrixSection
         title="SMEs need diverse data from a range of providers, making full license prohibitve"
         description="They can't afford multiple providers, or low utilisation - so pick one or none."
       />

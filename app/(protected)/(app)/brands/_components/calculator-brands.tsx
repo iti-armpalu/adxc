@@ -35,10 +35,12 @@ const formatUsdUI = (n: number) =>
     maximumFractionDigits: 0,
   });
 
-const sizeClassForBigMoney = (value: number) => {
-  if (value >= 1_000_000) return "text-[48px] sm:text-[56px] md:text-[64px] xl:text-[72px]";
-  return "text-[56px] sm:text-[64px] md:text-[72px] xl:text-[80px]";
-};
+  const sizeClassForBigMoney = (value: number) => {
+    if (value >= 100_000_000) return "text-[32px] sm:text-[40px] md:text-[48px] xl:text-[56px]";
+    if (value >= 10_000_000) return "text-[40px] sm:text-[48px] md:text-[56px] xl:text-[64px]";
+    if (value >= 1_000_000) return "text-[48px] sm:text-[56px] md:text-[64px] xl:text-[72px]";
+    return "text-[56px] sm:text-[64px] md:text-[72px] xl:text-[80px]";
+  };
 
 export default function CalculatorBrands() {
 
@@ -101,7 +103,7 @@ export default function CalculatorBrands() {
           />
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start lg:items-center">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start lg:items-stretch">
           {/* Calculator Form */}
           <div className="flex-1 w-full space-y-10 md:space-y-12">
             {/* Phase selection */}
@@ -194,8 +196,8 @@ export default function CalculatorBrands() {
 
             {/* Annual research budget slider */}
             <div className="pt-2">
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-4 mb-6 md:mb-8">
-                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider">
+              <div className="flex flex-row items-center justify-between gap-4 mb-6 md:mb-8">
+                <label className="inline-flex text-xs font-bold text-muted-foreground uppercase tracking-wider">
                   Your Annual Research Budget
                 </label>
 

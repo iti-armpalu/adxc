@@ -77,21 +77,22 @@ function getColorClass(value: number) {
   return "bg-emerald-400";
 }
 
-export default function CapabilityMatrix() {
-  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-  const isHoverActive = true;
+export default function DataCoverageMatrix() {
+  const [activeRow, setActiveRow] = useState<number | null>(null)
 
-  // Determine if a cell should be highlighted as a gap (row hover only)
+  const visibleRow = activeRow
+
+  // Determine if a cell should be highlighted as a gap
   const isGapHighlighted = (rowIdx: number, value: number) => {
-    const isGap = value <= GAP_THRESHOLD;
-    return hoveredRow === rowIdx && isGap;
-  };
+    const isGap = value <= GAP_THRESHOLD
+    return visibleRow === rowIdx && isGap
+  }
 
-  // Determine if a cell should be dimmed (not a gap but in hovered row)
+  // Determine if a cell should be dimmed
   const isDimmed = (rowIdx: number, value: number) => {
-    const isGap = value <= GAP_THRESHOLD;
-    return hoveredRow === rowIdx && !isGap;
-  };
+    const isGap = value <= GAP_THRESHOLD
+    return visibleRow === rowIdx && !isGap
+  }
 
   return (
     <Card className="border-2">
@@ -100,29 +101,17 @@ export default function CapabilityMatrix() {
         <CardDescription className="text-base">
           Each data provider covers part of the marketing process, but none cover it all.
         </CardDescription>
-        <div className="mt-3 flex flex-col gap-2 text-xs text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="flex items-center gap-1.5 whitespace-nowrap">
-              <span className="w-3 h-3 rounded-full bg-emerald-400 shrink-0" />
-              Strong (4–5)
-            </span>
 
-            <span className="flex items-center gap-1.5 whitespace-nowrap">
-              <span className="w-3 h-3 rounded-full bg-amber-400 shrink-0" />
-              Moderate (3)
-            </span>
-
-            <span className="flex items-center gap-1.5 whitespace-nowrap">
-              <span className="w-3 h-3 rounded-full bg-red-400 shrink-0" />
-              Gap (0–2)
-            </span>
-          </div>
-
-          <span className="italic sm:ml-2">
-            <span className="hidden sm:inline">Hover over a data provider to highlight gaps</span>
-            <span className="sm:hidden">Tap a data provider to highlight gaps</span>
+        <div className="mt-3 flex items-center gap-2">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>
           </span>
 
+          <p className="text-xs text-muted-foreground/80">
+            <span className="hidden sm:inline">Click on different data providers to highlight gaps</span>
+            <span className="sm:hidden">Tap a data provider to highlight gaps</span>
+          </p>
         </div>
 
       </CardHeader>
@@ -155,13 +144,14 @@ export default function CapabilityMatrix() {
               {dataSources.map((source, rowIdx) => (
                 <TableRow
                   key={rowIdx}
-                  className={`cursor-pointer transition-colors duration-200 ${hoveredRow === rowIdx ? "bg-muted/30" : ""
+                  className={`cursor-pointer transition-colors duration-200 ${visibleRow === rowIdx ? "bg-muted/30" : ""
                     }`}
-                  onMouseEnter={() => setHoveredRow(rowIdx)}
-                  onMouseLeave={() => setHoveredRow(null)}
+                  onClick={() => {
+                    setActiveRow((prev) => (prev === rowIdx ? null : rowIdx))
+                  }}
                 >
                   <TableCell
-                    className={`sticky left-0 z-10 w-[120px] sm:w-[140px] text-xs sm:text-sm font-medium transition-colors duration-200 ${hoveredRow === rowIdx
+                    className={`sticky left-0 z-10 w-[120px] sm:w-[140px] text-xs sm:text-sm font-medium transition-colors duration-200 ${visibleRow === rowIdx
                       ? "bg-muted/50 text-foreground"
                       : "bg-background"
                       }`}

@@ -103,7 +103,7 @@ const WORKFLOW_TASKS: TaskColumn[] = [
   },
 ]
 
-const DEFAULT_SUBTASK_LABEL = "Market understanding"
+const DEFAULT_SUBTASK_LABEL = "Reach, frequency"
 
 type AnimationState = "scattered" | "slotted"
 
@@ -602,9 +602,24 @@ export default function SquaresScatterToCard() {
 
             {/* Workflow Tasks (click to lock selection) */}
             <div className="mt-12 sm:mt-8 space-y-2">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xs text-muted-foreground uppercase tracking-wider">Workflow Tasks</h3>
+
+              <div className="flex flex-col gap-1">
+                <h3 className="text-xs text-muted-foreground uppercase tracking-wider">
+                  Workflow Tasks
+                </h3>
+
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>
+                  </span>
+
+                  <p className="text-xs text-muted-foreground/80">
+                    Click on different subtasks to see how data flows change
+                  </p>
+                </div>
               </div>
+
 
               <div className="relative rounded-xl border border-border/20 bg-stone-50/30 p-2">
                 <div className="-mx-2 overflow-x-auto px-2">
@@ -618,7 +633,7 @@ export default function SquaresScatterToCard() {
                           taskColumnRefs.current[taskIdx] = el
                         }}
                       >
-                        <p className="mb-3 flex min-h-[50px] w-full items-center justify-center rounded-full bg-stone-200 px-2 py-2 text-center text-xs font-semibold text-adxc">
+                        <p className="mb-3 flex min-h-[40px] w-full items-center justify-center rounded-full bg-stone-200 px-2 text-center text-xs font-semibold text-adxc">
                           {item.task}
                         </p>
 

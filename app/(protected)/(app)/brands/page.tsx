@@ -1,12 +1,13 @@
 
 import HeroSection from "./_components/hero-section";
 import ProblemSection from "./_components/problem-section";
-import CapabilityMatrixSection from "@/components/sections/capability-matrix-section";
+import DataCoverageMatrixSection from "@/components/sections/data-coverage-matrix-section";
 import WorkflowSection, { WorkflowStep } from "@/components/sections/workflow-section";
 import { Layers, Sparkles, TrendingDown } from "lucide-react";
 
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import CalculatorBrands from "./_components/calculator-brands";
+
 
 const steps: WorkflowStep[] = [
   { number: 1, title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
@@ -40,7 +41,8 @@ export default function BrandsPage() {
   return (
     <div>
       <HeroSection />
-      <CapabilityMatrixSection
+
+      <DataCoverageMatrixSection
         title="For SMEs, getting the right data for the right task is prohibitive"
         description="You can't afford multiple providers, or low utilisation - so pick one or none."
       />
