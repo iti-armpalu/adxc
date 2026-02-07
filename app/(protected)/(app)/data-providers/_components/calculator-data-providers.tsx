@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { Slider } from "@/components/ui/slider";
-import { Check } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "@/components/sections/section-header";
@@ -13,7 +12,7 @@ type TierId = "micro" | "small" | "medium";
 
 const PROVIDER_PAYOUT_PER_QUERY_GBP = 5.7;
 const GBP_TO_USD = 1.35;
-const USEFUL_DATA_FACTOR = 0.75;
+const USEFUL_DATA_FACTOR = 0.33;
 
 const PHASES = [
   { id: "strategy", label: "Strategy / brief", weight: 0.30 },
@@ -28,8 +27,8 @@ const clientTiers = [
     id: "micro",
     label: "Micro clients",
     min: 0,
-    max: 50000,
-    defaultValue: 500,
+    max: 20000,
+    defaultValue: 20000,
     step: 100,
     activeUsersPerClient: 2,
     avgQueriesPerUserPerMonth: 5,
@@ -38,8 +37,8 @@ const clientTiers = [
     id: "small",
     label: "Small clients",
     min: 0,
-    max: 10000,
-    defaultValue: 50,
+    max: 5000,
+    defaultValue: 5000,
     step: 10,
     activeUsersPerClient: 8,
     avgQueriesPerUserPerMonth: 10,
@@ -48,8 +47,8 @@ const clientTiers = [
     id: "medium",
     label: "Medium clients",
     min: 0,
-    max: 1000,
-    defaultValue: 5,
+    max: 250,
+    defaultValue: 250,
     step: 1,
     activeUsersPerClient: 20,
     avgQueriesPerUserPerMonth: 20,
@@ -142,9 +141,6 @@ export default function CalculatorDataProviders() {
 
   const displayRevenue =
     view === "annual" ? estimatedAnnual : estimatedMonthly;
-
-  const isLargeNumber = displayRevenue >= 10_000_000;
-
 
   return (
     <Section size="lg">

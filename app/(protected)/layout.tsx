@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import Header from "@/components/header/header";
 import { COOKIE_NAME, verify } from "@/lib/gate-token";
 import { DemoVideoProvider } from "@/components/demo/demo-video-provider";
 import { AudiencePortalSection } from "@/components/audience-portal-section";
