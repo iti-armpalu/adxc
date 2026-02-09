@@ -3,42 +3,35 @@
 import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import crypto from "crypto";
-
-/* ---------- config ---------- */
-
-const COOKIE_NAME = "site_unlocked";
-const MAX_AGE_SECONDS = 24 * 60 * 60;
+import { COOKIE_NAME, MAX_AGE_SECONDS, sign } from "@/lib/gate-token";
 
 /* ---------- helpers ---------- */
 
-// Timing-safe string comparison
-function timingSafeEqual(a: string, b: string) {
-  const aBuf = Buffer.from(a);
-  const bBuf = Buffer.from(b);
-  if (aBuf.length !== bBuf.length) return false;
-  return crypto.timingSafeEqual(aBuf, bBuf);
+// Safer internal-only redirect path (blocks //evil.com)
+function safeNextPath(input: string): string {
+  if (!input) return "/";
+  if (!input.startsWith("/")) return "/";
+  if (input.startsWith("//")) return "/";
+  if (input.includes("\\")) return "/";
+  return input;
 }
 
-// Sign payload with HMAC
-function sign(payload: string, secret: string) {
-  const sig = crypto.createHmac("sha256", secret).update(payload).digest("base64url");
-  return `${Buffer.from(payload).toString("base64url")}.${sig}`;
+// Constant-time password check without leaking length:
+// compare sha256 hashes of both values.
+function passwordMatches(provided: string, expected: string) {
+  const a = crypto.createHash("sha256").update(provided).digest();
+  const b = crypto.createHash("sha256").update(expected).digest();
+  return crypto.timingSafeEqual(a, b);
 }
 
-// GDPR-safe log (timestamp + country + success)
-function logGateEvent(event: {
-  createdAt: string;
-  country: string | null;
-  success: boolean;
-}) {
+// GDPR-safe log (timestamp + country + success only)
+function logGateEvent(event: { createdAt: string; country: string | null; success: boolean }) {
   console.log("[gate-event]", JSON.stringify(event));
 }
 
 /* ---------- server action ---------- */
 
-type UnlockState =
-  | { ok: true }
-  | { ok: false; error: string };
+type UnlockState = { ok: true } | { ok: false; error: string };
 
 export async function unlockAction(
   _prevState: UnlockState,
@@ -51,14 +44,13 @@ export async function unlockAction(
     return { ok: false, error: "Server misconfigured" };
   }
 
-  const h = await headers(); // Next.js 16: async
+  const h = await headers();
   const provided = String(formData.get("password") ?? "");
   const nextRaw = String(formData.get("next") ?? "/");
-  const nextPath = nextRaw.startsWith("/") ? nextRaw : "/";
+  const nextPath = safeNextPath(nextRaw);
 
-  const success = timingSafeEqual(provided, expectedPassword);
+  const success = passwordMatches(provided, expectedPassword);
 
-  // Log attempt (no personal data)
   logGateEvent({
     createdAt: new Date().toISOString(),
     country: h.get("x-vercel-ip-country"),
@@ -69,20 +61,17 @@ export async function unlockAction(
     return { ok: false, error: "Invalid password" };
   }
 
-  // Create 24h token
   const exp = Math.floor(Date.now() / 1000) + MAX_AGE_SECONDS;
   const token = sign(`exp=${exp}`, secret);
 
-  // Set HttpOnly cookie
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: true,        // always secure on vercel/prod
+    sameSite: "strict",  // stricter gate cookie
     path: "/",
     maxAge: MAX_AGE_SECONDS,
   });
 
-  // Redirect after success
   redirect(nextPath);
 }

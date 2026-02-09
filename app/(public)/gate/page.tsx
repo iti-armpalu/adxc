@@ -4,11 +4,18 @@ type GatePageProps = {
   searchParams: Promise<{ next?: string }>;
 };
 
+function safeNextPath(input: string | undefined): string {
+  const v = typeof input === "string" ? input : "/";
+  if (!v.startsWith("/")) return "/";
+  if (v.startsWith("//")) return "/"; // block scheme-relative redirect
+  if (v.includes("\\")) return "/";   // block odd path tricks
+  return v;
+}
+
 export default async function GatePage({ searchParams }: GatePageProps) {
   const sp = await searchParams;
 
-  const nextRaw = typeof sp.next === "string" ? sp.next : "/";
-  const nextPath = nextRaw.startsWith("/") ? nextRaw : "/";
+  const nextPath = safeNextPath(sp.next);
 
   return (
     <main className="min-h-[calc(100vh-40px)] flex flex-col items-center justify-center px-2">
