@@ -281,7 +281,7 @@ export default function CalculatorDataProviders() {
               <p className="text-primary-foreground/80 text-sm sm:text-[15px] font-light leading-relaxed">
 
                 Estimated {view} revenue based on selected phases, average ADXC spend per client type,
-                and the percentage of queries present in available data.
+                and the percentage of queries present in.
               </p>
             </div>
           </div>

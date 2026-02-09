@@ -103,7 +103,7 @@ const WORKFLOW_TASKS: TaskColumn[] = [
   },
 ]
 
-const DEFAULT_SUBTASK_LABEL = "Reach, frequency"
+const DEFAULT_SUBTASK_LABEL = "Market understanding"
 
 type AnimationState = "scattered" | "slotted"
 
@@ -502,7 +502,7 @@ export default function SquaresScatterToCard() {
       {/* --- Card in normal flow */}
       <div ref={cardWrapRef} className="relative z-0 flex justify-center pt-0">
         <Card className="bg-card/80 backdrop-blur-xl shadow-2xl border-border/50 py-0 max-w-full">
-          <CardContent className="p-4 md:p-8">
+          <CardContent className="relative p-4 md:p-8">
 
             {/* Data Providers */}
             <div className="space-y-2">
@@ -656,18 +656,20 @@ export default function SquaresScatterToCard() {
                   </div>
                 </div>
               </div>
+
+              <div className="mt-2 flex items-center gap-2">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>
+                </span>
+
+                <p className="text-xs text-muted-foreground/80">
+                  Click on different subtasks to see how data flows change
+                </p>
+              </div>
+
             </div>
 
-            <div className="mt-2 flex items-center gap-2">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>
-              </span>
-
-              <p className="text-xs text-muted-foreground/80">
-                Click on different subtasks to see how data flows change
-              </p>
-            </div>
 
 
             <p className="mx-auto mt-6 max-w-3xl text-center text-xs italic text-muted-foreground">
