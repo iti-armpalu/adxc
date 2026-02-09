@@ -9,7 +9,7 @@ export function MiroSection() {
             <Container size="md">
                 <SectionHeader
                     title="Access 100 million users through Miro"
-                    description=" At launch, we will be integrated with Miro, giving their 100 million users access to ADXC inside their workflows. We will be on-stage with Miro launching at their Canvas26 event in May, in front of xxx people."
+                    description=" At launch, we will be integrated with Miro, giving their 100 million users access to ADXC inside their workflows. We will be on-stage with Miro launching at their Canvas26 event in May."
                     align="center"
                     size="md"
                 />

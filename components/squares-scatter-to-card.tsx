@@ -143,6 +143,7 @@ export default function SquaresScatterToCard() {
   const adxcRef = useRef<HTMLDivElement>(null)
   const internalDataRef = useRef<HTMLDivElement>(null)
   const taskColumnRefs = useRef<(HTMLDivElement | null)[]>([])
+  const tasksScrollRef = useRef<HTMLDivElement>(null)
 
 
   // --- Selection state (click to lock)
@@ -390,6 +391,7 @@ export default function SquaresScatterToCard() {
             highlightedAgentIndex={highlightedAgentIndex}
             highlightedProviderIndex={highlightedProviderIndex}
             taskColumnEl={selectedTaskColumnEl}
+            tasksScrollRef={tasksScrollRef}
           />
         </svg>
       )}
@@ -607,22 +609,11 @@ export default function SquaresScatterToCard() {
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">
                   Workflow Tasks
                 </h3>
-
-                <div className="flex items-center gap-2">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>
-                  </span>
-
-                  <p className="text-xs text-muted-foreground/80">
-                    Click on different subtasks to see how data flows change
-                  </p>
-                </div>
               </div>
 
 
               <div className="relative rounded-xl border border-border/20 bg-stone-50/30 p-2">
-                <div className="-mx-2 overflow-x-auto px-2">
+                <div ref={tasksScrollRef} className="-mx-2 overflow-x-auto px-2">
                   <div className="grid grid-cols-5 gap-1" style={{ minWidth: 900 }}>
                     {WORKFLOW_TASKS.map((item, taskIdx) => (
                       <div
@@ -665,6 +656,17 @@ export default function SquaresScatterToCard() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-2 flex items-center gap-2">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>
+              </span>
+
+              <p className="text-xs text-muted-foreground/80">
+                Click on different subtasks to see how data flows change
+              </p>
             </div>
 
 
@@ -712,6 +714,7 @@ function ConnectionLines({
   highlightedAgentIndex,
   highlightedProviderIndex,
   taskColumnEl,
+  tasksScrollRef
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>
   adxcRef: React.RefObject<HTMLDivElement | null>
@@ -721,6 +724,7 @@ function ConnectionLines({
   highlightedAgentIndex: number
   highlightedProviderIndex: number[]
   taskColumnEl: HTMLElement | null
+  tasksScrollRef: React.RefObject<HTMLDivElement | null>
 }) {
   const [paths, setPaths] = useState<{ d: string; isOneWay?: boolean }[]>([])
 
@@ -759,13 +763,90 @@ function ConnectionLines({
     }
   }
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const container = containerRef.current
+  //   const adxc = adxcRef.current
+  //   const internalData = internalDataRef.current
+  //   const agentContainer = agentContainerRefs.current[highlightedAgentIndex]
+
+  //   // if (!container || !adxc || !agentContainer || !hoveredSubtaskRef) return
+  //   if (!container || !adxc || !agentContainer || !taskColumnEl) return
+
+  //   const containerRect = container.getBoundingClientRect()
+  //   const adxcRect = adxc.getBoundingClientRect()
+  //   const taskRect = taskColumnEl.getBoundingClientRect()
+  //   const agentRect = agentContainer.getBoundingClientRect()
+
+  //   const newPaths: { d: string; isOneWay?: boolean }[] = []
+
+  //   // Start point = task column top center (stable + looks clean)
+  //   const taskX = taskRect.left - containerRect.left + taskRect.width / 2
+  //   const taskY = taskRect.top - containerRect.top
+
+  //   // Agent point = agent container bottom center
+  //   const agentX = agentRect.left - containerRect.left + agentRect.width / 2
+  //   const agentTopY = agentRect.top - containerRect.top
+  //   const agentBottomY = agentRect.bottom - containerRect.top
+
+  //   // ADXC points
+  //   const adxcX = adxcRect.left - containerRect.left + adxcRect.width / 2
+  //   const adxcTopY = adxcRect.top - containerRect.top
+  //   const adxcBottomY = adxcRect.bottom - containerRect.top
+
+  //   // Path 1: Task → Agent
+  //   newPaths.push({
+  //     d: createCurvedPath(taskX, taskY, agentX, agentBottomY + 5),
+  //   })
+
+  //   // Path 2: Agent → ADXC
+  //   newPaths.push({
+  //     d: createCurvedPath(agentX, agentTopY - 5, adxcX, adxcBottomY + 5),
+  //   })
+
+  //   // Path 3: ADXC → Providers
+  //   highlightedProviderIndex.forEach((providerIndex) => {
+  //     const providerContainer = providerContainerRefs.current[providerIndex]
+  //     if (!providerContainer) return
+  //     const r = providerContainer.getBoundingClientRect()
+  //     const px = r.left - containerRect.left + r.width / 2
+  //     const py = r.bottom - containerRect.top
+
+  //     newPaths.push({
+  //       d: createCurvedPath(adxcX, adxcTopY - 5, px, py + 5),
+  //     })
+  //   })
+
+
+  //   // Path 4: Internal Data → ADXC (one-way)
+  //   if (internalData) {
+  //     const internalRect = internalData.getBoundingClientRect()
+  //     const internalLeftX = internalRect.left - containerRect.left
+  //     const adxcRightX = adxcRect.right - containerRect.left
+  //     const adxcCenterY = adxcRect.top - containerRect.top + adxcRect.height / 2
+  //     newPaths.push({
+  //       d: `M ${internalLeftX - 5} ${adxcCenterY} L ${adxcRightX + 5} ${adxcCenterY}`,
+  //       isOneWay: true,
+  //     })
+  //   }
+
+  //   setPaths(newPaths)
+  // }, [
+  //   containerRef,
+  //   adxcRef,
+  //   internalDataRef,
+  //   providerContainerRefs,
+  //   agentContainerRefs,
+  //   highlightedAgentIndex,
+  //   highlightedProviderIndex,
+  //   taskColumnEl,
+  // ])
+
+  const recalc = useCallback(() => {
     const container = containerRef.current
     const adxc = adxcRef.current
     const internalData = internalDataRef.current
     const agentContainer = agentContainerRefs.current[highlightedAgentIndex]
 
-    // if (!container || !adxc || !agentContainer || !hoveredSubtaskRef) return
     if (!container || !adxc || !agentContainer || !taskColumnEl) return
 
     const containerRect = container.getBoundingClientRect()
@@ -775,45 +856,29 @@ function ConnectionLines({
 
     const newPaths: { d: string; isOneWay?: boolean }[] = []
 
-    // Start point = task column top center (stable + looks clean)
     const taskX = taskRect.left - containerRect.left + taskRect.width / 2
     const taskY = taskRect.top - containerRect.top
 
-    // Agent point = agent container bottom center
     const agentX = agentRect.left - containerRect.left + agentRect.width / 2
     const agentTopY = agentRect.top - containerRect.top
     const agentBottomY = agentRect.bottom - containerRect.top
 
-    // ADXC points
     const adxcX = adxcRect.left - containerRect.left + adxcRect.width / 2
     const adxcTopY = adxcRect.top - containerRect.top
     const adxcBottomY = adxcRect.bottom - containerRect.top
 
-    // Path 1: Task → Agent
-    newPaths.push({
-      d: createCurvedPath(taskX, taskY, agentX, agentBottomY + 5),
-    })
+    newPaths.push({ d: createCurvedPath(taskX, taskY, agentX, agentBottomY + 5) })
+    newPaths.push({ d: createCurvedPath(agentX, agentTopY - 5, adxcX, adxcBottomY + 5) })
 
-    // Path 2: Agent → ADXC
-    newPaths.push({
-      d: createCurvedPath(agentX, agentTopY - 5, adxcX, adxcBottomY + 5),
-    })
-
-    // Path 3: ADXC → Providers
     highlightedProviderIndex.forEach((providerIndex) => {
       const providerContainer = providerContainerRefs.current[providerIndex]
       if (!providerContainer) return
       const r = providerContainer.getBoundingClientRect()
       const px = r.left - containerRect.left + r.width / 2
       const py = r.bottom - containerRect.top
-
-      newPaths.push({
-        d: createCurvedPath(adxcX, adxcTopY - 5, px, py + 5),
-      })
+      newPaths.push({ d: createCurvedPath(adxcX, adxcTopY - 5, px, py + 5) })
     })
 
-
-    // Path 4: Internal Data → ADXC (one-way)
     if (internalData) {
       const internalRect = internalData.getBoundingClientRect()
       const internalLeftX = internalRect.left - containerRect.left
@@ -836,6 +901,30 @@ function ConnectionLines({
     highlightedProviderIndex,
     taskColumnEl,
   ])
+
+
+  useEffect(() => {
+    recalc()
+  }, [recalc])
+
+
+  useEffect(() => {
+    const scroller = tasksScrollRef.current
+    if (!scroller) return
+
+    let raf = 0
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(recalc)
+    }
+
+    scroller.addEventListener("scroll", onScroll, { passive: true })
+    return () => {
+      cancelAnimationFrame(raf)
+      scroller.removeEventListener("scroll", onScroll)
+    }
+  }, [tasksScrollRef, recalc])
+
 
   return (
     <>

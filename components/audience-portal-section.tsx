@@ -94,7 +94,7 @@ export function AudiencePortalSection() {
         <SectionHeader
           title="Explore how ADXC works"
           size="md"
-          align="left"
+          align={{ base: "center", md: "left" }}
         />
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
