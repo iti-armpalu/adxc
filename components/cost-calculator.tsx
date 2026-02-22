@@ -60,7 +60,7 @@ export default function CostCalculator() {
 
     return (
         <div className="w-full flex justify-center">
-            <Card className="py-0">
+            <Card className="py-0 max-w-full">
                 <CardContent className="p-4 sm:p-8">
                     {/* Workflow Tasks - Top */}
                     <div className="space-y-2">
@@ -79,8 +79,8 @@ export default function CostCalculator() {
                             </div>
                         </div>
 
-                        <div className="relative rounded-xl border border-border/20 bg-stone-50/30 p-2">
-                            <div className="grid grid-cols-5 gap-1">
+                        <div className="rounded-xl border border-border/20 bg-stone-50/30 p-2 overflow-x-auto">
+                            <div className="grid grid-cols-5 gap-1 min-w-[900px]">
                                 {WORKFLOW_TASKS.map((item) => {
                                     const isSelected = selectedTasks.has(item.task)
 
@@ -98,7 +98,7 @@ export default function CostCalculator() {
                                                 {item.task}
                                             </button>
 
-                                            {/* Subtasks */}
+
                                             <div className="flex flex-col items-center gap-2">
                                                 {item.subtasks.map((subtask) => (
                                                     <span
@@ -124,8 +124,8 @@ export default function CostCalculator() {
                             </h3>
                         </div>
 
-                        <div className="flex flex-col sm:flex-row items-stretch gap-4">
-                            <div className="flex-1 flex items-center justify-between gap-4 sm:gap-8 md:gap-16 py-2 px-4 sm:py-4 sm:px-12 lg:px-16 bg-stone-50/30 rounded-xl border border-border/20">
+                        <div className="flex flex-col md:flex-row items-stretch gap-4">
+                            <div className="flex-1 flex items-center justify-between gap-4 sm:gap-8 lg:gap-16 py-2 px-4 sm:py-4 sm:px-12 lg:px-16 bg-stone-50/30 rounded-xl border border-border/20">
                                 {PROVIDERS.map((provider, index) => {
                                     const isHighlighted = highlightedProviders.includes(index)
                                     const boxShadow = isHighlighted
@@ -135,7 +135,7 @@ export default function CostCalculator() {
                                     return (
                                         <div key={provider.name} className="flex flex-col items-center gap-3">
                                             <div
-                                                className={`w-8 h-8 sm:w-14 sm:h-14 rounded-lg shadow-lg flex items-center justify-center transition-colors duration-300 ${isHighlighted
+                                                className={`w-8 h-8 md:w-14 md:h-14 rounded-lg shadow-lg flex items-center justify-center transition-colors duration-300 ${isHighlighted
                                                     ? "bg-adxc/20 border-2 border-adxc"
                                                     : "bg-stone-200 border border-stone-300"
                                                     }`}
