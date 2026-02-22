@@ -37,7 +37,7 @@ const newReality = [
     {
         icon: Briefcase,
         title: "SME-Enabled Workflows",
-        description: "Enables enterprise-grade workflows for SMEs",
+        description: "Enables enterprise-grade workflows for SMEs, where decisions are made",
     },
 ]
 

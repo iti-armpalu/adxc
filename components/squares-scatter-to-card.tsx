@@ -408,7 +408,7 @@ export default function SquaresScatterToCard() {
               key={`provider-${index}`}
               // ref={(el) => { squareRefs.current[index] = el; }}
               className={`absolute z-20 rounded-lg shadow-lg flex items-center justify-center transition-colors duration-300 ${isHighlighted
-                ? "bg-[#66023C]/20 border-2 border-[#66023C]"
+                ? "bg-adxc/20 border-2 border-adxc"
                 : "bg-stone-200 border border-stone-300"
                 }`}
               style={{
@@ -440,7 +440,6 @@ export default function SquaresScatterToCard() {
                   : "text-stone-600"
                   }`}
               >
-                {/* <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#66023C] opacity-75"></span> */}
                 <Database strokeWidth={2} />
               </span>
 
@@ -607,7 +606,7 @@ export default function SquaresScatterToCard() {
 
               <div className="flex flex-col gap-1">
                 <h3 className="text-xs text-muted-foreground uppercase tracking-wider">
-                  Workflow Tasks
+                  Example marketing tasks by stage
                 </h3>
               </div>
 

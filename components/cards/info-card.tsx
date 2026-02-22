@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type InfoCardTone = "problem" | "solution";
+type InfoCardTone = "problem" | "solution" | "adxc";
 
 const toneStyles: Record<
   InfoCardTone,
@@ -20,6 +20,11 @@ const toneStyles: Record<
     dot: "bg-green-500",
     label: "text-green-400",
     border: "border-green-500/20",
+  },
+  adxc: {
+    dot: "bg-adxc",
+    label: "text-adxc",
+    border: "border-adxc/20",
   },
 };
 

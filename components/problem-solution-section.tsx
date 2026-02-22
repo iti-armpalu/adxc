@@ -3,27 +3,24 @@ import { Container } from "@/components/layout/container";
 import { ProblemCard } from "@/components/cards/problem-card";
 import { SolutionCard } from "@/components/cards/solution-card";
 import SquaresScatterToCard from "@/components/squares-scatter-to-card";
+import { SectionHeader } from "./sections/section-header";
 
 export function ProblemSolutionSection() {
   return (
-    <Section size="sm">
+    <Section size="md">
       <Container size="lg">
-        {/* 1) Problem on top */}
-        <div className="mx-auto mb-24 max-w-3xl">
-          <ProblemCard />
-        </div>
 
-        {/* 2) Solution + Squares below */}
+        <SectionHeader
+          title="ADXC uses agentic access technology to give SMEs access to all the marketing data they need, while only paying for what they use"
+          size="sm"
+          align="center"
+        />
+
         <div className="mt-8 flex flex-col-reverse gap-6 xl:flex-row xl:items-start">
-          {/* Left on desktop, second on mobile */}
-          <div className="mx-auto mt-24 max-w-3xl my-auto">
+          <div className="mx-auto max-w-3xl">
             <SolutionCard />
           </div>
-
-          {/* Right on desktop, first on mobile */}
-          {/* <div className="w-full flex-1"> */}
-            <SquaresScatterToCard />
-          {/* </div> */}
+          <SquaresScatterToCard />
         </div>
       </Container>
     </Section>

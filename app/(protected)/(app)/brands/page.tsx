@@ -7,6 +7,7 @@ import { Layers, Sparkles, TrendingDown } from "lucide-react";
 
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import CalculatorBrands from "./_components/calculator-brands";
+import BrandStatsSection from "./_components/brand-stats-section";
 
 
 const steps: WorkflowStep[] = [
