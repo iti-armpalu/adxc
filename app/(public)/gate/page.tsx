@@ -1,4 +1,5 @@
 import GateForm from "@/components/gate/password-gate";
+import { SectionHeader } from "@/components/sections/section-header";
 
 type GatePageProps = {
   searchParams: Promise<{ next?: string }>;
@@ -25,8 +26,9 @@ export default async function GatePage({ searchParams }: GatePageProps) {
         </h1>
 
         <p className="text-xl sm:text-2xl text-foreground/80 leading-relaxed mb-4">
-          The data exchange connecting AI agents to premium data providers, on a pay-per-query basis; making access affordable and agents finally useful.
+          The Agentic Data Exchange that only charges marketing companies for data they use
         </p>
+
       </div>
 
       <div className="w-full flex justify-center">
