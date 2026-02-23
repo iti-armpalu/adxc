@@ -26,7 +26,7 @@ export default async function GatePage({ searchParams }: GatePageProps) {
         </h1>
 
         <p className="text-xl sm:text-2xl text-foreground/80 leading-relaxed mb-4">
-          The Agentic Data Exchange that only charges marketing companies for data they use
+          The Agentic Data Exchange that gives companies access to all the marketing data they need, and only charges for what they use
         </p>
 
       </div>

@@ -48,7 +48,7 @@ export default function DemoButtons({
         Watch the prototype demo
       </Button>
 
-      <Button size="lg" asChild className={`bg-adxc ${btnClass}`}>
+      <Button size="lg" asChild className={`bg-foreground ${btnClass}`}>
         <a
           href={prototypeUrl}
           target="_blank"

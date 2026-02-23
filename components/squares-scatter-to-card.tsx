@@ -656,12 +656,11 @@ export default function SquaresScatterToCard() {
                 </div>
               </div>
 
-              <div className="mt-2 flex items-center gap-2">
+              <div className="mt-2 flex lg:hidden items-center gap-2">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>
                 </span>
-
                 <p className="text-xs text-muted-foreground/80">
                   Click on different subtasks to see how data flows change
                 </p>

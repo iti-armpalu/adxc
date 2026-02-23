@@ -6,10 +6,10 @@ import { Card, CardContent } from "./ui/card"
 
 const PROVIDERS = [
     { name: "Kantar", cost: 200000 },
-    { name: "Nielsen", cost: 50000 },
+    { name: "Nielsen", cost: 100000 },
     { name: "Experian", cost: 50000 },
     { name: "GWI", cost: 75000 },
-    { name: "Comscore", cost: 25000 },
+    { name: "Comscore", cost: 100000 },
 ] as const
 
 const WORKFLOW_TASKS = [
@@ -68,7 +68,7 @@ export default function CostCalculator() {
                             <h3 className="text-xs text-muted-foreground uppercase tracking-wider">
                                 Example marketing tasks by stage
                             </h3>
-                            <div className="flex items-center gap-2">
+                            <div className="flex xl:hidden items-center gap-2">
                                 <span className="relative flex h-1.5 w-1.5">
                                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
                                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>
@@ -120,7 +120,7 @@ export default function CostCalculator() {
                     <div className="mt-8 space-y-2">
                         <div className="flex items-center justify-between">
                             <h3 className="text-xs text-muted-foreground uppercase tracking-wider">
-                                Data Providers
+                                Data Provider Subscription Costs (Entry Level)
                             </h3>
                         </div>
 

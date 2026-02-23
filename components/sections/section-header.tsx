@@ -29,7 +29,7 @@ const sizeClasses: Record<
   lg: {
     wrapper: "mb-16 md:mb-20",
     title: "text-4xl md:text-6xl",
-    description: "text-lg md:text-xl",
+    description: "text-lg md:text-2xl",
   },
 }
 

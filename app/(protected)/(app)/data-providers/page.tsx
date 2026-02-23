@@ -8,6 +8,7 @@ import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-
 import { DollarSign, RefreshCw, Workflow } from "lucide-react";
 import CalculatorDataProviders from "./_components/calculator-data-providers";
 import { MiroSection } from "./_components/miro-section";
+import { DataNeedSection } from "./_components/data-need-section";
 
 
 const steps: WorkflowStep[] = [
@@ -43,22 +44,16 @@ export default function ProvidersPage() {
     <div>
       <HeroSection />
       <WhyNowSection />
-      <DataCoverageMatrixSection
-        title="SMEs need diverse data from a range of providers, making full license prohibitve"
-        description="They can't afford multiple providers, or low utilisation - so pick one or none."
-      />
+
+      <DataNeedSection />
+
       <AIAgentsSection />
 
       <WorkflowSection
-        title="ADXC makes premium data usable for AI agents"
+        title="ADXC makes premium marketing data usable for AI agents"
         description="ADXC is the data exchange connecting premium data providers and SMEs via AI agents, on a pay-per-use model."
         steps={steps}
         footer="Data is read, not transferred • You make money per use, we take a service fee • High usage customers referred to you"
-      />
-
-      <BenefitsSection
-        title="This unlocks a new revenue stream for you, without disrupting your core business"
-        features={features}
       />
 
       <MiroSection />

@@ -9,7 +9,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 export default function CompetitiveAdvantageSection() {
 
-
     return (
         <Section size="md">
             <Container size="md">
@@ -23,7 +22,7 @@ export default function CompetitiveAdvantageSection() {
                     />
                 </div>
 
-                <Card className="max-w-3xl mx-auto border-border bg-card shadow-sm overflow-hidden">
+                <Card className="max-w-2xl mx-auto border-border bg-card shadow-sm overflow-hidden">
                     <CardContent className="py-0">
                         <Table>
                             <TableHeader>
@@ -35,19 +34,19 @@ export default function CompetitiveAdvantageSection() {
                             <TableBody>
                                 <TableRow className="border-border">
                                     <TableCell className="text-muted-foreground">Large data providers</TableCell>
-                                    <TableCell className="text-foreground">We only charge for the data that is actually used</TableCell>
+                                    <TableCell className="text-foreground whitespace-normal md:whitespace-nowrap">We only charge for the data that is actually used</TableCell>
                                 </TableRow>
                                 <TableRow className="border-border">
                                     <TableCell className="text-muted-foreground">Small data providers</TableCell>
-                                    <TableCell className="text-foreground">We consolidate data to answer questions</TableCell>
+                                    <TableCell className="text-foreground whitespace-normal md:whitespace-nowrap">We consolidate data to answer questions</TableCell>
                                 </TableRow>
                                 <TableRow className="border-border">
                                     <TableCell className="text-muted-foreground">Standard LLMs</TableCell>
-                                    <TableCell className="text-foreground">We connect LLMs to paywalled data</TableCell>
+                                    <TableCell className="text-foreground whitespace-normal md:whitespace-nowrap">We connect LLMs to paywalled data</TableCell>
                                 </TableRow>
                                 <TableRow className="border-border">
                                     <TableCell className="text-muted-foreground">Internal data sets</TableCell>
-                                    <TableCell className="text-foreground">We complement them with paid data</TableCell>
+                                    <TableCell className="text-foreground whitespace-normal md:whitespace-nowrap">We complement them with paid data</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>

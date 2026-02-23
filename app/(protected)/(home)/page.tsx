@@ -1,8 +1,8 @@
 import { HeroSection } from "@/components/hero-section";
-import { ProblemSolutionSection } from "@/components/problem-solution-section";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import BrandStatsSection from "../(app)/brands/_components/brand-stats-section";
+import { ADXCApproachSection } from "@/components/adxc-approach-section";
 import CostCalculator from "@/components/cost-calculator";
 import { SectionHeader } from "@/components/sections/section-header";
 import { StatCard } from "@/components/cards/stat-card";
@@ -12,7 +12,8 @@ import SalesMarketingSection from "@/components/sales-marketing-section";
 import TeamSection from "@/components/team-section";
 import AdvisorsSection from "@/components/advisors-section";
 import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
+import { CornerDownRight, ExternalLink } from "lucide-react";
+
 
 export default function HomePage() {
     return (
@@ -21,17 +22,11 @@ export default function HomePage() {
 
             <Section size="md">
                 <Container size="md">
-
-                    <SectionHeader
-                        title="The $18B data opportunity unlocked by agents & an ageing industry with outdated monetization & pricing"
-                        size="sm"
-                        align="center"
-                    />
                     <BrandStatsSection />
                 </Container>
             </Section>
 
-            <Section size="md" className="bg-white flex items-center">
+            <Section size="md" className="relative">
                 <Container size="md">
                     <SectionHeader
                         title="See how much it costs to buy the data needed at each stage of the marketing workflow"
@@ -39,6 +34,22 @@ export default function HomePage() {
                         align="center"
                     />
                     <CostCalculator />
+                    <div className="absolute mt-4 left-4 top-1/4 -translate-y-1/2 max-w-[200px] hidden xl:block">
+                        <div className="flex flex-col">
+                            <div className="bg-card/80 backdrop-blur-xl border border-adxc rounded-xl px-4 py-3 shadow-md">
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                    <span className="uppercase text-adxc font-semibold">Click a task</span>
+                                    {" "}to see which data providers it uses and the associated costs
+                                </p>
+                            </div>
+
+                            <CornerDownRight
+                                className="mt-3 self-end text-adxc h-6 w-6"
+                                aria-hidden="true"
+                            />
+                        </div>
+                    </div>
+
                 </Container>
             </Section>
 
@@ -78,13 +89,13 @@ export default function HomePage() {
 
 
 
-            <ProblemSolutionSection />
+            <ADXCApproachSection />
 
             {/* CTA Section */}
             <Section size="md">
                 <Container size="lg">
                     <SectionHeader
-                        title="Watch our founder's explanation with more details (it's less than 10 minutes)"
+                        title="Watch our founder's explanation with more details"
                         size="sm"
                         align="center"
                         className="max-w-3xl"
@@ -105,7 +116,7 @@ export default function HomePage() {
                             <p className="text-muted-foreground text-sm max-w-sm">
                                 Explore the platform yourself and discover how it can transform workflows
                             </p>
-                            <Button size="lg" asChild className={`mt-2 text-base bg-adxc`}>
+                            <Button size="lg" asChild className={`mt-2 text-base bg-foreground`}>
                                 <a
                                     href="https://adxc.netlify.app/login"
                                     target="_blank"

@@ -37,7 +37,7 @@ export default function TeamSection() {
                                     alt={member.name}
                                     className="w-24 h-24 rounded-full object-cover"
                                 />
-                                <div className="">
+                                <div className="min-h-1/3">
                                     <p className="text-base font-semibold text-foreground">{member.name}</p>
                                     <p className="text-sm text-muted-foreground">{member.title}</p>
                                 </div>
