@@ -5,6 +5,7 @@ import { Container } from "./layout/container"
 import { Section } from "./layout/section"
 import { SectionHeader } from "./sections/section-header"
 import { Card, CardContent } from "@/components/ui/card"
+import { CornerDownRight } from "lucide-react"
 
 const salesChannels = [
     {
@@ -81,8 +82,8 @@ export default function SalesMarketingSection() {
     const [active, setActive] = useState(0)
 
     return (
-        <Section size="md">
-            <Container size="lg">
+        <Section size="md" className="relative">
+            <Container size="md">
                 <div className="text-center mb-8">
                     <span className="inline-block text-xs font-semibold uppercase tracking-widest text-adxc bg-pink-50 px-3 py-1 rounded-full mb-3">
                         Sales & Marketing
@@ -95,7 +96,7 @@ export default function SalesMarketingSection() {
                 </div>
 
                 <Card className="border-none bg-card shadow-none py-0">
-                    <CardContent className="p-0 sm:p-8">
+                    <CardContent className="px-0">
 
                         {/* Mobile: stacked content (no buttons) */}
                         <div className="md:hidden space-y-4">
@@ -118,15 +119,6 @@ export default function SalesMarketingSection() {
                                     <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                                         Sales Channels
                                     </h3>
-                                    <div className="flex items-center gap-2">
-                                        <span className="relative flex h-1.5 w-1.5">
-                                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60" />
-                                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc" />
-                                        </span>
-                                        <p className="text-xs text-muted-foreground">
-                                            Click channel to view status
-                                        </p>
-                                    </div>
                                 </div>
 
                                 {salesChannels.map((ch, i) => (
@@ -155,6 +147,23 @@ export default function SalesMarketingSection() {
 
                     </CardContent>
                 </Card>
+
+                <div className="absolute mt-4 left-4 top-1/4 -translate-y-1/2 max-w-[200px] hidden xl:block">
+                    <div className="flex flex-col">
+                        <div className="bg-card/80 backdrop-blur-xl border border-adxc rounded-xl px-4 py-3 shadow-md">
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                <span className="uppercase text-adxc font-semibold">Click a channel</span>
+                                {" "}to view status
+                            </p>
+                        </div>
+
+                        <CornerDownRight
+                            className="mt-3 self-end text-adxc h-6 w-6"
+                            aria-hidden="true"
+                        />
+                    </div>
+                </div>
+
             </Container>
         </Section>
     )

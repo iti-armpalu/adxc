@@ -27,7 +27,7 @@ export default function WorkflowSection({
 }: WorkflowSectionProps) {
   return (
     <Section size="lg" className="relative">
-      <Container className="relative z-10">
+      <Container size="lg" className="relative z-10">
         <SectionHeader
           title={title}
           description={description}

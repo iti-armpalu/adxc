@@ -87,8 +87,6 @@ export default function HomePage() {
                 </Container>
             </Section>
 
-
-
             <ADXCApproachSection />
 
             {/* CTA Section */}

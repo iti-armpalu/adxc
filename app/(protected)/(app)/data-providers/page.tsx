@@ -2,10 +2,7 @@
 import { AIAgentsSection } from "./_components/ai-agents-section";
 import { HeroSection } from "./_components/hero-section";
 import { WhyNowSection } from "./_components/why-now-section";
-import DataCoverageMatrixSection from "@/components/sections/data-coverage-matrix-section";
 import WorkflowSection, { WorkflowStep } from "@/components/sections/workflow-section";
-import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
-import { DollarSign, RefreshCw, Workflow } from "lucide-react";
 import CalculatorDataProviders from "./_components/calculator-data-providers";
 import { MiroSection } from "./_components/miro-section";
 import { DataNeedSection } from "./_components/data-need-section";
@@ -16,27 +13,6 @@ const steps: WorkflowStep[] = [
   { number: 2, title: "Orchestration", description: "ADXC's Agentic Orchestrator understands the question context, breaks it into sub-tasks and identifies the most relevant data to answer it." },
   { number: 3, title: "Abstract Answer", description: "The customer sees an abstract of the answer and price." },
   { number: 4, title: "Full Answer", description: "The user approves and ADXC pulls only the relevant data to answer the question." },
-];
-
-const features: BenefitFeature[] = [
-  {
-    icon: DollarSign,
-    title: "Access to the SME Market",
-    description:
-      "Enable monetisation of SME customers that were previously out of reach.",
-  },
-  {
-    icon: RefreshCw,
-    title: "Repeated Monetisation",
-    description:
-      "Monetise the same data repeatedly across multiple agent-driven use cases.",
-  },
-  {
-    icon: Workflow,
-    title: "Where Decisions are Made",
-    description:
-      "Presence inside agent-driven workflows where decisions are made.",
-  },
 ];
 
 export default function ProvidersPage() {
