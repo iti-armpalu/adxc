@@ -95,6 +95,7 @@ export default function SalesMarketingSection() {
                     />
                 </div>
 
+                <div className="relative">
                 <Card className="border-none bg-card shadow-none py-0">
                     <CardContent className="px-0">
 
@@ -148,7 +149,7 @@ export default function SalesMarketingSection() {
                     </CardContent>
                 </Card>
 
-                <div className="absolute mt-4 left-4 top-1/4 -translate-y-1/2 max-w-[200px] hidden xl:block">
+                <div className="absolute -left-[220px] top-14 -translate-y-1/2 max-w-[200px] hidden xl:block">
                     <div className="flex flex-col">
                         <div className="bg-card/80 backdrop-blur-xl border border-adxc rounded-xl px-4 py-3 shadow-md">
                             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -162,6 +163,8 @@ export default function SalesMarketingSection() {
                             aria-hidden="true"
                         />
                     </div>
+                </div>
+
                 </div>
 
             </Container>

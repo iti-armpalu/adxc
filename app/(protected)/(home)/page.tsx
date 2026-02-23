@@ -33,23 +33,25 @@ export default function HomePage() {
                         size="sm"
                         align="center"
                     />
-                    <CostCalculator />
-                    <div className="absolute mt-4 left-4 top-1/4 -translate-y-1/2 max-w-[200px] hidden xl:block">
-                        <div className="flex flex-col">
-                            <div className="bg-card/80 backdrop-blur-xl border border-adxc rounded-xl px-4 py-3 shadow-md">
-                                <p className="text-sm text-muted-foreground leading-relaxed">
-                                    <span className="uppercase text-adxc font-semibold">Click a task</span>
-                                    {" "}to see which data providers it uses and the associated costs
-                                </p>
-                            </div>
 
-                            <CornerDownRight
-                                className="mt-3 self-end text-adxc h-6 w-6"
-                                aria-hidden="true"
-                            />
+                    <div className="relative">
+                        <CostCalculator />
+                        <div className="absolute -left-[220px] top-6 -translate-y-1/2 max-w-[200px] hidden xl:block">
+                            <div className="flex flex-col">
+                                <div className="bg-card/80 backdrop-blur-xl border border-adxc rounded-xl px-4 py-3 shadow-md">
+                                    <p className="text-sm text-muted-foreground leading-relaxed">
+                                        <span className="uppercase text-adxc font-semibold">Click a task</span>
+                                        {" "}to see which data providers it uses and the associated costs
+                                    </p>
+                                </div>
+
+                                <CornerDownRight
+                                    className="mt-3 self-end text-adxc h-6 w-6"
+                                    aria-hidden="true"
+                                />
+                            </div>
                         </div>
                     </div>
-
                 </Container>
             </Section>
 
