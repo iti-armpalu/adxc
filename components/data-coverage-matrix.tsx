@@ -97,7 +97,7 @@ export default function DataCoverageMatrix() {
   return (
     <Card className="border-2">
       <CardHeader>
-        <CardTitle className="text-2xl">Marketing Data Coverage</CardTitle>
+        <CardTitle className="text-2xl">Data Provider Coverage by Marketing Stage</CardTitle>
         <CardDescription className="text-base">
           Each data provider covers part of the marketing process, but none cover it all.
         </CardDescription>

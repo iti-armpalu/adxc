@@ -51,7 +51,7 @@ export default function BrandsPage() {
 
       <WorkflowSection
         title="ADXC gives you access to all the data you need, while you only pay for what you use"
-        description="ADXC is the data exchange connecting premium data providers and SMEs via AI agents, on a pay-per-use model."
+        description="ADXC is the data exchange connecting premium marketing data providers and SMEs via AI agents, on a pay-per-use model."
         steps={steps}
         footer="No long-term contracts • Access multiple premium datasets • Spend caps set per task/user"
       />
