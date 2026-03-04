@@ -18,6 +18,7 @@ import Logo from "./logo";
 import { logoutAction } from "@/lib/gate-logout";
 
 const NAV_ITEMS = [
+    { href: "/agencies", label: "For agencies" },
     { href: "/brands", label: "For brands" },
     { href: "/data-providers", label: "For data providers" },
     { href: "/ai-platforms", label: "For AI platforms" },

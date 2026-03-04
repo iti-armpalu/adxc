@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
-import { ArrowRight, Building2, Database, Sparkles } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, Building2, Database, Sparkles } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionHeader } from "./sections/section-header";
@@ -18,12 +18,20 @@ type Portal = {
 
 const portals: Portal[] = [
   {
+    href: "/agencies",
+    title: "For agencies",
+    description:
+      "Monetise your clients’ marketing data usage, and cut your own data budget in half",
+    badge: "For Agencies",
+    Icon: Building2,
+  },
+  {
     href: "/brands",
     title: "For brands",
     description:
       "Connect ADXC to get decision-grade market and consumer insights on demand, without expensive annual licences.",
     badge: "For SMEs",
-    Icon: Building2,
+    Icon: BriefcaseBusiness,
   },
   {
     href: "/data-providers",
@@ -97,7 +105,7 @@ export function AudiencePortalSection() {
           align={{ base: "center", md: "left" }}
         />
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {visiblePortals.map((portal) => (
             <PortalCard key={portal.href} portal={portal} />
           ))}

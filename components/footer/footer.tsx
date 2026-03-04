@@ -1,19 +1,3 @@
-// export function Footer() {
-//     const year = new Date().getFullYear();
-
-//     return (
-//         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
-//             <p className="text-muted-foreground/50 text-xs">
-//                 © 2025 ADXC
-//             </p>
-//         </div>
-//     )
-// }
-
-
-import Link from "next/link";
-
-
 export function Footer() {
     const year = new Date().getFullYear();
 

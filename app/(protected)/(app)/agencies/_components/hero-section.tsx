@@ -1,15 +1,16 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/sections/section-header";
-import BrandStatsSection from "./brand-stats-section";
+import BrandStatsSection from "../../brands/_components/brand-stats-section";
+
 
 
 const HeroSection = () => {
   return (
-    <Section size="md" className="bg-white flex items-center">
+    <Section size="md" className="flex items-center">
       <Container size="md">
         <SectionHeader
-          title="Cut your marketing data budget in half and get the data that finally makes your agents useful"
+          title="Monetise your clients’ marketing data usage, and cut your own data budget in half"
           size="lg"
           align="center"
         />

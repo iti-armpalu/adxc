@@ -20,19 +20,19 @@ const steps: WorkflowStep[] = [
 const features: BenefitFeature[] = [
   {
     icon: Sparkles,
-    title: "Higher-Quality AI Outputs",
+    title: "Higher-quality AI outputs",
     description:
       "AI agents generate materially better results when powered by trusted, premium data sources.",
   },
   {
     icon: Layers,
-    title: "Multi-Source Data Access",
+    title: "Multi-source data access",
     description:
       "AI agents can access and combine insights from multiple premium data providers in a single workflow.",
   },
   {
     icon: TrendingDown,
-    title: "Lower Spend, Higher Utilisation",
+    title: "Lower spend, higher utilisation",
     description:
       "Lower cost per insight, and no wasted spend on data you don't need.",
   },
