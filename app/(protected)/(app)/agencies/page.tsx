@@ -44,8 +44,6 @@ export default function AgenciesPage() {
         <div>
             <HeroSection />
 
-            <ProblemSection />
-
             <Section size="lg">
                 <Container size="md">
                     <SectionHeader
@@ -95,7 +93,7 @@ export default function AgenciesPage() {
                             className="hover:underline underline-offset-4"
                         >
                             <span>
-                                <sup>1</sup> Salesforce State of Marketing Report 2025
+                                <sup>2</sup> Salesforce State of Marketing Report 2025
                             </span>
                         </a>
                     </div>
@@ -103,7 +101,7 @@ export default function AgenciesPage() {
                 </Container>
             </Section>
 
-
+            <ProblemSection />
 
             <WorkflowSection
                 title="ADXC gives you access to all the data you need, while you only pay for what you use"

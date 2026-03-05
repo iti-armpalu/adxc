@@ -18,12 +18,12 @@ type Portal = {
 
 const portals: Portal[] = [
   {
-    href: "/agencies",
-    title: "For agencies",
+    href: "/data-providers",
+    title: "For data providers",
     description:
-      "Monetise your clients’ marketing data usage, and cut your own data budget in half",
-    badge: "For Agencies",
-    Icon: Building2,
+      "Connect to ADXC to monetise your data with pay-per-use access for SMEs, without exposing raw datasets.",
+    badge: "For Data Providers",
+    Icon: Database,
   },
   {
     href: "/brands",
@@ -34,20 +34,20 @@ const portals: Portal[] = [
     Icon: BriefcaseBusiness,
   },
   {
-    href: "/data-providers",
-    title: "For data providers",
-    description:
-      "Connect to ADXC to monetise your data with pay-per-use access for SMEs, without exposing raw datasets.",
-    badge: "For Data Providers",
-    Icon: Database,
-  },
-  {
     href: "/ai-platforms",
     title: "For AI platforms",
     description:
       "Add ADXC to your marketplace to deliver dramatically better outcomes inside your workflows.",
     badge: "For AI Platforms",
     Icon: Sparkles,
+  },
+  {
+    href: "/agencies",
+    title: "For agencies",
+    description:
+      "Monetise your clients’ marketing data usage, and cut your own data budget in half",
+    badge: "For Agencies",
+    Icon: Building2,
   },
 ];
 

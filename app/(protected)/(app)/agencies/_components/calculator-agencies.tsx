@@ -8,11 +8,9 @@ import { Slider } from "@/components/ui/slider";
 
 type View = "annual" | "monthly";
 
-// Hard constants (behind the scenes)
 const ADXC_NET_REVENUE = 0.34;
 const AVG_SHARE_OF_REVENUE = 0.15;
 
-// UI-only: force "$" (not "US$") and round to whole dollars
 const formatUsdUI = (n: number) =>
   n.toLocaleString("en-US", {
     style: "currency",
@@ -32,15 +30,31 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
 
+function parseNonNegativeInt(s: string): number {
+  const trimmed = s.trim();
+  if (!trimmed) return 0;
+  const n = Number(trimmed);
+  if (!Number.isFinite(n)) return 0;
+  return Math.max(0, Math.floor(n));
+}
+
 export default function CalculatorAgencies() {
   const [clientsUsingAdxc, setClientsUsingAdxc] = useState<number>(10);
-  const [avgAnnualDataSpendUsd, setAvgAnnualDataSpendUsd] = useState<number>(100_000);
+
+  // store raw input string so empty stays empty
+  const [avgAnnualDataSpendInput, setAvgAnnualDataSpendInput] = useState<string>("100000");
+
   const [view, setView] = useState<View>("annual");
+
+  // number derived from string for calculations
+  const avgAnnualDataSpendUsd = useMemo(
+    () => parseNonNegativeInt(avgAnnualDataSpendInput),
+    [avgAnnualDataSpendInput]
+  );
 
   const annualRevenueUsd = useMemo(() => {
     const clients = clamp(clientsUsingAdxc, 0, 100);
-    const spend = Math.max(0, avgAnnualDataSpendUsd || 0);
-
+    const spend = avgAnnualDataSpendUsd;
     return clients * spend * ADXC_NET_REVENUE * AVG_SHARE_OF_REVENUE;
   }, [clientsUsingAdxc, avgAnnualDataSpendUsd]);
 
@@ -59,15 +73,12 @@ export default function CalculatorAgencies() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start lg:items-stretch">
-          {/* Left controls */}
           <div className="flex-1 w-full space-y-10 md:space-y-12">
-            {/* Number of clients slider */}
             <div className="pt-2">
               <div className="flex flex-row items-center justify-between gap-4 mb-6 md:mb-8">
                 <label className="inline-flex text-xs font-bold text-muted-foreground uppercase tracking-wider">
                   Number of clients using ADXC
                 </label>
-
                 <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-adxc tracking-tight tabular-nums">
                   {clientsUsingAdxc}
                 </div>
@@ -95,41 +106,39 @@ export default function CalculatorAgencies() {
                   Average annual data spend
                 </label>
 
+                {/* display uses parsed number */}
                 <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-adxc tracking-tight tabular-nums">
-                  {formatUsdUI(Math.max(0, avgAnnualDataSpendUsd || 0))}
+                  {formatUsdUI(avgAnnualDataSpendUsd)}
                 </div>
               </div>
 
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  $
-                </span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
                 <input
-                  type="number"
+                  type="text"
                   inputMode="numeric"
-                  min={0}
-                  step={1_000}
-                  value={Number.isFinite(avgAnnualDataSpendUsd) ? avgAnnualDataSpendUsd : 0}
+                  pattern="[0-9]*"
+                  value={avgAnnualDataSpendInput}
                   onChange={(e) => {
-                    const next = Number(e.target.value);
-                    setAvgAnnualDataSpendUsd(Number.isFinite(next) ? Math.max(0, next) : 0);
+                    // allow empty; otherwise keep digits only (prevents weird chars)
+                    const next = e.target.value.replace(/[^\d]/g, "");
+                    setAvgAnnualDataSpendInput(next);
+                  }}
+                  onBlur={() => {
+                    // normalize leading zeros ("" stays "")
+                    if (avgAnnualDataSpendInput === "") return;
+                    setAvgAnnualDataSpendInput(String(parseNonNegativeInt(avgAnnualDataSpendInput)));
                   }}
                   className="w-full rounded-xl border transition-all bg-white px-8 py-3 text-base font-semibold tabular-nums outline-none focus:ring-2 focus:ring-adxc/30"
                   aria-label="Average annual data spend in USD"
                 />
               </div>
-
-              <div className="flex justify-between text-sm text-muted-foreground mt-4">
-                <span>$0</span>
-                <span className="opacity-0 select-none">.</span>
-              </div>
             </div>
           </div>
 
-          {/* Results Card (replica layout) */}
+          {/* Results Card */}
           <div className="w-full lg:w-[480px] lg:shrink-0 bg-adxc rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
             <div className="relative">
-              {/* Header */}
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
                 <span className="text-primary-foreground/80 text-base sm:text-lg font-medium">
                   Your estimated revenue
@@ -163,12 +172,10 @@ export default function CalculatorAgencies() {
                 </div>
               </div>
 
-              {/* Revenue label */}
               <div className="text-xs font-bold uppercase tracking-wider text-primary-foreground/70 mb-3">
                 Estimated revenue
               </div>
 
-              {/* Revenue Amount */}
               <div
                 className={[
                   "text-white font-bold tracking-tight leading-none mb-4 tabular-nums whitespace-nowrap transition-all duration-300",
