@@ -13,6 +13,8 @@ import TeamSection from "@/components/team-section";
 import AdvisorsSection from "@/components/advisors-section";
 import { Button } from "@/components/ui/button";
 import { CornerDownRight, ExternalLink } from "lucide-react";
+import PartnersSection from "@/components/partners-section";
+import VideoDemosSection from "@/components/video-demos-sections";
 
 
 export default function HomePage() {
@@ -146,6 +148,12 @@ export default function HomePage() {
 
             {/* Advisors Section */}
             <AdvisorsSection />
+
+            {/* Video Demos Section */}
+            <VideoDemosSection />
+
+            {/* Partners Section */}
+            <PartnersSection />
         </>
     );
 }
