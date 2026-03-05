@@ -129,7 +129,7 @@ export default function CalculatorAgencies() {
                     if (avgAnnualDataSpendInput === "") return;
                     setAvgAnnualDataSpendInput(String(parseNonNegativeInt(avgAnnualDataSpendInput)));
                   }}
-                  className="w-full rounded-xl border transition-all bg-white px-8 py-3 text-base font-semibold tabular-nums outline-none focus:ring-2 focus:ring-adxc/30"
+                  className="w-full rounded-xl border transition-all bg-white px-8 py-3 text-base font-semibold tabular-nums outline-none ring-2 ring-adxc/30 focus:ring-2 focus:ring-adxc/50"
                   aria-label="Average annual data spend in USD"
                 />
               </div>

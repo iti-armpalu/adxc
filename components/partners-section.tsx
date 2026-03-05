@@ -6,7 +6,7 @@ import { SectionHeader } from "./sections/section-header";
 
 const PARTNERS = [
     { name: "Miro", tagline: "AI Innovation Workspace", logo: "/miro-logo.png", description: "We will be integrating with Miros's marketplace at launch, giving us accelerated scale, and will be on-stage at their 2026 tech event." },
-    { name: "Revelate", tagline: "Marketplace Builder", logo: "/revelate-logo.png", description: "Revelate is a data marketplace builder that will set up the data exchnage marketplace with capabilities like data metering to track usage." },
+    { name: "Revelate", tagline: "Marketplace Builder", logo: "/revelate-logo.png", description: "Revelate is a data marketplace builder that will set up the data exchange marketplace with capabilities like data metering to track usage." },
 ]
 
 export default function PartnersSection() {
