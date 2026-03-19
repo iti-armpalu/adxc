@@ -22,6 +22,10 @@ type TaskColumn = {
   subtasks: SubtaskRoute[]
 }
 
+type SquaresScatterToCardProps = {
+  hintClassName?: string
+}
+
 // --- Animation config
 const ANIMATION_DURATION = 1
 const ANIMATION_EASING = [0.32, 0.72, 0, 1] as const
@@ -122,7 +126,9 @@ function useIsSm() {
   return isSm
 }
 
-export default function SquaresScatterToCard() {
+export default function SquaresScatterToCard({
+  hintClassName = "flex xl:hidden",
+}: SquaresScatterToCardProps) {
   const isSm = useIsSm()
   const prefersReducedMotion = useReducedMotion()
 
@@ -153,7 +159,6 @@ export default function SquaresScatterToCard() {
   const [highlightedProviderIndex, setHighlightedProviderIndex] = useState<number[]>([])
 
   const isActive = !!selectedSubtaskLabel && !!selectedTaskColumnEl
-
 
   // --- Animation state + cached positions
   const scatteredPositions = useRef<SquarePosition[]>([])
@@ -656,7 +661,7 @@ export default function SquaresScatterToCard() {
                 </div>
               </div>
 
-              <div className="mt-2 flex lg:hidden items-center gap-2">
+              <div className={`mt-2 items-center gap-2 ${hintClassName}`}>
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adxc opacity-60"></span>
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-adxc"></span>

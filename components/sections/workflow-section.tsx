@@ -36,7 +36,7 @@ export default function WorkflowSection({
         />
 
         <div className="flex flex-col items-start gap-6 xl:flex-row">
-          <SquaresScatterToCard />
+          <SquaresScatterToCard hintClassName="flex" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-6">
             {steps.map((step) => (

@@ -96,74 +96,74 @@ export default function SalesMarketingSection() {
                 </div>
 
                 <div className="relative">
-                <Card className="border-none bg-card shadow-none py-0">
-                    <CardContent className="px-0">
+                    <Card className="border-none bg-card shadow-none py-0">
+                        <CardContent className="px-0">
 
-                        {/* Mobile: stacked content (no buttons) */}
-                        <div className="md:hidden space-y-4">
-                            <div className="mb-2">
-                                <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                                    Sales Channels
-                                </h3>
-                            </div>
-                            {salesChannels.map((ch, i) => (
-                                <div key={i}>
-                                    <ChannelDetails channel={ch} />
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Desktop: your existing tabs layout */}
-                        <div className="hidden md:flex flex-col md:flex-row gap-6">
-                            <div className="md:w-1/3 flex flex-col gap-2">
+                            {/* Mobile: stacked content (no buttons) */}
+                            <div className="md:hidden space-y-4">
                                 <div className="mb-2">
                                     <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                                         Sales Channels
                                     </h3>
                                 </div>
-
                                 {salesChannels.map((ch, i) => (
-                                    <button
-                                        key={i}
-                                        type="button"
-                                        onClick={() => setActive(i)}
-                                        className={[
-                                            "text-left px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200",
-                                            active === i
-                                                ? "bg-foreground text-primary-foreground"
-                                                : "bg-muted/50 text-muted-foreground hover:bg-muted",
-                                        ].join(" ")}
-                                    >
-                                        {ch.name}
-                                    </button>
+                                    <div key={i}>
+                                        <ChannelDetails channel={ch} />
+                                    </div>
                                 ))}
                             </div>
 
-                            <div className="md:w-2/3 flex">
-                                <div className="w-full">
-                                    <ChannelDetails channel={salesChannels[active]} />
+                            {/* Desktop: your existing tabs layout */}
+                            <div className="hidden md:flex flex-col md:flex-row gap-6">
+                                <div className="md:w-1/3 flex flex-col gap-2">
+                                    <div className="mb-2">
+                                        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                            Sales Channels
+                                        </h3>
+                                    </div>
+
+                                    {salesChannels.map((ch, i) => (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            onClick={() => setActive(i)}
+                                            className={[
+                                                "text-left px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200",
+                                                active === i
+                                                    ? "bg-foreground text-primary-foreground"
+                                                    : "bg-muted/50 text-muted-foreground hover:bg-muted",
+                                            ].join(" ")}
+                                        >
+                                            {ch.name}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <div className="md:w-2/3 flex">
+                                    <div className="w-full">
+                                        <ChannelDetails channel={salesChannels[active]} />
+                                    </div>
                                 </div>
                             </div>
+
+                        </CardContent>
+                    </Card>
+
+                    <div className="absolute -left-[200px] top-14 -translate-y-1/2 max-w-[180px] hidden xl:block">
+                        <div className="flex flex-col">
+                            <div className="bg-card/80 backdrop-blur-xl border border-adxc rounded-xl px-4 py-3 shadow-md">
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                    <span className="uppercase text-adxc font-semibold">Click a channel</span>
+                                    {" "}to view status
+                                </p>
+                            </div>
+
+                            <CornerDownRight
+                                className="mt-3 self-end text-adxc h-6 w-6"
+                                aria-hidden="true"
+                            />
                         </div>
-
-                    </CardContent>
-                </Card>
-
-                <div className="absolute -left-[220px] top-14 -translate-y-1/2 max-w-[200px] hidden xl:block">
-                    <div className="flex flex-col">
-                        <div className="bg-card/80 backdrop-blur-xl border border-adxc rounded-xl px-4 py-3 shadow-md">
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                                <span className="uppercase text-adxc font-semibold">Click a channel</span>
-                                {" "}to view status
-                            </p>
-                        </div>
-
-                        <CornerDownRight
-                            className="mt-3 self-end text-adxc h-6 w-6"
-                            aria-hidden="true"
-                        />
                     </div>
-                </div>
 
                 </div>
 

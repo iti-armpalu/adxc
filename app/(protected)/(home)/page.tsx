@@ -37,7 +37,7 @@ export default function HomePage() {
 
                     <div className="relative">
                         <CostCalculator />
-                        <div className="absolute -left-[220px] top-6 -translate-y-1/2 max-w-[200px] hidden xl:block">
+                        <div className="absolute -left-[200px] top-6 -translate-y-1/2 max-w-[180px] hidden xl:block">
                             <div className="flex flex-col">
                                 <div className="bg-card/80 backdrop-blur-xl border border-adxc rounded-xl px-4 py-3 shadow-md">
                                     <p className="text-sm text-muted-foreground leading-relaxed">
