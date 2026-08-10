@@ -1,5 +1,5 @@
 import GateForm from "@/components/gate/password-gate";
-import { SectionHeader } from "@/components/sections/section-header";
+import adxcLogo from "@/public/adxc-logo-with-tagline.svg";
 
 type GatePageProps = {
   searchParams: Promise<{ next?: string }>;
@@ -19,14 +19,37 @@ export default async function GatePage({ searchParams }: GatePageProps) {
   const nextPath = safeNextPath(sp.next);
 
   return (
-    <main className="min-h-[calc(100vh-40px)] flex flex-col items-center justify-center px-2">
-      <div className="mx-auto w-full max-w-xl text-center mb-10">
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-foreground mb-8">
-          ADXC
-        </h1>
+    <main className="min-h-[calc(100vh-var(--spacing-header))] flex flex-col items-center justify-center px-2">
 
-        <p className="text-xl sm:text-2xl text-foreground/80 leading-relaxed mb-4">
-          The Agentic Data Exchange that gives companies access to all the marketing data they need, and only charges for what they use
+      {/* Diagonal glow + grid */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          maskImage: "linear-gradient(135deg, transparent 35%, black 65%)",
+          WebkitMaskImage: "linear-gradient(135deg, transparent 35%, black 65%)",
+        }}
+      >
+        <div className="absolute inset-0 bg-grid opacity-20" />
+        <div
+          className="absolute -top-1/4 -right-1/4 w-[800px] h-[800px] rounded-full"
+          style={{
+            background: "radial-gradient(circle, var(--color-brand-200) 0%, transparent 70%)",
+            opacity: 0.4,
+          }}
+        />
+      </div>
+
+
+      <div className="mx-auto w-full max-w-lg text-center mb-10">
+        {/* Plain <img> per established pattern — fixed SVG asset, not next/image */}
+        <img
+          src={adxcLogo.src}
+          alt="ADXC"
+          className="h-12 sm:h-16 md:h-20 w-auto mx-auto mb-8"
+        />
+
+        <p className="text-lg sm:text-xl text-foreground-alt leading-relaxed mb-4">
+          The Agentic Data Exchange that gives companies access to all the marketing data they need, and only charges for what they use.
         </p>
 
       </div>

@@ -69,8 +69,10 @@ export default function PasswordGate({ nextPath }: Props) {
   return (
     <div
       className={`w-full max-w-xs transition-transform ${
-        isShaking ? "animate-shake" : ""
-      }`}
+        // NOTE: requires --animate-adxc-shake + @keyframes adxc-shake to be
+        // added to globals.css (not present in the current token set)
+        isShaking ? "animate-adxc-shake" : ""
+        }`}
     >
       <form action={action} className="space-y-3">
         {/* where to redirect after unlock */}
@@ -84,9 +86,8 @@ export default function PasswordGate({ nextPath }: Props) {
             placeholder="Password"
             required
             disabled={isPending}
-            className={`h-12 bg-background border-border text-foreground placeholder:text-muted-foreground text-center ${
-              showError && !state.ok && "error" in state ? "border-destructive" : ""
-            }`}
+            className={`h-12 bg-background border-input text-foreground placeholder:text-muted-foreground text-center ${showError && !state.ok && "error" in state ? "border-destructive" : ""
+              }`}
           />
           <button
             type="button"
@@ -108,7 +109,7 @@ export default function PasswordGate({ nextPath }: Props) {
         <Button
           type="submit"
           disabled={isPending}
-          className="w-full h-12 bg-adxc text-primary-foreground hover:bg-primary/90 font-medium group"
+          className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-medium group"
         >
           {isPending ? "Unlocking…" : "Unlock"}
           <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
