@@ -17,6 +17,7 @@ import VideoDemosSection from "@/components/video-demos-sections";
 import { Hero } from "@/components/sections/hero";
 import { Stats } from "@/components/sections/stats";
 import { MARKET_STATS } from "@/lib/stats";
+import { WorkflowCosts } from "@/components/sections/workflow-costs";
 
 
 export default function HomePage() {
@@ -33,7 +34,7 @@ export default function HomePage() {
             />
             <Stats stats={MARKET_STATS} />
 
-            <Section size="md" className="relative">
+            {/* <Section size="md" className="relative">
                 <Container size="md">
                     <SectionHeader
                         title="See how much it costs to buy the data needed at each stage of the marketing workflow"
@@ -60,7 +61,9 @@ export default function HomePage() {
                         </div>
                     </div>
                 </Container>
-            </Section>
+            </Section> */}
+
+            <WorkflowCosts />
 
             <Section size="md">
                 <Container size="md">
