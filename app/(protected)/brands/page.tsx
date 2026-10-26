@@ -8,6 +8,9 @@ import { Layers, Sparkles, TrendingDown } from "lucide-react";
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import CalculatorBrands from "./_components/calculator-brands";
 import BrandStatsSection from "./_components/brand-stats-section";
+import { StatsGrid } from "@/components/sections/stats";
+import { MARKET_STATS } from "@/lib/stats";
+import { Hero } from "@/components/sections/hero";
 
 
 const steps: WorkflowStep[] = [
@@ -41,7 +44,12 @@ const features: BenefitFeature[] = [
 export default function BrandsPage() {
   return (
     <div>
-      <HeroSection />
+      {/* <HeroSection /> */}
+      <Hero title="Cut your marketing data budget in half and get the data that finally makes your agents useful">
+        <StatsGrid stats={MARKET_STATS} />
+      </Hero>
+
+
 
       <DataCoverageMatrixSection
         title="For SMEs, getting the right data for the right task is prohibitive"

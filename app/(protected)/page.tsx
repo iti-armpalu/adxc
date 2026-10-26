@@ -15,19 +15,23 @@ import { Button } from "@/components/ui/button";
 import { CornerDownRight, ExternalLink } from "lucide-react";
 import VideoDemosSection from "@/components/video-demos-sections";
 import { Hero } from "@/components/sections/hero";
+import { Stats } from "@/components/sections/stats";
+import { MARKET_STATS } from "@/lib/stats";
 
 
 export default function HomePage() {
     return (
         <>
-            {/* <HeroSection /> */}
-            <Hero />
-
-            <Section size="md" className="bg-brand-50">
-                <Container size="md">
-                    <BrandStatsSection />
-                </Container>
-            </Section>
+            <Hero
+                title="The Agentic Data Exchange that gives companies access to all the marketing data they need, and only charges for what they use"
+                description={
+                    <>
+                        The <span className="font-medium text-primary">$18B data opportunity</span> unlocked
+                        by agents to transform an industry with outdated monetization and pricing
+                    </>
+                }
+            />
+            <Stats stats={MARKET_STATS} />
 
             <Section size="md" className="relative">
                 <Container size="md">
