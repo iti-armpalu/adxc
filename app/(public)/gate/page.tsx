@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GateForm } from "@/components/gate/gate-form";
+import { GridGlow } from "@/components/decor/grid-glow";
 
 export const metadata: Metadata = {
   title: "Investor Access | ADXC",
@@ -15,18 +16,7 @@ export default async function GatePage({ searchParams }: GatePageProps) {
 
   return (
     <main className="relative isolate flex min-h-dvh flex-col items-center justify-center overflow-hidden px-4 py-12">
-      {/* Diagonal glow + grid */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          maskImage: "linear-gradient(135deg, transparent 35%, black 65%)",
-          WebkitMaskImage: "linear-gradient(135deg, transparent 35%, black 65%)",
-        }}
-      >
-        <div className="absolute inset-0 bg-grid opacity-20" />
-        <div className="absolute -right-1/4 -top-1/4 size-[800px] rounded-full bg-[radial-gradient(circle,var(--color-brand-200)_0%,transparent_70%)] opacity-40" />
-      </div>
+      <GridGlow />
 
       <div className="w-full max-w-lg text-center">
         {/* Plain <img> per established pattern for SVGs */}

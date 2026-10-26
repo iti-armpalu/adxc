@@ -14,12 +14,14 @@ import AdvisorsSection from "@/components/advisors-section";
 import { Button } from "@/components/ui/button";
 import { CornerDownRight, ExternalLink } from "lucide-react";
 import VideoDemosSection from "@/components/video-demos-sections";
+import { Hero } from "@/components/sections/hero";
 
 
 export default function HomePage() {
     return (
         <>
-            <HeroSection />
+            {/* <HeroSection /> */}
+            <Hero />
 
             <Section size="md" className="bg-brand-50">
                 <Container size="md">
