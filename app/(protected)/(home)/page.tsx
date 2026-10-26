@@ -21,7 +21,7 @@ export default function HomePage() {
         <>
             <HeroSection />
 
-            <Section size="md">
+            <Section size="md" className="bg-brand-50">
                 <Container size="md">
                     <BrandStatsSection />
                 </Container>

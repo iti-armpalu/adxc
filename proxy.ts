@@ -1,53 +1,31 @@
-import { NextRequest, NextResponse } from "next/server";
-import { COOKIE_NAME } from "@/lib/gate-token";
-import { verifyEdge } from "@/lib/gate-token-edge";
-
-function isPublicAsset(pathname: string) {
-  return (
-    pathname.startsWith("/_next") ||
-    pathname === "/favicon.ico" ||
-    pathname === "/robots.txt" ||
-    pathname === "/sitemap.xml" ||
-    /\.(png|jpg|jpeg|svg|webp|css|js|ico|txt|map|json)$/.test(pathname)
-  );
-}
-
-function redirectToGate(req: NextRequest, nextValue: string) {
-  const url = req.nextUrl.clone();
-  url.pathname = "/gate";
-  url.searchParams.set("next", nextValue);
-  return NextResponse.redirect(url);
-}
+import { NextResponse, type NextRequest } from "next/server";
+import { GATE_COOKIE, GATE_PATH } from "@/lib/gate/config";
+import { verifyToken } from "@/lib/gate/token";
 
 export async function proxy(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
-
-  // Public route: gate page
-  if (pathname === "/gate") return NextResponse.next();
-
-  // Allow Next internals + public assets
-  if (isPublicAsset(pathname)) return NextResponse.next();
-
-  // If you want /api public, uncomment:
-  // if (pathname.startsWith("/api")) return NextResponse.next();
-
-  const nextValue = pathname + search;
-
-  // Require cookie
-  const token = req.cookies.get(COOKIE_NAME)?.value;
-  if (!token) return redirectToGate(req, nextValue);
-
-  // Verify at the edge (Web Crypto)
   const secret = process.env.SITE_GATE_COOKIE_SECRET;
-  if (!secret) return redirectToGate(req, nextValue);
 
-  const decoded = await verifyEdge(token, secret);
-  if (!decoded) return redirectToGate(req, nextValue);
+  const unlocked = secret
+    ? Boolean(await verifyToken(req.cookies.get(GATE_COOKIE)?.value, secret))
+    : false;
 
-  const now = Math.floor(Date.now() / 1000);
-  if (decoded.exp <= now) return redirectToGate(req, nextValue);
+  // Gate page: let locked visitors in, send unlocked ones home
+  if (pathname === GATE_PATH) {
+    return unlocked ? NextResponse.redirect(new URL("/", req.url)) : NextResponse.next();
+  }
 
-  return NextResponse.next();
+  if (unlocked) return NextResponse.next();
+
+  // Locked: redirect to gate, preserving deep links
+  const url = new URL(GATE_PATH, req.url);
+  const next = pathname + search;
+  if (next !== "/") url.searchParams.set("next", next);
+  return NextResponse.redirect(url);
 }
 
-export const config = { matcher: ["/:path*"] };
+export const config = {
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|svg|webp|ico|txt|map|mp4|webm)$).*)",
+  ],
+};

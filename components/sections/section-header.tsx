@@ -10,6 +10,9 @@ type SectionHeaderProps = {
   align?: ResponsiveAlign
   size?: "sm" | "md" | "lg"
   className?: string
+  /** Heading level for `title`. Defaults to h2 — pass "h1" for the single
+   *  page-level heading (e.g. the homepage hero), never more than once per page. */
+  as?: "h1" | "h2"
 }
 
 const sizeClasses: Record<
@@ -29,7 +32,7 @@ const sizeClasses: Record<
   lg: {
     wrapper: "mb-16 md:mb-20",
     title: "text-4xl md:text-6xl",
-    description: "text-lg md:text-2xl",
+    description: "text-lg md:text-xl",
   },
 }
 
@@ -66,18 +69,24 @@ export function SectionHeader({
   align = "center",
   size = "md",
   className,
+  as = "h2",
 }: SectionHeaderProps) {
   const styles = sizeClasses[size]
   const alignClasses = getAlignClasses(align)
+  const Heading = as
 
   return (
     <div className={cn(styles.wrapper, alignClasses.wrapper, className)}>
-      <h2 className={cn("mb-4 font-black leading-tight tracking-tight", styles.title)}>
+      {/* No weight/tracking/leading overrides — the base h1/h2 rule in
+          globals.css already applies the correct token values for
+          whichever tag renders here. Only size is a deliberate display-scale
+          override on top of that. */}
+      <Heading className={cn("mb-4", styles.title)}>
         {title}
-      </h2>
+      </Heading>
 
       {description && (
-        <p className={cn("text-muted-foreground", styles.description, alignClasses.p)}>
+        <p className={cn(styles.description, alignClasses.p)}>
           {description}
         </p>
       )}
