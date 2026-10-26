@@ -1,18 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo, useState } from "react";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-
-type DemoVideoState = {
-    open: boolean;
-    url: string | null;
-    title: string;
-};
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type DemoVideoContextValue = {
     openVideo: (url: string, title?: string) => void;
@@ -22,17 +11,16 @@ type DemoVideoContextValue = {
 const DemoVideoContext = createContext<DemoVideoContextValue | null>(null);
 
 export function DemoVideoProvider({ children }: { children: React.ReactNode }) {
-    const [state, setState] = useState<DemoVideoState>({
-        open: false,
-        url: null,
-        title: "Prototype Demo",
-    });
+    const [open, setOpen] = useState(false);
+    const [video, setVideo] = useState({ url: "", title: "Prototype demo" });
 
     const value = useMemo<DemoVideoContextValue>(
         () => ({
-            openVideo: (url, title = "Prototype Demo") =>
-                setState({ open: true, url, title }),
-            closeVideo: () => setState((s) => ({ ...s, open: false })),
+            openVideo: (url, title = "Prototype demo") => {
+                setVideo({ url, title });
+                setOpen(true);
+            },
+            closeVideo: () => setOpen(false),
         }),
         []
     );
@@ -41,24 +29,23 @@ export function DemoVideoProvider({ children }: { children: React.ReactNode }) {
         <DemoVideoContext.Provider value={value}>
             {children}
 
-            {/* Single global dialog */}
-            <Dialog open={state.open} onOpenChange={(open) => setState((s) => ({ ...s, open }))}>
-                <DialogContent className="min-w-4xl p-0 overflow-hidden">
-                    <DialogHeader className="p-4 pb-0">
-                        <DialogTitle>ADXC Prototype Demo</DialogTitle>
+            {/* Single global dialog; content unmounts on close, which stops playback */}
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent className="w-[calc(100%-2rem)] max-w-4xl gap-0 overflow-hidden p-0 sm:max-w-4xl">
+                    <DialogHeader className="p-4">
+                        <DialogTitle>{video.title}</DialogTitle>
                     </DialogHeader>
-
-                    <div className="aspect-video w-full">
-                        {state.url ? (
+                    <div className="aspect-video w-full bg-black">
+                        {video.url && (
                             <iframe
-                                key={state.url} // ensures reset when URL changes
-                                src={state.url}
-                                title={state.title}
-                                className="h-full w-full"
-                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                                key={video.url}
+                                src={video.url}
+                                title={video.title}
+                                className="size-full"
+                                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
                                 allowFullScreen
                             />
-                        ) : null}
+                        )}
                     </div>
                 </DialogContent>
             </Dialog>

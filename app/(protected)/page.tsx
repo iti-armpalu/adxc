@@ -1,7 +1,7 @@
 import { HeroSection } from "@/components/hero-section";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
-import BrandStatsSection from "../(app)/brands/_components/brand-stats-section";
+import BrandStatsSection from "./brands/_components/brand-stats-section";
 import { ADXCApproachSection } from "@/components/adxc-approach-section";
 import CostCalculator from "@/components/cost-calculator";
 import { SectionHeader } from "@/components/sections/section-header";
