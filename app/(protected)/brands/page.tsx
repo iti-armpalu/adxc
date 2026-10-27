@@ -1,6 +1,3 @@
-
-import HeroSection from "./_components/hero-section";
-import ProblemSection from "./_components/problem-section";
 import DataCoverageMatrixSection from "@/components/sections/data-coverage-matrix-section";
 import WorkflowSection, { WorkflowStep } from "@/components/sections/workflow-section";
 import { Layers, Sparkles, TrendingDown } from "lucide-react";
@@ -11,6 +8,7 @@ import BrandStatsSection from "./_components/brand-stats-section";
 import { StatsGrid } from "@/components/sections/stats";
 import { MARKET_STATS } from "@/lib/stats";
 import { Hero } from "@/components/sections/hero";
+import { Problem } from "./_components/problem";
 
 
 const steps: WorkflowStep[] = [
@@ -44,7 +42,6 @@ const features: BenefitFeature[] = [
 export default function BrandsPage() {
   return (
     <div>
-      {/* <HeroSection /> */}
       <Hero title="Cut your marketing data budget in half and get the data that finally makes your agents useful">
         <StatsGrid stats={MARKET_STATS} />
       </Hero>
@@ -55,7 +52,8 @@ export default function BrandsPage() {
         title="For SMEs, getting the right data for the right task is prohibitive"
         description="You can't afford multiple providers, or low utilisation - so pick one or none."
       />
-      <ProblemSection />
+
+       <Problem />
 
       <WorkflowSection
         title="ADXC gives you access to all the data you need, while you only pay for what you use"
