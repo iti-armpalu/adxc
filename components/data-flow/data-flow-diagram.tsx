@@ -210,31 +210,17 @@ export function DataFlowDiagram() {
                     </div>
                 </Group>
 
-                {/* Summary + footnote */}
+                {/* Footnote + screen-reader description (no visible summary) */}
                 <div className="order-8 mt-6 md:order-5 md:mt-0">
-                    <p
-                        aria-live="polite"
-                        className="mx-auto max-w-xl text-pretty text-center text-sm text-foreground-alt sm:text-base"
-                    >
-                        {route ? (
-                            <>
-                                <span className="font-semibold text-primary">{AGENTS[route.agent]}</span> pulls
-                                from{" "}
-                                <span className="font-semibold text-primary">
-                                    {joinList(route.providers.map((i) => PROVIDERS[i]))}
-                                </span>
-                                , and pays only for{" "}
-                                {route.providers.length === 1
-                                    ? "that source"
-                                    : `those ${route.providers.length} sources`}
-                                .
-                            </>
-                        ) : (
-                            "Select a subtask to see which data it needs."
-                        )}
-                    </p>
-                    <p className="mt-3 text-center text-xs italic text-muted-foreground">
+                    <p className="text-center text-xs italic text-muted-foreground">
                         For illustrative purposes only
+                    </p>
+                    <p aria-live="polite" className="sr-only">
+                        {route
+                            ? `${route.label}: ${AGENTS[route.agent]} queries ${joinList(
+                                route.providers.map((i) => PROVIDERS[i])
+                            )} through ADXC`
+                            : ""}
                     </p>
                 </div>
             </div>
