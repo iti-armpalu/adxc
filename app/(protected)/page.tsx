@@ -22,6 +22,7 @@ import { FounderVideo } from "@/components/sections/founder-video";
 import { FinancialProjections } from "@/components/sections/financial-projections";
 import { CompetitiveAdvantage } from "@/components/sections/competitive-advantage";
 import { SalesMarketing } from "@/components/sections/sales-marketing";
+import { Team } from "@/components/sections/team";
 
 
 export default function HomePage() {
@@ -55,8 +56,7 @@ export default function HomePage() {
 
             <SalesMarketing />
 
-            {/* Team Section */}
-            <TeamSection />
+            <Team />
 
             {/* Advisors Section */}
             <AdvisorsSection />
