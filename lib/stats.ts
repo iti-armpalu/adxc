@@ -16,3 +16,15 @@ export const MARKET_STATS: Stat[] = [
         },
     },
 ];
+
+export const SME_STATS: Stat[] = [
+    {
+        value: ">99%",
+        detail: "of businesses are small and medium-sized enterprises",
+    },
+    {
+        value: "~$18B",
+        detail: "untapped market",
+        note: "Estimated annual SME research and data spend (UK + US)",
+    },
+];

@@ -4,6 +4,7 @@ export type Stat = {
     lead?: string;
     value: string;
     detail: string;
+    note?: string; // small qualifier under the detail
     source?: { label: string; href: string };
 };
 
@@ -45,6 +46,9 @@ export function StatsGrid({ stats }: { stats: Stat[] }) {
                                 </sup>
                             )}
                         </p>
+                        {stat.note && (
+                            <p className="mx-auto mt-1 max-w-xs text-xs text-muted-foreground">{stat.note}</p>
+                        )}
                     </div>
                 );
             })}
