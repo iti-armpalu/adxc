@@ -380,6 +380,10 @@
 
   /* Layout tokens */
   --spacing-header: var(--header-h);
+
+  --color-heading: var(--heading);
+  --color-primary-subtle: var(--primary-subtle);
+  --color-primary-muted: var(--primary-muted);
 }
 
 /* ============================================================
@@ -545,6 +549,25 @@
 
     --ring-error: #B02C2F;
     --sidebar-muted: var(--color-neutral-500);
+
+    /* Persona-switchable tokens */
+    --heading: var(--primary);
+    --primary-subtle: var(--color-brand-50);
+    --primary-muted: var(--color-brand-200);
+    --grid-tint: #CF6F94;
+  }
+
+  /* ----------------------------------------------------------
+     PERSONA THEMES — set via data-persona on the page wrapper
+  ---------------------------------------------------------- */
+  [data-persona="brands"] {
+    --primary: var(--color-purple-700);
+    --primary-hover: var(--color-purple-700);
+    --ring: var(--color-purple-300);
+    --heading: var(--color-blue-800);
+    --primary-subtle: var(--color-purple-50);
+    --primary-muted: var(--color-purple-200);
+    --grid-tint: var(--color-purple-400);
   }
 
   /* ----------------------------------------------------------
@@ -629,7 +652,8 @@
     --grid-h: 64px;
     /* cell height — shorter than width          */
     --grid-dot: 4px;
-    --grid-color: #CF6F94;
+    /* --grid-color: #CF6F94; */
+    --grid-color: var(--grid-tint);
     /* brand-400 */
     background-image:
       radial-gradient(circle, oklch(from var(--grid-color) l c h / 0.95) var(--grid-dot), transparent calc(var(--grid-dot) + 1px)),
