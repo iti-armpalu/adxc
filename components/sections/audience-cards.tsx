@@ -10,7 +10,7 @@ export function AudienceCards() {
     const items = current ? PERSONAS.filter((p) => p.href !== current.href) : PERSONAS;
 
     return (
-        <section className="bg-card">
+        <section className="adxc-brand bg-card">
             <div className="mx-auto max-w-7xl space-y-12 px-4 py-16 text-center sm:px-6 sm:py-24">
                 <h2 className="text-primary">
                     {current ? "Explore other audiences" : "Explore how ADXC works"}

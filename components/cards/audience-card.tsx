@@ -10,11 +10,11 @@ export function AudienceCard({ persona }: { persona: Persona }) {
             href={href}
             className="group block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-            <Card className="h-full transition-all duration-150 group-hover:ring-primary">
+            <Card className="h-full gap-2 transition-[border-color,box-shadow] duration-150 group-hover:border-primary group-hover:shadow-md">
                 <CardHeader className="flex flex-col items-center gap-3 text-center">
                     <div
                         className="flex size-14 shrink-0 items-center justify-center rounded-full"
-                        style={{ backgroundColor: color ?? "var(--primary)" }}
+                        style={{ backgroundColor: color }}
                     >
                         <Icon className="size-8 text-primary-foreground" strokeWidth={1.5} aria-hidden />
                     </div>
