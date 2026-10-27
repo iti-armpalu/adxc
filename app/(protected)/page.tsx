@@ -25,6 +25,7 @@ import { SalesMarketing } from "@/components/sections/sales-marketing";
 import { Team } from "@/components/sections/team";
 import { Advisors } from "@/components/sections/advisors";
 import { VideoDemos } from "@/components/sections/video-demos";
+import { AdxcApproach } from "@/components/sections/adxc-approach";
 
 
 export default function HomePage() {
@@ -48,7 +49,7 @@ export default function HomePage() {
                 stats={SME_STATS}
             />
 
-            <ADXCApproachSection />
+            <AdxcApproach />
 
             <FounderVideo />
 
