@@ -560,6 +560,7 @@
   /* ----------------------------------------------------------
      PERSONA THEMES — set via data-persona on the page wrapper
   ---------------------------------------------------------- */
+
   [data-persona="brands"] {
     --primary: var(--color-purple-700);
     --primary-hover: var(--color-purple-700);
@@ -604,6 +605,17 @@
     --primary-subtle: var(--color-blue-50);
     --primary-muted: var(--color-blue-200);
     --grid-tint: var(--color-blue-400);
+  }
+
+  /* Force ADXC brand colours inside persona pages (e.g. data-flow diagram) */
+  .adxc-brand {
+    --primary: var(--color-brand-600);
+    --primary-hover: var(--color-brand-600);
+    --ring: var(--color-brand-300);
+    --heading: var(--color-brand-600);
+    --primary-subtle: var(--color-brand-50);
+    --primary-muted: var(--color-brand-200);
+    --grid-tint: #CF6F94;
   }
 
   /* ----------------------------------------------------------

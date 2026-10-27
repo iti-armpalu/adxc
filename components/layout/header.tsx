@@ -20,7 +20,7 @@ export function Header() {
     const close = () => setOpen(false);
 
     return (
-        <header className="fixed inset-x-0 top-0 z-50 border-b bg-background/80 backdrop-blur-md">
+        <header className="adxc-brand fixed inset-x-0 top-0 z-50 border-b bg-background/80 backdrop-blur-md">
             <div className="mx-auto flex h-header max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
                 <Link href="/" className="shrink-0 transition-opacity hover:opacity-70">
                     <img src="/adxc-logo-with-tagline.svg" alt="ADXC" className="h-7 w-auto md:h-9" />

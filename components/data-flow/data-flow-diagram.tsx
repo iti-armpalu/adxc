@@ -60,7 +60,7 @@ export function DataFlowDiagram() {
         <MotionConfig reducedMotion="user">
             <div
                 ref={containerRef}
-                className="relative mx-auto flex w-full min-w-0 max-w-5xl flex-col rounded-xl border bg-card p-4 shadow-xl sm:p-8 md:gap-10"
+                className="adxc-brand relative mx-auto flex w-full min-w-0 max-w-5xl flex-col rounded-xl border bg-card p-4 shadow-xl sm:p-8 md:gap-10"
 
             >
                 {/* Curved lines: desktop only */}

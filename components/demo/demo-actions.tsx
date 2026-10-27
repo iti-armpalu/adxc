@@ -14,9 +14,9 @@ type Props = {
 };
 
 const wrapperClass = {
-    inline: "flex items-center gap-2",
-    stacked: "flex flex-col gap-2",
-    section: "flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center sm:gap-4",
+    inline: "adxc-brand flex items-center gap-2",
+    stacked: "adxc-brand flex flex-col gap-2",
+    section: "adxc-brand flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center sm:gap-4",
 };
 
 export function DemoActions({
@@ -30,7 +30,7 @@ export function DemoActions({
     const btnClass = cn(layout === "stacked" && "w-full", layout === "section" && "sm:px-8");
 
     return (
-        <div className={wrapperClass[layout]}>
+        <div className={cn("adxc-brand flex gap-2", wrapperClass[layout])}>
             <Button
                 variant="outline"
                 size={size}
