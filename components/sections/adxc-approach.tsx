@@ -1,4 +1,4 @@
-import { DataFlowDiagram } from "@/components/data-flows/data-flow-diagram";
+import { DataFlowDiagram } from "@/components/data-flow/data-flow-diagram";
 
 export function AdxcApproach() {
     return (

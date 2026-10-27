@@ -1,4 +1,4 @@
-import WorkflowSection, { WorkflowStep } from "@/components/sections/workflow-section";
+
 import { Layers, Sparkles, TrendingDown } from "lucide-react";
 
 import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
@@ -8,13 +8,13 @@ import { MARKET_STATS } from "@/lib/stats";
 import { Hero } from "@/components/sections/hero";
 import { Problem } from "./_components/problem";
 import { DataCoverage } from "@/components/sections/data-coverage";
+import { HowItWorks, type HowItWorksStep } from "@/components/sections/how-it-works";
 
-
-const steps: WorkflowStep[] = [
-  { number: 1, title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
-  { number: 2, title: "Orchestration", description: "ADXC's Agentic Orchestrator understands the question context, breaks it into sub-tasks and identifies the most relevant data to answer it." },
-  { number: 3, title: "Abstract Answer", description: "The customer sees an abstract of the answer and price." },
-  { number: 4, title: "Full Answer", description: "The user approves and ADXC pulls only the relevant data to answer the question." },
+const steps: HowItWorksStep[] = [
+  { title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
+  { title: "Orchestration", description: "ADXC's Agentic Orchestrator understands the question context, breaks it into sub-tasks and identifies the most relevant data to answer it." },
+  { title: "Abstract Answer", description: "The customer sees an abstract of the answer and price." },
+  { title: "Full Answer", description: "The user approves and ADXC pulls only the relevant data to answer the question." },
 ];
 
 const features: BenefitFeature[] = [
@@ -54,11 +54,11 @@ export default function BrandsPage() {
 
       <Problem />
 
-      <WorkflowSection
+      <HowItWorks
         title="ADXC gives you access to all the data you need, while you only pay for what you use"
         description="ADXC is the data exchange connecting premium marketing data providers and SMEs via AI agents, on a pay-per-use model."
         steps={steps}
-        footer="No long-term contracts • Access multiple premium datasets • Spend caps set per task/user"
+        highlights={["No long-term contracts", "Access multiple premium datasets", "Spend caps set per task/user"]}
       />
 
       <BenefitsSection
