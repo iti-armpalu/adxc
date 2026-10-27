@@ -1,6 +1,8 @@
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FOUNDER_VIDEO_URL, PROTOTYPE_URL } from "@/lib/demo";
+import { YouTubeEmbed } from "../media/youtube-embed";
+import { FOUNDER_VIDEO_ID, PROTOTYPE_URL } from "@/lib/demo";
+
 
 export function FounderVideo() {
     return (
@@ -11,16 +13,7 @@ export function FounderVideo() {
                 </h2>
 
                 <div className="grid gap-4 md:grid-cols-[3fr_2fr] md:gap-6">
-                    <div className="aspect-video w-full overflow-hidden rounded-xl bg-muted shadow-lg">
-                        <iframe
-                            src={FOUNDER_VIDEO_URL}
-                            title="ADXC founder explanation"
-                            loading="lazy"
-                            className="size-full"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                        />
-                    </div>
+                    <YouTubeEmbed id={FOUNDER_VIDEO_ID} title="ADXC founder explanation" className="shadow-lg" />
 
                     <div className="flex flex-col items-center justify-center gap-4 rounded-xl bg-primary p-8 text-center text-primary-foreground shadow-lg md:items-start md:p-10 md:text-left">
                         <h3>See it in action</h3>

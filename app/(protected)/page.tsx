@@ -24,6 +24,7 @@ import { CompetitiveAdvantage } from "@/components/sections/competitive-advantag
 import { SalesMarketing } from "@/components/sections/sales-marketing";
 import { Team } from "@/components/sections/team";
 import { Advisors } from "@/components/sections/advisors";
+import { VideoDemos } from "@/components/sections/video-demos";
 
 
 export default function HomePage() {
@@ -61,8 +62,7 @@ export default function HomePage() {
 
             <Advisors />
 
-            {/* Video Demos Section */}
-            <VideoDemosSection />
+            <VideoDemos />
         </>
     );
 }
