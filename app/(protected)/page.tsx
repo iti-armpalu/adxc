@@ -20,6 +20,7 @@ import { MARKET_STATS, SME_STATS } from "@/lib/stats";
 import { WorkflowCosts } from "@/components/sections/workflow-costs";
 import { FounderVideo } from "@/components/sections/founder-video";
 import { FinancialProjections } from "@/components/sections/financial-projections";
+import { CompetitiveAdvantage } from "@/components/sections/competitive-advantage";
 
 
 export default function HomePage() {
@@ -49,8 +50,7 @@ export default function HomePage() {
 
             <FinancialProjections />
 
-            {/* Competitive Advantage Section */}
-            <CompetitiveAdvantageSection />
+            <CompetitiveAdvantage />
 
             {/* Sales & Marketing Section */}
             <SalesMarketingSection />
