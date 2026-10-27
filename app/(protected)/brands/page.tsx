@@ -1,7 +1,6 @@
 
 import { Layers, Sparkles, TrendingDown } from "lucide-react";
 
-import { BenefitFeature, BenefitsSection } from "@/components/sections/benefits-section";
 import CalculatorBrands from "./_components/calculator-brands";
 import { StatsGrid } from "@/components/sections/stats";
 import { MARKET_STATS } from "@/lib/stats";
@@ -9,6 +8,7 @@ import { Hero } from "@/components/sections/hero";
 import { Problem } from "./_components/problem";
 import { DataCoverage } from "@/components/sections/data-coverage";
 import { HowItWorks, type HowItWorksStep } from "@/components/sections/how-it-works";
+import { Benefits, type Benefit } from "@/components/sections/benefits";
 
 const steps: HowItWorksStep[] = [
   { title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
@@ -17,24 +17,21 @@ const steps: HowItWorksStep[] = [
   { title: "Full Answer", description: "The user approves and ADXC pulls only the relevant data to answer the question." },
 ];
 
-const features: BenefitFeature[] = [
+const benefits: Benefit[] = [
   {
     icon: Sparkles,
     title: "Higher-quality AI outputs",
-    description:
-      "AI agents generate materially better results when powered by trusted, premium data sources.",
+    description: "AI agents generate materially better results when powered by trusted, premium data sources.",
   },
   {
     icon: Layers,
     title: "Multi-source data access",
-    description:
-      "AI agents can access and combine insights from multiple premium data providers in a single workflow.",
+    description: "AI agents can access and combine insights from multiple premium data providers in a single workflow.",
   },
   {
     icon: TrendingDown,
     title: "Lower spend, higher utilisation",
-    description:
-      "Lower cost per insight, and no wasted spend on data you don't need.",
+    description: "Lower cost per insight, and no wasted spend on data you don't need.",
   },
 ];
 
@@ -61,10 +58,7 @@ export default function BrandsPage() {
         highlights={["No long-term contracts", "Access multiple premium datasets", "Spend caps set per task/user"]}
       />
 
-      <BenefitsSection
-        title="Start paying for answers, not access"
-        features={features}
-      />
+      <Benefits title="Start paying for answers, not access" benefits={benefits} />
 
       <CalculatorBrands />
     </>
