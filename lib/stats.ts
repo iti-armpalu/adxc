@@ -82,3 +82,22 @@ export const DATA_ACCESS_STATS: Stat[] = [
         detail: "Typical entry-level cost to access premium data providers (e.g. GWI, Kantar, Nielsen)",
     },
 ];
+
+export const WHY_NOW_STATS: Stat[] = [
+    {
+        value: "80%",
+        detail: "of businesses already use AI",
+        source: {
+            label: "MIT Nanda AI Report 2025",
+            href: "https://mlq.ai/media/quarterly_decks/v0.1_State_of_AI_in_Business_2025_Report.pdf",
+        },
+    },
+    {
+        value: "88%",
+        detail: "plan to increase AI budgets over the next 12 months",
+        source: {
+            label: "PwC AI Agent Report 2025",
+            href: "https://www.pwc.com/us/en/tech-effect/ai-analytics/ai-agent-survey.html",
+        },
+    },
+];

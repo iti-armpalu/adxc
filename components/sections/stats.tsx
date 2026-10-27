@@ -60,15 +60,18 @@ type StatsProps = {
     stats: Stat[];
     title?: string;
     className?: string;
+    children?: React.ReactNode; // optional closing content under the grid
+
 };
 
 // Mid-page band
-export function Stats({ stats, title, className }: StatsProps) {
+export function Stats({ stats, title, className, children }: StatsProps) {
     return (
         <section className={cn("bg-primary-subtle", className)}>
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
                 {title && <h2 className="mb-12 text-center text-heading">{title}</h2>}
                 <StatsGrid stats={stats} />
+                {children && <div className="mt-12 sm:mt-16">{children}</div>}
             </div>
         </section>
     );

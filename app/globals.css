@@ -594,6 +594,18 @@
     --grid-tint: var(--color-cyan-400);
   }
 
+  [data-persona="data-providers"] {
+    --primary: var(--color-blue-600);
+    /* #24354E */
+    --primary-hover: var(--color-blue-600);
+    --ring: var(--color-blue-300);
+    --heading: var(--color-blue-800);
+    /* #192535 */
+    --primary-subtle: var(--color-blue-50);
+    --primary-muted: var(--color-blue-200);
+    --grid-tint: var(--color-blue-400);
+  }
+
   /* ----------------------------------------------------------
      BASE ELEMENT DEFAULTS
   ---------------------------------------------------------- */
