@@ -470,6 +470,12 @@
     /* --- Layout --- */
     --header-h: 68px;
     /* mobile-first */
+
+    /* Persona-switchable tokens */
+    --heading: var(--primary);
+    --primary-subtle: var(--color-brand-50);
+    --primary-muted: var(--color-brand-200);
+    --grid-tint: #CF6F94;
   }
 
   /* Responsive layout overrides */
@@ -549,12 +555,6 @@
 
     --ring-error: #B02C2F;
     --sidebar-muted: var(--color-neutral-500);
-
-    /* Persona-switchable tokens */
-    --heading: var(--primary);
-    --primary-subtle: var(--color-brand-50);
-    --primary-muted: var(--color-brand-200);
-    --grid-tint: #CF6F94;
   }
 
   /* ----------------------------------------------------------
@@ -580,6 +580,18 @@
     --primary-subtle: var(--color-orange-50);
     --primary-muted: var(--color-orange-200);
     --grid-tint: var(--color-orange-400);
+  }
+
+  [data-persona="ai-platforms"] {
+    --primary: var(--color-cyan-600);
+    /* #008392 */
+    --primary-hover: var(--color-cyan-600);
+    --ring: var(--color-cyan-300);
+    --heading: var(--color-cyan-800);
+    /* #005660 */
+    --primary-subtle: var(--color-cyan-50);
+    --primary-muted: var(--color-cyan-200);
+    --grid-tint: var(--color-cyan-400);
   }
 
   /* ----------------------------------------------------------

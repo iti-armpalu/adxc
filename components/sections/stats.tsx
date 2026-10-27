@@ -14,7 +14,7 @@ export function StatsGrid({ stats }: { stats: Stat[] }) {
     return (
         <div
             className={cn(
-                "mx-auto grid divide-y divide-brand-200 md:divide-x md:divide-y-0",
+                "mx-auto grid divide-y divide-primary-muted md:divide-x md:divide-y-0",
                 stats.length >= 3 ? "max-w-6xl md:grid-cols-3" : "max-w-4xl md:grid-cols-2"
             )}
         >
@@ -65,9 +65,9 @@ type StatsProps = {
 // Mid-page band
 export function Stats({ stats, title, className }: StatsProps) {
     return (
-        <section className={cn("bg-brand-50", className)}>
+        <section className={cn("bg-primary-subtle", className)}>
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
-                {title && <h2 className="mb-12 text-center text-primary">{title}</h2>}
+                {title && <h2 className="mb-12 text-center text-heading">{title}</h2>}
                 <StatsGrid stats={stats} />
             </div>
         </section>
