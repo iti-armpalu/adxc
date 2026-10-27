@@ -19,6 +19,7 @@ import { Stats } from "@/components/sections/stats";
 import { MARKET_STATS, SME_STATS } from "@/lib/stats";
 import { WorkflowCosts } from "@/components/sections/workflow-costs";
 import { FounderVideo } from "@/components/sections/founder-video";
+import { FinancialProjections } from "@/components/sections/financial-projections";
 
 
 export default function HomePage() {
@@ -46,8 +47,7 @@ export default function HomePage() {
 
             <FounderVideo />
 
-            {/* Financial Projections Section */}
-            <FinancialProjectionsSection />
+            <FinancialProjections />
 
             {/* Competitive Advantage Section */}
             <CompetitiveAdvantageSection />
