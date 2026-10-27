@@ -3,15 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Lock, Menu } from "lucide-react";
+import { ArrowUpRight, Lock, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { DemoActions } from "@/components/demo/demo-actions";
 import { lock } from "@/lib/gate/actions";
 import { PERSONAS, getPersona } from "@/lib/personas";
 import { cn } from "@/lib/utils";
+import { CopyEmail } from "@/components/layout/copy-email";
+import { GATE_CONTACT_EMAIL } from "@/lib/gate/config";
+import { MAIN_SITE_URL } from "@/lib/demo";
 
-const NAV_ITEMS = [{ href: "/", label: "Overview" }, ...PERSONAS];
+const NAV_ITEMS = [{ href: "/", label: "Overview", color: "var(--color-brand-600)" }, ...PERSONAS];
 
 export function Header() {
     const pathname = usePathname();
@@ -40,7 +43,7 @@ export function Header() {
                             </Button>
                         </SheetTrigger>
 
-                        <SheetContent side="right" className="flex w-full flex-col gap-0 sm:max-w-sm">
+                        <SheetContent side="right" className="bg-card flex w-full flex-col gap-0 sm:max-w-sm">
                             <SheetHeader className="h-header justify-center border-b px-4">
                                 <Link href="/" onClick={close} className="w-fit">
                                     <img src="/adxc-logo-with-tagline.svg" alt="ADXC" className="h-7 w-auto" />
@@ -48,7 +51,7 @@ export function Header() {
                                 <SheetTitle className="sr-only">Menu</SheetTitle>
                             </SheetHeader>
 
-                            <nav aria-label="Main" className="flex flex-col px-4">
+                            <nav aria-label="Main" className="flex flex-col gap-1 p-4">
                                 {NAV_ITEMS.map((item) => {
                                     const active = pathname === item.href;
                                     return (
@@ -58,10 +61,17 @@ export function Header() {
                                             onClick={close}
                                             aria-current={active ? "page" : undefined}
                                             className={cn(
-                                                "border-b py-4 text-lg font-medium transition-colors",
-                                                active ? "text-primary" : "text-foreground-alt hover:text-foreground"
+                                                "flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium transition-colors",
+                                                active
+                                                    ? "bg-primary-subtle text-primary"
+                                                    : "text-foreground-alt hover:bg-ghost-hover hover:text-foreground"
                                             )}
                                         >
+                                            <span
+                                                aria-hidden
+                                                className="size-2 shrink-0 rounded-full"
+                                                style={{ backgroundColor: item.color }}
+                                            />
                                             {item.label}
                                         </Link>
                                     );
@@ -74,16 +84,31 @@ export function Header() {
                                 </div>
                             )}
 
-                            <form action={lock} className="mt-auto border-t p-4">
-                                <Button
-                                    type="submit"
-                                    variant="ghost"
-                                    className="w-full justify-start text-muted-foreground hover:text-foreground"
+                            <div className="mt-auto space-y-1 border-t p-4">
+                                <CopyEmail
+                                    email={GATE_CONTACT_EMAIL}
+                                    className="w-full rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-ghost-hover hover:text-foreground"
+                                />
+                                <a
+                                    href={MAIN_SITE_URL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-ghost-hover hover:text-foreground"
                                 >
-                                    <Lock className="size-4" />
-                                    Lock site
-                                </Button>
-                            </form>
+                                    Visit adxc.ai
+                                    <ArrowUpRight className="size-4" aria-hidden />
+                                </a>
+                                <form action={lock}>
+                                    <Button
+                                        type="submit"
+                                        variant="ghost"
+                                        className="w-full justify-start px-3 text-muted-foreground hover:text-foreground"
+                                    >
+                                        <Lock className="size-4" />
+                                        Lock site
+                                    </Button>
+                                </form>
+                            </div>
                         </SheetContent>
                     </Sheet>
                 </div>
