@@ -3,7 +3,7 @@ import { Hero } from "@/components/sections/hero";
 import { StatsGrid } from "@/components/sections/stats";
 import { MARKET_STATS } from "@/lib/stats";
 import { DataCoverage } from "@/components/sections/data-coverage";
-import { Problem } from "./_components/problem";
+import { Problem } from "@/components/sections/problem";
 import { HowItWorks, type HowItWorksStep } from "@/components/sections/how-it-works";
 import { Benefits, type Benefit } from "@/components/sections/benefits";
 import { SavingsCalculator } from "./_components/savings-calculator";

@@ -570,6 +570,18 @@
     --grid-tint: var(--color-purple-400);
   }
 
+  [data-persona="agencies"] {
+    --primary: var(--color-orange-700);
+    /* #B85C12 */
+    --primary-hover: var(--color-orange-700);
+    --ring: var(--color-orange-300);
+    --heading: var(--color-orange-800);
+    /* #944712 */
+    --primary-subtle: var(--color-orange-50);
+    --primary-muted: var(--color-orange-200);
+    --grid-tint: var(--color-orange-400);
+  }
+
   /* ----------------------------------------------------------
      BASE ELEMENT DEFAULTS
   ---------------------------------------------------------- */
