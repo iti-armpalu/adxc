@@ -32,7 +32,7 @@ const formatMillions = (v: number) =>
 
 export function FinancialProjections() {
     return (
-        <section>
+        <section className="bg-white">
             <div className="mx-auto max-w-7xl space-y-12 px-4 py-16 sm:px-6 sm:py-24">
                 <div className="text-center">
                     <p className="text-caption mb-3 text-muted-foreground">Financial projections</p>

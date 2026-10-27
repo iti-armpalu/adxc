@@ -21,6 +21,7 @@ import { WorkflowCosts } from "@/components/sections/workflow-costs";
 import { FounderVideo } from "@/components/sections/founder-video";
 import { FinancialProjections } from "@/components/sections/financial-projections";
 import { CompetitiveAdvantage } from "@/components/sections/competitive-advantage";
+import { SalesMarketing } from "@/components/sections/sales-marketing";
 
 
 export default function HomePage() {
@@ -52,8 +53,7 @@ export default function HomePage() {
 
             <CompetitiveAdvantage />
 
-            {/* Sales & Marketing Section */}
-            <SalesMarketingSection />
+            <SalesMarketing />
 
             {/* Team Section */}
             <TeamSection />

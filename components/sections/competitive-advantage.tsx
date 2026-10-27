@@ -9,7 +9,7 @@ const ROWS = [
 
 export function CompetitiveAdvantage() {
     return (
-        <section>
+        <section className="bg-white">
             <div className="mx-auto max-w-7xl space-y-12 px-4 py-16 sm:px-6 sm:py-24">
                 <div className="mx-auto max-w-3xl text-center">
                     <p className="text-caption mb-3 text-muted-foreground">Competitive advantage</p>
