@@ -23,6 +23,7 @@ import { FinancialProjections } from "@/components/sections/financial-projection
 import { CompetitiveAdvantage } from "@/components/sections/competitive-advantage";
 import { SalesMarketing } from "@/components/sections/sales-marketing";
 import { Team } from "@/components/sections/team";
+import { Advisors } from "@/components/sections/advisors";
 
 
 export default function HomePage() {
@@ -58,8 +59,7 @@ export default function HomePage() {
 
             <Team />
 
-            {/* Advisors Section */}
-            <AdvisorsSection />
+            <Advisors />
 
             {/* Video Demos Section */}
             <VideoDemosSection />
