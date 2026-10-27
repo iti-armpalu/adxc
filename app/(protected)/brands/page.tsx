@@ -1,11 +1,9 @@
-
 import { Layers, Sparkles, TrendingDown } from "lucide-react";
-
+import { Hero } from "@/components/sections/hero";
 import { StatsGrid } from "@/components/sections/stats";
 import { MARKET_STATS } from "@/lib/stats";
-import { Hero } from "@/components/sections/hero";
-import { Problem } from "./_components/problem";
 import { DataCoverage } from "@/components/sections/data-coverage";
+import { Problem } from "./_components/problem";
 import { HowItWorks, type HowItWorksStep } from "@/components/sections/how-it-works";
 import { Benefits, type Benefit } from "@/components/sections/benefits";
 import { SavingsCalculator } from "./_components/savings-calculator";
