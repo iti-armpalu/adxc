@@ -1,7 +1,6 @@
 
 import { Layers, Sparkles, TrendingDown } from "lucide-react";
 
-import CalculatorBrands from "./_components/calculator-brands";
 import { StatsGrid } from "@/components/sections/stats";
 import { MARKET_STATS } from "@/lib/stats";
 import { Hero } from "@/components/sections/hero";
@@ -9,6 +8,7 @@ import { Problem } from "./_components/problem";
 import { DataCoverage } from "@/components/sections/data-coverage";
 import { HowItWorks, type HowItWorksStep } from "@/components/sections/how-it-works";
 import { Benefits, type Benefit } from "@/components/sections/benefits";
+import { SavingsCalculator } from "./_components/savings-calculator";
 
 const steps: HowItWorksStep[] = [
   { title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
@@ -60,7 +60,7 @@ export default function BrandsPage() {
 
       <Benefits title="Start paying for answers, not access" benefits={benefits} />
 
-      <CalculatorBrands />
+      <SavingsCalculator />
     </>
   );
 }
