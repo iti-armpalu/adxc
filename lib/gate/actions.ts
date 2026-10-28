@@ -2,8 +2,10 @@
 
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { createHash, timingSafeEqual } from "node:crypto";
 import { GATE_COOKIE, GATE_MAX_AGE, GATE_PATH } from "./config";
+import { notifyUnlock, shouldNotify } from "./notify";
 import { signToken } from "./token";
 
 export type UnlockState = { error: string | null; failures: number };
@@ -48,20 +50,9 @@ export async function unlock(prev: UnlockState, formData: FormData): Promise<Unl
         };
     }
 
-    const success = passwordMatches(String(formData.get("password") ?? ""), password);
-
-    // GDPR-safe: timestamp, country, outcome only
-    const h = await headers();
-    console.log(
-        "[gate-event]",
-        JSON.stringify({
-            at: new Date().toISOString(),
-            country: h.get("x-vercel-ip-country"),
-            success,
-        })
-    );
-
-    if (!success) return { error: "Incorrect password.", failures: prev.failures + 1 };
+    if (!passwordMatches(String(formData.get("password") ?? ""), password)) {
+        return { error: "Incorrect password.", failures: prev.failures + 1 };
+    }
 
     const exp = Math.floor(Date.now() / 1000) + GATE_MAX_AGE;
     const cookieStore = await cookies();
@@ -69,6 +60,13 @@ export async function unlock(prev: UnlockState, formData: FormData): Promise<Unl
         ...cookieOptions,
         maxAge: GATE_MAX_AGE,
     });
+
+    // Slack ping runs after the response, so the investor isn't kept waiting.
+    // Must be scheduled before redirect(), which ends the function.
+    if (shouldNotify()) {
+        const h = await headers();
+        after(() => notifyUnlock(h));
+    }
 
     redirect(safeNext(formData.get("next")));
 }
