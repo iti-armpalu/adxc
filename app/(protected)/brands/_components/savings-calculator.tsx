@@ -9,12 +9,13 @@ import { formatUsd } from "@/lib/calculator/format";
 
 const TEAM_OPTIONS = TEAM_SIZES.map((t) => ({ ...t, icon: Users }));
 
-export function SavingsCalculator() {
+export function SavingsCalculator({ className }: { className?: string }) {
     const [team, setTeam] = useState<TeamSize>("lt10");
     const [budget, setBudget] = useState(100_000);
 
     return (
         <CalculatorSection
+            className={className}
             title="Calculate your potential savings"
             description="See how much you could save by switching to ADXC's on-demand model."
             resultLabel="savings"

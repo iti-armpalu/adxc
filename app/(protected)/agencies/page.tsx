@@ -43,6 +43,7 @@ export default function AgenciesPage() {
             </Hero>
 
             <Stats
+                className="bg-card"
                 title="But businesses need this data more than ever to make their agents useful"
                 stats={AI_ADOPTION_STATS}
             />
@@ -50,15 +51,16 @@ export default function AgenciesPage() {
             <Problem />
 
             <HowItWorks
+                className="bg-card"
                 title="ADXC gives you access to all the data you need, while you only pay for what you use"
                 description="ADXC is the data exchange connecting premium marketing data providers and SMEs via AI agents, on a pay-per-use model."
                 steps={steps}
                 highlights={["No long-term contracts", "Access multiple premium datasets", "Spend caps set per task/user"]}
             />
 
-            <Benefits title="Turn a costly expense into a profitable service" benefits={benefits} />
+            <Benefits className="bg-primary-subtle" title="Turn a costly expense into a profitable service" benefits={benefits} />
 
-            <RevenueCalculator />
+            <RevenueCalculator className="bg-card" />
         </>
     );
 }

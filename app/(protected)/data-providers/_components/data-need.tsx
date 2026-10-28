@@ -73,7 +73,7 @@ export function DataNeed() {
     const usesYours = !!route?.providers.includes(YOUR_DATA);
 
     return (
-        <section>
+        <section className="bg-primary-subtle">
             <div className="mx-auto max-w-7xl space-y-12 px-4 py-16 sm:px-6 sm:py-24">
                 <div className="mx-auto max-w-3xl text-center">
                     <h2 className="text-balance text-heading">

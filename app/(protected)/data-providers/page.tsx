@@ -21,16 +21,18 @@ export default function DataProvidersPage() {
         <StatsGrid stats={SME_STATS} />
       </Hero>
 
-      <Stats title="Why this matters now" stats={WHY_NOW_STATS}>
+      <Stats className="bg-card" title="Why this matters now" stats={WHY_NOW_STATS}>
         <p className="mx-auto max-w-3xl text-balance text-center text-2xl font-semibold text-heading sm:text-3xl">
           SMEs don&apos;t have the data to fuel these agents. You do.
         </p>
       </Stats>
 
       <DataNeed />
+
       <StructuralShift />
 
       <HowItWorks
+        className="bg-primary-subtle"
         title="ADXC makes premium marketing data usable for AI agents"
         description="ADXC is the data exchange connecting premium data providers and SMEs via AI agents, on a pay-per-use model."
         steps={steps}
@@ -42,7 +44,8 @@ export default function DataProvidersPage() {
       />
 
       <MiroLaunch />
-      <EarningsCalculator />
+
+      <EarningsCalculator className="bg-card" />
     </>
   );
 }

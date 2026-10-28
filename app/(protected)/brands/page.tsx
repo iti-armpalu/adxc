@@ -42,7 +42,7 @@ export default function BrandsPage() {
 
 
       <DataCoverage
-        className="bg-primary-subtle"
+        className="bg-card"
         title="For SMEs, getting the right data for the right task is prohibitive"
         description="You can't afford multiple providers, or low utilisation - so pick one or none."
       />
@@ -50,15 +50,16 @@ export default function BrandsPage() {
       <Problem />
 
       <HowItWorks
+        className="bg-card"
         title="ADXC gives you access to all the data you need, while you only pay for what you use"
         description="ADXC is the data exchange connecting premium marketing data providers and SMEs via AI agents, on a pay-per-use model."
         steps={steps}
         highlights={["No long-term contracts", "Access multiple premium datasets", "Spend caps set per task/user"]}
       />
 
-      <Benefits title="Start paying for answers, not access" benefits={benefits} />
+      <Benefits className="bg-primary-subtle" title="Start paying for answers, not access" benefits={benefits} />
 
-      <SavingsCalculator />
+      <SavingsCalculator className="bg-card" />
     </>
   );
 }

@@ -18,7 +18,7 @@ const NEW: Item[] = [
 
 export function StructuralShift() {
     return (
-        <section>
+        <section className="bg-card">
             <div className="mx-auto max-w-7xl space-y-12 px-4 py-16 sm:px-6 sm:py-24">
                 <h2 className="mx-auto max-w-3xl text-balance text-center text-heading">
                     AI agents make this SME market accessible

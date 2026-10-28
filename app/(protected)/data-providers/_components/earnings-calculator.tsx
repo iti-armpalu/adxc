@@ -13,7 +13,7 @@ import {
 
 const DEFAULT_COUNTS = Object.fromEntries(TIERS.map((t) => [t.id, t.defaultValue])) as Record<TierId, number>;
 
-export function EarningsCalculator() {
+export function EarningsCalculator({ className }: { className?: string }) {
     const [phases, setPhases] = useState<PhaseId[]>(["strategy", "media"]);
     const [counts, setCounts] = useState(DEFAULT_COUNTS);
 
@@ -24,6 +24,7 @@ export function EarningsCalculator() {
 
     return (
         <CalculatorSection
+            className={className}
             title="Calculate your potential earnings"
             description="See how much you could earn by switching to ADXC's on-demand model."
             resultLabel="earnings"

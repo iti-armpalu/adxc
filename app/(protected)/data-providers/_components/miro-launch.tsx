@@ -7,7 +7,7 @@ const IMAGES = [
 
 export function MiroLaunch() {
     return (
-        <section>
+        <section className="bg-card">
             <div className="mx-auto max-w-7xl space-y-12 px-4 py-16 sm:px-6 sm:py-24">
                 <div className="mx-auto max-w-3xl text-center">
                     <h2 className="text-balance text-heading">Instantly access 100 million users through Miro</h2>
