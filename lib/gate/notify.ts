@@ -5,13 +5,19 @@ type HeaderReader = { get(name: string): string | null };
 export const shouldNotify = () =>
     process.env.VERCEL_ENV === "production" || process.env.SLACK_NOTIFY_DEV === "true";
 
-function formatCountry(code: string | null) {
-    if (!code) return "an unknown location";
-    const name = new Intl.DisplayNames(["en"], { type: "region" }).of(code) ?? code;
-    const flag = String.fromCodePoint(
-        ...[...code.toUpperCase()].map((c) => 0x1f1a5 + c.charCodeAt(0))
-    );
-    return `${flag} ${name}`;
+function formatLocation(cityHeader: string | null, code: string | null) {
+    const country = code ? (new Intl.DisplayNames(["en"], { type: "region" }).of(code) ?? code) : null;
+
+    let city: string | null = null;
+    if (cityHeader) {
+        try {
+            city = decodeURIComponent(cityHeader);
+        } catch {
+            city = cityHeader;
+        }
+    }
+
+    return [city, country].filter(Boolean).join(", ") || "an unknown location";
 }
 
 function formatLocalTime(tz: string | null, now: Date) {
@@ -36,7 +42,7 @@ export async function notifyUnlock(h: HeaderReader) {
     const ts = Math.floor(now.getTime() / 1000);
 
     const text = [
-        `:unlock: Investor site unlocked from *${formatCountry(h.get("x-vercel-ip-country"))}*`,
+        `:unlock: Investor site unlocked from *${formatLocation(h.get("x-vercel-ip-city"), h.get("x-vercel-ip-country"))}*`,
         formatLocalTime(h.get("x-vercel-ip-timezone"), now),
         `your time: <!date^${ts}^{date_short_pretty} at {time}|${now.toISOString()}>`,
     ]
