@@ -4,7 +4,6 @@ import { GridGlow } from "@/components/decor/grid-glow";
 
 export const metadata: Metadata = {
   title: "Investor Access | ADXC",
-  robots: { index: false, follow: false },
 };
 
 type GatePageProps = {

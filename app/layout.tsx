@@ -11,8 +11,10 @@ const manrope = Manrope({
 /* ---------- metadata ---------- */
 
 export const metadata: Metadata = {
-  title: "ADXC",
-  description: "Private preview",
+  title: { template: "%s | ADXC Investors", default: "ADXC Investors" },
+  description:
+    "The Agentic Data Exchange that gives companies access to the marketing data they need, and only charges for what they use.",
+  robots: { index: false, follow: false },
 };
 
 /* ---------- root layout ---------- */
