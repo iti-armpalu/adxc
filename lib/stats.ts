@@ -3,8 +3,8 @@ import type { Stat } from "@/components/sections/stats";
 export const MARKET_STATS: Stat[] = [
     {
         lead: "Marketing data is expensive",
-        value: "$200k+",
-        detail: "entry-level price to access GWI, Kantar or Nielsen",
+        value: "$100k+",
+        detail: "average cost for a **single** premium market research data subscription",
     },
     {
         lead: "…and chronically underutilised",

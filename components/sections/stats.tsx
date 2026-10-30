@@ -8,6 +8,24 @@ export type Stat = {
     source?: { label: string; href: string };
 };
 
+// Renders **text** as bold, keeping stat copy as plain strings
+function Emphasis({ text }: { text: string }) {
+    const parts = text.split(/\*\*(.+?)\*\*/g);
+    return (
+        <>
+            {parts.map((part, i) =>
+                i % 2 ? (
+                    <strong key={i} className="font-semibold text-foreground-alt">
+                        {part}
+                    </strong>
+                ) : (
+                    part
+                )
+            )}
+        </>
+    );
+}
+
 export function StatsGrid({ stats }: { stats: Stat[] }) {
     let n = 0;
 
@@ -30,7 +48,7 @@ export function StatsGrid({ stats }: { stats: Stat[] }) {
                             {stat.value}
                         </p>
                         <p className="mx-auto max-w-xs text-sm text-muted-foreground sm:text-base">
-                            {stat.detail}
+                            <Emphasis text={stat.detail} />
                             {stat.source && (
                                 <sup className="ml-0.5">
                                     <a
