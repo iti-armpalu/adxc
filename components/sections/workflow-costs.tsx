@@ -3,22 +3,20 @@
 import { useMemo, useState } from "react";
 import { Check, Database } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PROVIDERS as PROVIDER_LIST, STAGES } from "@/lib/content/workflow";
 
-const PROVIDERS = [
-    { name: "Kantar", cost: 200000 },
-    { name: "Nielsen", cost: 100000 },
-    { name: "Experian", cost: 50000 },
-    { name: "GWI", cost: 75000 },
-    { name: "Comscore", cost: 100000 },
-] as const;
+const PROVIDERS = PROVIDER_LIST.map((p) => ({ name: p.name, cost: p.annualPrice }));
 
-const TASKS = [
-    { name: "Strategy / Brief", subtasks: ["Market understanding", "Audience sizing", "Category context"], providers: [0, 1, 2] },
-    { name: "Creative Development", subtasks: ["Tensions", "Cultural context", "Inspiration"], providers: [0, 4] },
-    { name: "Media Strategy / Planning", subtasks: ["Reach, frequency", "Channel effectiveness", "Planning"], providers: [4] },
-    { name: "Activation / Execution", subtasks: ["Campaign delivery", "Retail media", "Execution"], providers: [2, 3] },
-    { name: "Measurement & Optimization", subtasks: ["Effectiveness", "Sales impact", "Optimization"], providers: [0, 1] },
-] as const;
+// One toggle per stage; its providers are every provider its tasks use
+const TASKS = STAGES.map((s) => ({
+    name: s.name,
+    subtasks: s.tasks.map((t) => t.label),
+    providers: [
+        ...new Set(
+            s.tasks.flatMap((t) => t.providers.map((p) => PROVIDER_LIST.findIndex((x) => x.name === p)))
+        ),
+    ].sort((a, b) => a - b),
+}));
 
 const formatUsd = (n: number) =>
     n.toLocaleString("en-US", {
