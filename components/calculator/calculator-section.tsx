@@ -69,7 +69,7 @@ export function CalculatorSection({
 
                         <p
                             aria-live="polite"
-                            className="mt-2 whitespace-nowrap font-bold leading-none tracking-tight tabular-nums lg:mt-8"
+                            className="mt-2 flex h-(--num-max) items-center whitespace-nowrap font-bold leading-none tracking-tight tabular-nums lg:mt-8"
                             style={{ fontSize: `min(var(--num-max), calc(100cqi / ${value.length * 0.62}))` }}
                         >
                             {value}
