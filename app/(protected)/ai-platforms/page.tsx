@@ -47,11 +47,13 @@ export default function AiPlatformsPage() {
       />
 
       <DataCoverage
+        className="bg-card"
         title="Marketers need diverse data from a range of providers for Agents to be useful end-to-end"
         description="Most can't afford multiple subscriptions, and most data sources aren't Agent-accessible."
       />
 
       <HowItWorks
+        className="bg-card"
         title="ADXC makes premium data usable for AI agents"
         description="ADXC is the data exchange connecting premium data providers and SMEs via AI agents, on a pay-per-use model."
         steps={steps}
@@ -62,7 +64,7 @@ export default function AiPlatformsPage() {
         ]}
       />
 
-      <Benefits title="Make your agents more valuable, trusted and differentiated" benefits={benefits} />
+      <Benefits className="bg-primary-subtle" title="Make your agents more valuable, trusted and differentiated" benefits={benefits} />
     </>
   );
 }
