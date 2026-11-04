@@ -20,13 +20,10 @@ const CHANNELS: Channel[] = [
         status: "Miro integration confirmed",
         live: true,
         description:
-            "Marketing companies, especially SMEs, use tools like Miro, Jasper, and others to build their plans. Plugging ADXC allows them to keep using familiar marketing tools, but make more informed plans with data. This is also identified as a gap by those tools, so they have invited us to integrate quickly and be present at their events. For example, the confirmed Miro integration gives us direct access to 100M users working at 110,000 SMEs.",
+            "Marketing companies, especially SMEs, use tools like Miro, Jasper, and others to build their plans. Plugging ADXC allows them to keep using familiar marketing tools, but make more informed plans with data. This is also identified as a gap by those tools, so they have invited us to integrate quickly. For example, the confirmed Miro integration gives us direct access to 100M users working at 110,000 SMEs.",
         images: [
-            { src: "/miro-canvas-26.png", alt: "Miro Canvas26 conference stage presentation" },
             { src: "/miro-canvas.png", alt: "ADXC integrated within Miro collaborative workspace" },
         ],
-        statement:
-            "Data providers that sign up now will get immediate access to these customers via ADXC, and be part of our launch presentation on stage.",
     },
     {
         name: "Agency / consultancy direct sales",
