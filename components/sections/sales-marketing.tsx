@@ -140,7 +140,7 @@ function ChannelDetails({ channel }: { channel: Channel }) {
             )}
 
             {channel.images && (
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                <div className={cn("mt-6 grid gap-4", channel.images.length > 1 && "sm:grid-cols-2")}>
                     {channel.images.map((img) => (
                         <div key={img.src} className="relative aspect-video overflow-hidden rounded-lg bg-muted">
                             <Image
