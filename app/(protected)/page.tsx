@@ -10,6 +10,7 @@ import { Team } from "@/components/sections/team";
 import { Advisors } from "@/components/sections/advisors";
 import { VideoDemos } from "@/components/sections/video-demos";
 import { AdxcApproach } from "@/components/sections/adxc-approach";
+import { MarketSize } from "@/components/sections/market-size";
 
 
 export default function HomePage() {
@@ -18,6 +19,9 @@ export default function HomePage() {
             <Hero
                 title="The Agentic Data Exchange that gives companies access to all the marketing data they need, and only charges for what they use"
             />
+
+            <MarketSize />
+
             <Stats stats={MARKET_STATS} />
 
             <WorkflowCosts />

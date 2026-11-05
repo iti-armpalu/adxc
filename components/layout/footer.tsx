@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { PERSONAS } from "@/lib/personas";
 import { GATE_CONTACT_EMAIL } from "@/lib/gate/config";
-import { CopyEmail } from "./copy-email";
+import { CopyEmail } from "../common/copy-email";
 
 const MAIN_SITE = "https://adxc.ai";
 

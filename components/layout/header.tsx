@@ -10,7 +10,7 @@ import { DemoActions } from "@/components/demo/demo-actions";
 import { lock } from "@/lib/gate/actions";
 import { PERSONAS, getPersona } from "@/lib/personas";
 import { cn } from "@/lib/utils";
-import { CopyEmail } from "@/components/layout/copy-email";
+import { CopyEmail } from "@/components/common/copy-email";
 import { GATE_CONTACT_EMAIL } from "@/lib/gate/config";
 import { MAIN_SITE_URL } from "@/lib/demo";
 
