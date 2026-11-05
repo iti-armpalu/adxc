@@ -1,14 +1,12 @@
 import { PersonCard, type Person } from "@/components/cards/person-card";
 
 const TEAM: Person[] = [
-    { name: "Roy Armale", title: "Founder, Chairman", image: "/roy.jpeg", linkedin: "https://www.linkedin.com/in/royarmale/" },
-    { name: "Josh Hedley-Dent", title: "Co-founder, Commercial", image: "/josh.jpeg", linkedin: "https://www.linkedin.com/in/joshuahedleydent/" },
-    { name: "George Chatzigiannis", title: "Co-founder, Product", image: "/george.jpeg", linkedin: "https://www.linkedin.com/in/georgechatzigiannis/" },
-    { name: "[Announcement soon]", title: "Co-founder, Engineering" },
+    { name: "Roy Armale", title: "Founder, Chairman", bio: "ex CPO WPP Open, now CPO DEPT", image: "/roy.jpeg", linkedin: "https://www.linkedin.com/in/royarmale/" },
+    { name: "Josh Hedley-Dent", title: "Co-founder, Commercial", bio: "ex startup CMO, marketing advisor to Fortune 500", image: "/josh.jpeg", linkedin: "https://www.linkedin.com/in/joshuahedleydent/" },
+    { name: "George Chatzigiannis", title: "Co-founder, Product", bio: "ex Lead Software Engineer M&S, On, WPP", image: "/george.jpeg", linkedin: "https://www.linkedin.com/in/georgechatzigiannis/" },
+    { name: "[Announcement soon]", title: "Co-founder, Engineering", bio: "Leading AI Architect" },
     { name: "Joseph Mattouk", title: "Data Engineer", image: "/joseph.jpeg", linkedin: "https://www.linkedin.com/in/joseph-mattouk-20b880222/" },
-    // TODO: add photo and LinkedIn
     { name: "Slava Yakovenko", title: "Data Engineer", image: "/slava.jpeg", linkedin: "https://www.linkedin.com/in/yakovenko/" },
-    // TODO: add photo and LinkedIn
     { name: "Amina Sinanovic", title: "Data Engineer", linkedin: "https://www.linkedin.com/in/amina-sinanovi%C4%87-872035243/" },
     { name: "Iti Armpalu", title: "Front-end Developer", image: "/iti.jpeg", linkedin: "https://www.linkedin.com/in/itiarmpalu/" },
 ];
