@@ -1,6 +1,6 @@
 import { Hero } from "@/components/sections/hero";
 import { Stats } from "@/components/sections/stats";
-import { GENERIC_AI_STATS, MARKET_STATS, SME_STATS } from "@/lib/stats";
+import { GENERIC_AI_STATS, WHY_STATS } from "@/lib/stats";
 import { WorkflowCosts } from "@/components/sections/workflow-costs";
 import { FounderVideo } from "@/components/sections/founder-video";
 import { FinancialProjections } from "@/components/sections/financial-projections";
@@ -25,6 +25,12 @@ export default function HomePage() {
             <Stats
                 title="Right now, generic AI doesn't have the data to give useful and reliable answers"
                 stats={GENERIC_AI_STATS}
+            />
+
+            <Stats
+                layout="list"
+                title="Why? The data sits behind subscriptions most businesses can't afford"
+                stats={WHY_STATS}
             />
 
             <WorkflowCosts />

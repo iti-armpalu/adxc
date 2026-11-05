@@ -120,3 +120,13 @@ export const GENERIC_AI_STATS: Stat[] = [
         },
     },
 ];
+
+export const WHY_STATS: Stat[] = [
+    { value: "99%", detail: "of businesses are SMEs" },
+    {
+        value: "$100k+",
+        detail: "average cost for a **single** premium market research data subscription",
+        note: "Calculated average for the top 15 providers from publicly available data",
+    },
+    { value: "0", detail: "data providers who cover every stage of the marketing process" },
+];
