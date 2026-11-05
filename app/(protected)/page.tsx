@@ -48,7 +48,7 @@ export default function HomePage() {
 
             <FinancialProjections />
 
-            <CompetitiveAdvantage />
+            <CompetitiveAdvantage className="bg-card" />
 
             <SalesMarketing />
 
