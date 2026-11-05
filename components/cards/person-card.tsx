@@ -49,7 +49,7 @@ export function PersonCard({ person, horizontal = false, className }: Props) {
                 </span>
             )}
 
-            <div className={cn("flex flex-1 flex-col", !horizontal && "mt-4 items-center")}>
+            <div className={cn("flex flex-1 flex-col self-stretch", !horizontal && "mt-4 items-center")}>
                 <p className="text-sm font-semibold text-foreground sm:text-base">{name}</p>
                 <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{title}</p>
                 {bio && <p className="mt-3 text-sm leading-relaxed text-foreground-alt">{bio}</p>}

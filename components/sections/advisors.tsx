@@ -2,6 +2,13 @@ import { PersonCard, type Person } from "@/components/cards/person-card";
 
 const ADVISORS: Person[] = [
     {
+        name: "Shahid Sadiq",
+        title: "Commercial advisor",
+        image: "/shahid.jpeg",
+        linkedin: "https://www.linkedin.com/in/shahid-sadiq-537399162/",
+        bio: "Supports on business model, pricing strategy, unit economics, and enterprise packaging.",
+    },
+    {
         name: "Rachel Higham",
         title: "Tech/governance advisor",
         image: "/rachel.jpeg",
@@ -9,21 +16,28 @@ const ADVISORS: Person[] = [
         bio: "Advises on architecture strategy, data governance, and institutional-grade board practices.",
     },
     {
-        name: "Shahid Sadiq",
-        title: "Commercial advisor",
-        image: "/shahid.jpeg",
-        linkedin: "https://www.linkedin.com/in/shahid-sadiq-537399162/",
-        bio: "Supports on business model, pricing strategy, unit economics, and enterprise packaging.",
+        name: "Andrew Dimitriou",
+        title: "Growth advisor, Non-exec Chair of Advisory Board",
+        linkedin: "https://www.linkedin.com/in/andrewdimitriou/",
+        bio: "Supporting growth with agencies & enterprises, and fundraising.",
+        // TODO: add photo
+    },
+    {
+        name: "Kostas Kontopanos",
+        title: "Growth advisor",
+        linkedin: "https://www.linkedin.com/in/kostas-kontopanos-a598367/",
+        bio: "Supporting growth with enterprises and data providers.",
+        // TODO: add photo
     },
 ];
 
 export function Advisors() {
     return (
-        <section className="bg-white">
+        <section>
             <div className="mx-auto max-w-7xl space-y-12 px-4 py-16 sm:px-6 sm:py-24">
                 <div className="mx-auto max-w-3xl text-center">
                     <p className="text-caption mb-3 text-muted-foreground">Advisory board</p>
-                    <h2 className="text-balance text-primary">We are advised by the best in the world</h2>
+                    <h2 className="text-balance text-heading">We are advised by the best in the world</h2>
                 </div>
 
                 <ul className="flex flex-wrap justify-center gap-4">
