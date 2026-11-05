@@ -1,11 +1,12 @@
 import Image from "next/image";
+import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type Person = {
     name: string;
     title: string;
-    image: string;
-    linkedin: string;
+    image?: string;
+    linkedin?: string;
     bio?: string;
 };
 
@@ -17,6 +18,7 @@ type Props = {
 
 export function PersonCard({ person, horizontal = false, className }: Props) {
     const { name, title, image, linkedin, bio } = person;
+    const avatarSize = horizontal ? "size-16 sm:size-20" : "size-20 sm:size-24";
 
     return (
         <div
@@ -26,32 +28,43 @@ export function PersonCard({ person, horizontal = false, className }: Props) {
                 className
             )}
         >
-            <Image
-                src={image}
-                alt=""
-                width={192}
-                height={192}
-                sizes="96px"
-                className={cn(
-                    "shrink-0 rounded-full object-cover",
-                    horizontal ? "size-16 sm:size-20" : "size-20 sm:size-24"
-                )}
-            />
+            {image ? (
+                <Image
+                    src={image}
+                    alt=""
+                    width={192}
+                    height={192}
+                    sizes="96px"
+                    className={cn("shrink-0 rounded-full object-cover", avatarSize)}
+                />
+            ) : (
+                <span
+                    aria-hidden
+                    className={cn(
+                        "flex shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground",
+                        avatarSize
+                    )}
+                >
+                    <User className="size-1/2" strokeWidth={1.5} />
+                </span>
+            )}
 
             <div className={cn("flex flex-1 flex-col", !horizontal && "mt-4 items-center")}>
                 <p className="text-sm font-semibold text-foreground sm:text-base">{name}</p>
                 <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{title}</p>
                 {bio && <p className="mt-3 text-sm leading-relaxed text-foreground-alt">{bio}</p>}
-                <a
-                    href={linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${name} on LinkedIn`}
-                    className="mt-auto inline-flex w-fit items-center gap-1.5 pt-4 text-xs font-medium text-primary hover:underline"
-                >
-                    <LinkedInIcon className="size-4" />
-                    LinkedIn
-                </a>
+                {linkedin && (
+                    <a
+                        href={linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${name} on LinkedIn`}
+                        className="mt-auto inline-flex w-fit items-center gap-1.5 pt-4 text-xs font-medium text-primary hover:underline"
+                    >
+                        <LinkedInIcon className="size-4" />
+                        LinkedIn
+                    </a>
+                )}
             </div>
         </div>
     );
