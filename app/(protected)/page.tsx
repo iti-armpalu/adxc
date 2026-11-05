@@ -11,6 +11,7 @@ import { Advisors } from "@/components/sections/advisors";
 import { VideoDemos } from "@/components/sections/video-demos";
 import { AdxcApproach } from "@/components/sections/adxc-approach";
 import { MarketSize } from "@/components/sections/market-size";
+import { SolutionIntro } from "@/components/sections/solution-intro";
 
 
 export default function HomePage() {
@@ -28,6 +29,7 @@ export default function HomePage() {
             />
 
             <Stats
+                className="bg-card"
                 layout="list"
                 title="Why? The data sits behind subscriptions most businesses can't afford"
                 stats={WHY_STATS}
@@ -35,6 +37,7 @@ export default function HomePage() {
 
             <WorkflowCosts />
 
+            <SolutionIntro className="bg-primary-subtle" />
 
             <AdxcApproach />
 

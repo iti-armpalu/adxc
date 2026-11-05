@@ -43,7 +43,7 @@ export function WorkflowCosts() {
     const count = active.size;
 
     return (
-        <section className="bg-white">
+        <section className="bg-card">
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
                 {/* Heading + hint */}
                 <div className="mx-auto mb-10 max-w-3xl text-center">
