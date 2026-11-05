@@ -12,6 +12,7 @@ import { VideoDemos } from "@/components/sections/video-demos";
 import { AdxcApproach } from "@/components/sections/adxc-approach";
 import { MarketSize } from "@/components/sections/market-size";
 import { SolutionIntro } from "@/components/sections/solution-intro";
+import { StakeholderBenefits } from "@/components/sections/stakeholder-benefits";
 
 
 export default function HomePage() {
@@ -42,6 +43,8 @@ export default function HomePage() {
             <AdxcApproach />
 
             <FounderVideo />
+
+            <StakeholderBenefits className="bg-card" />
 
             <FinancialProjections />
 
