@@ -1,11 +1,14 @@
 import {
-    AGENTS as AGENT_NAMES,
+    AGENTS as AGENT_LIST,
     PROVIDERS as PROVIDER_LIST,
     STAGES as CONTENT_STAGES,
 } from "@/lib/content/workflow";
 
 export const PROVIDERS = PROVIDER_LIST.map((p) => p.name);
-export const AGENTS = [...AGENT_NAMES];
+export const PROVIDER_LOGOS = PROVIDER_LIST.map((p) => ("logo" in p ? p.logo : undefined));
+
+export const AGENTS = AGENT_LIST.map((a) => a.name);
+export const AGENT_LOGOS = AGENT_LIST.map((a) => ("logo" in a ? a.logo : undefined));
 
 export type Subtask = { label: string; agent: number; providers: number[] };
 export type Stage = { name: string; subtasks: Subtask[] };

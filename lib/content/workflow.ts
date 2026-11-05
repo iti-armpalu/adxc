@@ -3,17 +3,22 @@
 // costProviders per stage + prices → stage-level sheet (used by WorkflowCosts).
 
 export const PROVIDERS = [
-    { name: "YouGov", annualPrice: 75_000 },
+    { name: "YouGov", annualPrice: 75_000, logo: "/yougov-logo.svg" },
     { name: "Nielsen", annualPrice: 200_000 },
-    { name: "Quid", annualPrice: 50_000 }, // TODO: task sheet says $75k, stage sheet $50k — confirm
+    { name: "Quid", annualPrice: 50_000, logo: "/quid-logo.svg" }, // TODO: task sheet says $75k, stage sheet $50k — confirm
     { name: "Comscore", annualPrice: 100_000 },
     { name: "Circana", annualPrice: 100_000 },
 ] as const;
 
-export const AGENTS = ["Miro", "Jasper", "Salesforce", "Your agent"] as const;
+export const AGENTS = [
+    { name: "Miro", logo: "/miro-logo.svg" },
+    { name: "Jasper", logo: "/jasper-logo.svg" },
+    { name: "Salesforce" },
+    { name: "Your agent" },
+] as const;
 
 export type ProviderName = (typeof PROVIDERS)[number]["name"];
-export type AgentName = (typeof AGENTS)[number];
+export type AgentName = (typeof AGENTS)[number]["name"];
 export type Task = { label: string; agent: AgentName; providers: ProviderName[] };
 export type Stage = { name: string; costProviders: ProviderName[]; tasks: Task[] };
 

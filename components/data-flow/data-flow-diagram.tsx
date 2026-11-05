@@ -6,9 +6,11 @@ import { ArrowDown, Database, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
     AGENTS,
+    AGENT_LOGOS,
     AGENT_SCATTER,
     DEFAULT_SUBTASK,
     PROVIDERS,
+    PROVIDER_LOGOS,
     PROVIDER_SCATTER,
     STAGES,
 } from "./data";
@@ -155,6 +157,7 @@ export function DataFlowDiagram() {
                                 key={name}
                                 id={`agent-${i}`}
                                 name={name}
+                                logo={AGENT_LOGOS[i]}
                                 kind="agent"
                                 slotted={slotted}
                                 active={live?.agent === i}
@@ -172,9 +175,11 @@ export function DataFlowDiagram() {
                         data-flow="adxc"
                         className="flex items-center justify-center rounded-xl bg-primary p-3 sm:p-4"
                     >
-                        <span className="text-xl font-bold tracking-[0.3em] text-primary-foreground sm:text-3xl">
-                            ADXC
-                        </span>
+                        <img
+                            src="/adxc-logo-primary-horizontal.svg"
+                            alt="ADXC"
+                            className="h-6 w-auto brightness-0 invert sm:h-8"
+                        />
                     </div>
                     <div
                         aria-hidden
@@ -201,6 +206,7 @@ export function DataFlowDiagram() {
                                 key={name}
                                 id={`provider-${i}`}
                                 name={name}
+                                logo={PROVIDER_LOGOS[i]}
                                 kind="provider"
                                 slotted={slotted}
                                 active={!!live?.providers.includes(i)}
@@ -276,6 +282,7 @@ function ScatteredSquare({
 function SlotItem({
     id,
     name,
+    logo,
     kind,
     slotted,
     active,
@@ -283,6 +290,7 @@ function SlotItem({
 }: {
     id: string;
     name: string;
+    logo?: string;
     kind: Kind;
     slotted: boolean;
     active: boolean;
@@ -314,9 +322,22 @@ function SlotItem({
                     </motion.div>
                 )}
             </div>
-            <span className="break-words text-center text-[0.625rem] leading-tight text-mid-alt sm:text-xs">
-                {name}
-            </span>
+
+            {logo ? (
+                // Plain <img> for SVG per convention
+                <img
+                    src={logo}
+                    alt={name}
+                    className={cn(
+                        "h-3.5 w-auto max-w-16 object-contain transition-[filter] duration-300 sm:h-4 sm:max-w-20",
+                        !active && "grayscale"
+                    )}
+                />
+            ) : (
+                <span className="break-words text-center text-[0.625rem] leading-tight text-mid-alt sm:text-xs">
+                    {name}
+                </span>
+            )}
         </div>
     );
 }
