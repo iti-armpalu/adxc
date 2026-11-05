@@ -101,3 +101,22 @@ export const WHY_NOW_STATS: Stat[] = [
         },
     },
 ];
+
+export const GENERIC_AI_STATS: Stat[] = [
+    {
+        value: "76%",
+        detail: "of people in the US don't trust answers from LLMs",
+        source: {
+            label: "Quinnipiac University Poll",
+            href: "https://poll.qu.edu/poll-release?releaseid=3955",
+        },
+    },
+    {
+        value: "#2",
+        detail: "Lack of necessary data is the no. 2 concern using AI tools for marketers",
+        source: {
+            label: "Salesforce State of Marketing Report",
+            href: "https://www.salesforce.com/uk/marketing/resources/state-of-marketing-report/",
+        },
+    },
+];

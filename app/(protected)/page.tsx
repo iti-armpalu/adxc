@@ -1,6 +1,6 @@
 import { Hero } from "@/components/sections/hero";
 import { Stats } from "@/components/sections/stats";
-import { MARKET_STATS, SME_STATS } from "@/lib/stats";
+import { GENERIC_AI_STATS, MARKET_STATS, SME_STATS } from "@/lib/stats";
 import { WorkflowCosts } from "@/components/sections/workflow-costs";
 import { FounderVideo } from "@/components/sections/founder-video";
 import { FinancialProjections } from "@/components/sections/financial-projections";
@@ -22,14 +22,13 @@ export default function HomePage() {
 
             <MarketSize />
 
-            <Stats stats={MARKET_STATS} />
+            <Stats
+                title="Right now, generic AI doesn't have the data to give useful and reliable answers"
+                stats={GENERIC_AI_STATS}
+            />
 
             <WorkflowCosts />
 
-            <Stats
-                title="This prices SMEs out and creates a large market opportunity"
-                stats={SME_STATS}
-            />
 
             <AdxcApproach />
 
