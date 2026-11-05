@@ -7,15 +7,12 @@ import { PROVIDERS as PROVIDER_LIST, STAGES } from "@/lib/content/workflow";
 
 const PROVIDERS = PROVIDER_LIST.map((p) => ({ name: p.name, cost: p.annualPrice }));
 
-// One toggle per stage; its providers are every provider its tasks use
 const TASKS = STAGES.map((s) => ({
     name: s.name,
     subtasks: s.tasks.map((t) => t.label),
-    providers: [
-        ...new Set(
-            s.tasks.flatMap((t) => t.providers.map((p) => PROVIDER_LIST.findIndex((x) => x.name === p)))
-        ),
-    ].sort((a, b) => a - b),
+    providers: s.costProviders
+        .map((p) => PROVIDER_LIST.findIndex((x) => x.name === p))
+        .sort((a, b) => a - b),
 }));
 
 const formatUsd = (n: number) =>
