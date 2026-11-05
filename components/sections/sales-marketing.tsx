@@ -17,7 +17,7 @@ type Channel = {
 const CHANNELS: Channel[] = [
     {
         name: "AI platform integrations (e.g. Miro, Jasper)",
-        status: "Miro integration confirmed",
+        status: "Miro integration live",
         live: true,
         description:
             "Marketing companies, especially SMEs, use tools like Miro, Jasper, and others to build their plans. Plugging ADXC allows them to keep using familiar marketing tools, but make more informed plans with data. This is also identified as a gap by those tools, so they have invited us to integrate quickly. For example, the confirmed Miro integration gives us direct access to 100M users working at 110,000 SMEs.",
@@ -63,6 +63,15 @@ export function SalesMarketing() {
 
                 <div className="mx-auto max-w-5xl">
                     <p className="text-caption mb-3 text-muted-foreground">Sales channels</p>
+
+                    {/* Hint: desktop only, since mobile shows every channel stacked */}
+                    <p className="mb-4 hidden items-center gap-2 text-sm text-muted-foreground md:flex">
+                        <span className="relative flex size-2 shrink-0">
+                            <span className="absolute inline-flex size-full rounded-full bg-primary opacity-60 motion-safe:animate-ping" />
+                            <span className="relative inline-flex size-2 rounded-full bg-primary" />
+                        </span>
+                        Click to see more detail for each channel
+                    </p>
 
                     {/* Mobile: stacked cards */}
                     <div className="space-y-4 md:hidden">
