@@ -78,12 +78,16 @@ export function DataFlowDiagram() {
                 {/* Scattered squares, shown until the diagram enters view */}
                 {!slotted && (
                     <div aria-hidden className="pointer-events-none absolute inset-0 z-20">
-                        {PROVIDER_SCATTER.map((p, i) => (
-                            <ScatteredSquare key={`p${i}`} id={`provider-${i}`} pos={p} kind="provider" />
-                        ))}
-                        {AGENT_SCATTER.map((p, i) => (
-                            <ScatteredSquare key={`a${i}`} id={`agent-${i}`} pos={p} kind="agent" />
-                        ))}
+                        {PROVIDER_SCATTER.map((p, i) =>
+                            PROVIDER_LOGOS[i] ? null : (
+                                <ScatteredSquare key={`p${i}`} id={`provider-${i}`} pos={p} kind="provider" />
+                            )
+                        )}
+                        {AGENT_SCATTER.map((p, i) =>
+                            AGENT_LOGOS[i] ? null : (
+                                <ScatteredSquare key={`a${i}`} id={`agent-${i}`} pos={p} kind="agent" />
+                            )
+                        )}
                     </div>
                 )}
 
@@ -301,42 +305,45 @@ function SlotItem({
             data-flow={id}
             className={cn(
                 "flex min-w-0 flex-1 flex-col items-center gap-2 transition-opacity duration-300 sm:w-20 sm:flex-none",
+                logo && "justify-center",
                 dimmed && "opacity-40"
             )}
         >
-            <div
-                className={cn(
-                    "relative size-9 rounded-lg border-2 border-dashed transition-colors sm:size-13",
-                    slotted ? "border-transparent" : "border-border"
-                )}
-            >
-                {slotted && (
-                    <motion.div
-                        layoutId={id}
-                        className="size-full"
-                        initial={false}
-                        animate={{ rotate: 0, scale: active ? 1.1 : 1 }}
-                        transition={SQUARE_TRANSITION}
-                    >
-                        <Square kind={kind} active={active} />
-                    </motion.div>
-                )}
-            </div>
-
             {logo ? (
-                // Plain <img> for SVG per convention
-                <img
-                    src={logo}
-                    alt={name}
-                    className={cn(
-                        "h-3.5 w-auto max-w-16 object-contain transition-[filter] duration-300 sm:h-4 sm:max-w-20",
-                        !active && "grayscale"
-                    )}
-                />
+                <div className="flex w-full items-center justify-center">
+                    <img
+                        src={logo}
+                        alt={name}
+                        className={cn(
+                            "h-5 w-auto max-w-full object-contain transition duration-300 sm:h-7",
+                            active ? "scale-110" : "grayscale"
+                        )}
+                    />
+                </div>
             ) : (
-                <span className="break-words text-center text-[0.625rem] leading-tight text-mid-alt sm:text-xs">
-                    {name}
-                </span>
+                <>
+                    <div
+                        className={cn(
+                            "relative size-9 rounded-lg border-2 border-dashed transition-colors sm:size-13",
+                            slotted ? "border-transparent" : "border-border"
+                        )}
+                    >
+                        {slotted && (
+                            <motion.div
+                                layoutId={id}
+                                className="size-full"
+                                initial={false}
+                                animate={{ rotate: 0, scale: active ? 1.1 : 1 }}
+                                transition={SQUARE_TRANSITION}
+                            >
+                                <Square kind={kind} active={active} />
+                            </motion.div>
+                        )}
+                    </div>
+                    <span className="break-words text-center text-[0.625rem] leading-tight text-mid-alt sm:text-xs">
+                        {name}
+                    </span>
+                </>
             )}
         </div>
     );
