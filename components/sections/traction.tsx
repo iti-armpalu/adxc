@@ -12,7 +12,7 @@ export function Traction({ className }: { className?: string }) {
                 <div className="mx-auto max-w-4xl text-center">
                     <p className="text-caption mb-3 text-muted-foreground">Traction</p>
                     <h2 className="text-balance text-foreground">
-                        We are in Alpha, and have <span className="text-heading">providers</span>,{" "}
+                        We are pre-launch, but have <span className="text-heading">providers</span>,{" "}
                         <span className="text-heading">clients</span>, and{" "}
                         <span className="text-heading">distribution</span> already in place
                     </h2>
@@ -130,7 +130,7 @@ export function Traction({ className }: { className?: string }) {
                                 </li>
                             </ul>
                         </RowTile>
-                        
+
                         <RowTile
                             label="Clients"
                             accent={accent("/brands", "/agencies")}
