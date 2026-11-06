@@ -23,7 +23,7 @@ export const SME_STATS: Stat[] = [
         detail: "of businesses are small and medium-sized enterprises",
     },
     {
-        value: "~$18B",
+        value: "~$11B",
         detail: "untapped market",
         note: "Estimated annual SME research and data spend (UK + US)",
     },
@@ -78,7 +78,7 @@ export const DATA_ACCESS_STATS: Stat[] = [
         },
     },
     {
-        value: "$200k+",
+        value: "$100k+",
         detail: "Typical entry-level cost to access premium data providers (e.g. GWI, Kantar, Nielsen)",
     },
 ];
