@@ -2,17 +2,18 @@ import { Check } from "lucide-react";
 import { DataFlowDiagram } from "@/components/data-flow/data-flow-diagram";
 import { cn } from "@/lib/utils";
 
-export type HowItWorksStep = { title: string; description: string };
+export type HowItWorksStep = { title?: string; description: string };
 
 type Props = {
     title: string;
     description?: string;
     steps: HowItWorksStep[];
     highlights?: string[];
+    footnote?: string; // e.g. explains an asterisk in a step
     className?: string;
 };
 
-export function HowItWorks({ title, description, steps, highlights, className }: Props) {
+export function HowItWorks({ title, description, steps, highlights, footnote, className }: Props) {
     return (
         <section className={cn(className)}>
             <div className="mx-auto max-w-7xl space-y-12 px-4 py-16 sm:px-6 sm:py-24">
@@ -23,24 +24,27 @@ export function HowItWorks({ title, description, steps, highlights, className }:
                     )}
                 </div>
 
-                <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start xl:gap-10\">
+                <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start xl:gap-10">
                     <DataFlowDiagram />
 
-                    <ol className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
-                        {steps.map((step, i) => (
-                            <li key={step.title} className="flex gap-4 rounded-xl border bg-card p-5 shadow-sm">
-                                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-subtle font-bold tabular-nums text-primary">
-                                    {i + 1}
-                                </span>
-                                <div>
-                                    <h3 className="text-base text-primary">{step.title}</h3>
-                                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                                        {step.description}
-                                    </p>
-                                </div>
-                            </li>
-                        ))}
-                    </ol>
+                    <div>
+                        <ol className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
+                            {steps.map((step, i) => (
+                                <li key={step.description} className="flex gap-4 rounded-xl border bg-card p-5 shadow-sm">
+                                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-subtle font-bold tabular-nums text-primary">
+                                        {i + 1}
+                                    </span>
+                                    <div className={cn(!step.title && "self-center")}>
+                                        {step.title && <h3 className="text-base text-primary">{step.title}</h3>}
+                                        <p className={cn("text-sm leading-relaxed text-muted-foreground", step.title && "mt-1")}>
+                                            {step.description}
+                                        </p>
+                                    </div>
+                                </li>
+                            ))}
+                        </ol>
+                        {footnote && <p className="mt-4 text-xs italic text-muted-foreground">{footnote}</p>}
+                    </div>
                 </div>
 
                 {highlights?.length ? (

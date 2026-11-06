@@ -9,10 +9,10 @@ import { Benefits, type Benefit } from "@/components/sections/benefits";
 import { SavingsCalculator } from "./_components/savings-calculator";
 
 const steps: HowItWorksStep[] = [
-  { title: "AI Request", description: "AI agents query ADXC when completing tasks inside workflows." },
-  { title: "Orchestration", description: "ADXC's Agentic Orchestrator understands the question context, breaks it into sub-tasks and identifies the most relevant data to answer it." },
-  { title: "Abstract Answer", description: "The customer sees an abstract of the answer and price." },
-  { title: "Full Answer", description: "The user approves and ADXC pulls only the relevant data to answer the question." },
+  { description: "Connect an AI tool to ADXC & ask a question*" },
+  { description: "ADXC clarifies context & searches multiple research providers" },
+  { description: "ADXC presents an abstract of the answer, the sources, and price" },
+  { description: "Approve, get a synthesised response & only pay for that data" },
 ];
 
 const benefits: Benefit[] = [
@@ -55,6 +55,7 @@ export default function BrandsPage() {
         description="ADXC is the data exchange connecting premium marketing data providers and SMEs via AI agents, on a pay-per-use model."
         steps={steps}
         highlights={["No long-term contracts", "Access multiple premium datasets", "Spend caps set per task/user"]}
+        footnote="*Requires sign-up + topping up your ADXC wallet"
       />
 
       <Benefits className="bg-primary-subtle" title="Start paying for answers, not access" benefits={benefits} />
