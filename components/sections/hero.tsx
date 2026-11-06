@@ -1,4 +1,3 @@
-import { ChevronDown } from "lucide-react";
 import { GridGlow } from "@/components/decor/grid-glow";
 
 type Props = {
@@ -23,11 +22,6 @@ export function Hero({ title, description, children }: Props) {
                 )}
                 {children && <div className="mt-12 sm:mt-16">{children}</div>}
             </div>
-
-            <ChevronDown
-                aria-hidden
-                className="absolute bottom-6 left-1/2 size-6 -translate-x-1/2 text-muted-foreground motion-safe:animate-bounce"
-            />
         </section>
     );
 }
