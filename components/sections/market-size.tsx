@@ -1,6 +1,4 @@
-import { Footnote } from "@/components/common/footnote";
-
-const HIGHLIGHT = "font-semibold text-[color-mix(in_oklch,var(--primary)_60%,black)]";
+const HIGHLIGHT = "font-semibold text-brand-500";
 
 export function MarketSize() {
     return (
@@ -8,7 +6,7 @@ export function MarketSize() {
             <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 md:grid-cols-[minmax(0,1fr)_22rem] lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-20">
                 <div className="text-center md:text-left">
                     <h2 className="text-balance text-heading">There is an $11Bn untapped data market</h2>
-                    <p className="mx-auto mt-4 max-w-md text-pretty text-xl leading-relaxed text-foreground-alt sm:text-2xl md:mx-0">
+                    <p className="mx-auto mt-6 max-w-md border-l-4 border-primary pl-6 text-left text-2xl font-medium leading-snug text-foreground-alt sm:text-3xl md:mx-0">
                         <span className={HIGHLIGHT}>SMEs</span> that need{" "}
                         <span className={HIGHLIGHT}>reliable data</span> to make{" "}
                         <span className={HIGHLIGHT}>AI useful</span> for marketing
