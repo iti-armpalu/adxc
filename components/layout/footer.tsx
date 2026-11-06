@@ -49,8 +49,8 @@ export function Footer() {
                             />
                         </Link>
                         <p className="max-w-xs text-sm leading-relaxed text-brand-100">
-                            The Agentic Data Exchange that gives companies access to the marketing data they need, and
-                            only charges for what they use.
+                            The trusted data layer for marketing AI. ADXC connects AI tools to consumer research from
+                            leading data providers, charged per question.
                         </p>
                     </div>
 
