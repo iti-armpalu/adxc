@@ -13,6 +13,7 @@ import { AdxcApproach } from "@/components/sections/adxc-approach";
 import { MarketSize } from "@/components/sections/market-size";
 import { SolutionIntro } from "@/components/sections/solution-intro";
 import { StakeholderBenefits } from "@/components/sections/stakeholder-benefits";
+import { Traction } from "@/components/sections/traction";
 
 
 export default function HomePage() {
@@ -51,6 +52,8 @@ export default function HomePage() {
             <CompetitiveAdvantage className="bg-card" />
 
             <SalesMarketing />
+
+            <Traction className="bg-primary-subtle" />
 
             <Team />
 
