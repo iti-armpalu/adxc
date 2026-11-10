@@ -43,8 +43,8 @@ const CHANNELS: Channel[] = [
     },
     {
         name: "SME self-serve",
-        status: "Coming soon",
-        live: false,
+        status: "In Alpha",
+        live: true,
     },
 ];
 
