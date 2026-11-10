@@ -2,7 +2,6 @@ import { Hero } from "@/components/sections/hero";
 import { Stats } from "@/components/sections/stats";
 import { GENERIC_AI_STATS, WHY_STATS } from "@/lib/stats";
 import { WorkflowCosts } from "@/components/sections/workflow-costs";
-import { FounderVideo } from "@/components/sections/founder-video";
 import { FinancialProjections } from "@/components/sections/financial-projections";
 import { CompetitiveAdvantage } from "@/components/sections/competitive-advantage";
 import { SalesMarketing } from "@/components/sections/sales-marketing";
@@ -14,6 +13,7 @@ import { MarketSize } from "@/components/sections/market-size";
 import { SolutionIntro } from "@/components/sections/solution-intro";
 import { StakeholderBenefits } from "@/components/sections/stakeholder-benefits";
 import { Traction } from "@/components/sections/traction";
+import { MiroDemo } from "@/components/sections/miro-demo";
 
 
 export default function HomePage() {
@@ -43,7 +43,7 @@ export default function HomePage() {
 
             <AdxcApproach />
 
-            <FounderVideo />
+            <MiroDemo />
 
             <StakeholderBenefits className="bg-card" />
 
