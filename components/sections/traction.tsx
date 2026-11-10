@@ -75,7 +75,7 @@ export function Traction({ className }: { className?: string }) {
                                 <div className="border-t-4 border-primary pt-3">
                                     <p className="text-2xl font-semibold text-foreground">Nov &apos;26</p>
                                     <p className="mt-1 flex items-center gap-2 font-semibold text-primary">
-                                        Beta
+                                        Alpha
                                         <span className="rounded-full bg-primary-subtle px-2 py-0.5 text-xs">Now</span>
                                     </p>
                                 </div>
