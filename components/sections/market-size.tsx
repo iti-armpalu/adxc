@@ -24,13 +24,13 @@ export function MarketSize() {
                         </div>
 
                         <div className="absolute bottom-[2%] left-[16%] flex aspect-square w-[68%] flex-col items-center rounded-full bg-[color-mix(in_oklch,var(--primary)_40%,white)] pt-[6%] text-center">
-                            <p className="text-[8cqi] font-bold leading-none tracking-tight text-heading">$1.7Bn</p>
+                            <p className="text-[8cqi] font-bold leading-none tracking-tight text-heading">$3Bn</p>
                             <p className="mt-[1.2cqi] text-[3.2cqi] text-foreground">SAM: Relevant B2Cs + agencies</p>
                         </div>
 
                         <div className="absolute bottom-[3%] left-[30%] flex aspect-square w-[40%] flex-col items-center justify-center rounded-full bg-primary-subtle text-center shadow-md">
                             <p className="text-[7cqi] font-bold leading-none tracking-tight text-primary">$8M</p>
-                            <p className="mt-[1.2cqi] text-[3cqi] text-foreground-alt">SOM: Y3 projection</p>
+                            <p className="mt-[1.2cqi] text-[3cqi] text-foreground-alt">SOM: Y2 projection</p>
                         </div>
                     </div>
 
