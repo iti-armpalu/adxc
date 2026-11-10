@@ -104,11 +104,11 @@ export const WHY_NOW_STATS: Stat[] = [
 
 export const GENERIC_AI_STATS: Stat[] = [
     {
-        value: "76%",
-        detail: "of people in the US don't trust answers from LLMs",
+        value: "72%",
+        detail: "of marketers have made a significant decision based on bad data",
         source: {
-            label: "Quinnipiac University Poll",
-            href: "https://poll.qu.edu/poll-release?releaseid=3955",
+            label: "GWI: The AI Trust Gap Is Costing Marketers",
+            href: "https://www.gwi.com/blog/the-ai-trust-gap-is-costing-marketers",
         },
     },
     {
