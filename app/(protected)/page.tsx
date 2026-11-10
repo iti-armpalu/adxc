@@ -43,7 +43,7 @@ export default function HomePage() {
 
             <AdxcApproach />
 
-            <MiroDemo />
+            <MiroDemo className="bg-primary-subtle" />
 
             <StakeholderBenefits className="bg-card" />
 
