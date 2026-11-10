@@ -18,16 +18,9 @@ const ADVISORS: Person[] = [
     {
         name: "Andrew Dimitriou",
         title: "Growth advisor, Non-exec Chair of Advisory Board",
+        image: "/andrew.png",
         linkedin: "https://www.linkedin.com/in/andrewdimitriou/",
         bio: "Supporting growth with agencies & enterprises, and fundraising.",
-        // TODO: add photo
-    },
-    {
-        name: "Kostas Kontopanos",
-        title: "Growth advisor",
-        linkedin: "https://www.linkedin.com/in/kostas-kontopanos-a598367/",
-        bio: "Supporting growth with enterprises and data providers.",
-        // TODO: add photo
     },
 ];
 
